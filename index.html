@@ -8,7 +8,7 @@
   <meta name="author" content="Datanal" />
 
   <meta property="og:title" content="VRoom — By riders, for riders" />
-  <meta property="og:description" content="Voce, mappe offline, GPX, SOS e automazioni: VRoom evolve in v2.0 con focus safety-first." />
+  <meta property="og:description" content="V2 chiusa, v3 in corso, v4 verso sostenibilità: VRoom resta safety-first e privacy-first." />
   <meta property="og:type" content="website" />
 
   <title>VRoom — By riders, for riders</title>
@@ -518,19 +518,47 @@
     }
 
     .card {
+      position: relative;
+      overflow: hidden;
       padding: 1.6rem;
       border-radius: var(--radius);
       background: var(--card);
       border: 1px solid var(--stroke);
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(14px);
+      cursor: pointer;
       transition: transform 0.25s ease, border 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(140% 90% at 20% 0%, rgba(255, 255, 255, 0.08), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
     }
 
     .card:hover {
       transform: translateY(-6px);
       border-color: rgba(255, 255, 255, 0.2);
       box-shadow: 0 18px 38px rgba(255, 122, 24, 0.2);
+    }
+
+    .card:hover::before,
+    .card.is-selected::before,
+    .card:focus-within::before {
+      opacity: 1;
+    }
+
+    .card.is-selected {
+      background: #050607;
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow:
+        0 26px 60px rgba(0, 0, 0, 0.55),
+        0 0 45px rgba(255, 122, 24, 0.22),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
     }
 
     .card h3 {
@@ -541,6 +569,41 @@
     .card p {
       color: var(--muted);
       font-size: 0.95rem;
+    }
+
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      padding: 1.6rem;
+      display: grid;
+      gap: 0.7rem;
+      background:
+        radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
+        rgba(5, 6, 8, 0.92);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+    }
+
+    .card-overlay span {
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 0.7rem;
+      color: var(--accent-2);
+    }
+
+    .card-overlay p {
+      color: var(--text);
+      font-size: 0.95rem;
+      line-height: 1.45;
+    }
+
+    .card:hover .card-overlay,
+    .card.is-selected .card-overlay,
+    .card:focus-within .card-overlay {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .feature-rail {
@@ -925,12 +988,13 @@
         <section class="hero" data-story-index="0">
           <div class="hero-grid">
             <div class="hero-copy reveal" data-animate>
-              <span class="pill">🚧 v2.0 in avanzamento · 90% completata (29 gennaio 2026)</span>
+              <span class="pill">✅ v2.0 chiusa · 🚧 v3 in corso (abbozzata)</span>
               <h1>Una compagna di viaggio nata <span>in sella</span>.</h1>
               <p>
                 VRoom non vuole “aggiungere un’app” alla tua guida: vuole togliere rumore.
-                Ora include mappe offline, export GPX, SOS con countdown, copilot voice IT/EN
-                e automazioni via intent. Il prossimo passo: sensori e rifinitura UX.
+                La v2.0 è chiusa con offline, GPX, SOS, TTS e automazioni. La v3 è in corso
+                e si sta definendo; la v4 guarda alla sostenibilità del progetto, senza perdere
+                il focus safety‑first.
               </p>
               <div class="hero-actions">
                 <a class="button primary" href="https://github.com/Datanal/Vroom4">Scopri il progetto</a>
@@ -1006,17 +1070,17 @@
             contesto, memoria e sicurezza.
           </p>
           <div class="grid cards">
-            <div class="card reveal" data-animate data-story-hover="4">
+            <div class="card reveal" data-animate data-story-hover="4" tabindex="0" data-explain="Riduce le interazioni in marcia: registra e tagga per te, così resti concentrato sulla strada.">
               <h3>Meno distrazioni</h3>
               <p>La strada è intensa. VRoom prende appunti al posto tuo con log vocali e tagging automatico,
                 così puoi restare dove conta: in sella, con la testa libera.</p>
             </div>
-            <div class="card reveal" data-animate data-story-hover="6">
+            <div class="card reveal" data-animate data-story-hover="6" tabindex="0" data-explain="Trasforma il giro in un racconto leggibile, così ricordi punti critici senza numeri freddi.">
               <h3>Memoria della strada</h3>
               <p>Curve, pericoli e passaggi chiave diventano un racconto ordinato: note vocali, punti
                 salienti, replay e mappe che ti riportano esattamente lì.</p>
             </div>
-            <div class="card reveal" data-animate data-story-hover="7">
+            <div class="card reveal" data-animate data-story-hover="7" tabindex="0" data-explain="Rende la sicurezza concreta con azioni rapide e chiare quando serve davvero.">
               <h3>Safety che protegge</h3>
               <p>Quando succede qualcosa, il supporto è concreto: SOS con countdown, contatti dedicati
                 e alert vocali per restare lucidi.</p>
@@ -1103,10 +1167,11 @@
           <h2 class="section-title reveal" data-animate>Soluzioni ai problemi reali.</h2>
           <p class="section-subtitle reveal" data-animate>
             VRoom nasce per risolvere quello che manca in sella: consapevolezza, fiducia e memoria.
-            Ora la base v2.0 è reale: offline, GPX, SOS, TTS e automazioni, con sensori in arrivo.
+            La v2.0 è chiusa; la v3 è in corso e si sta definendo. La v4 guarda a sostenibilità e scala,
+            senza spostare il baricentro dalla sicurezza.
           </p>
           <div class="feature-rail">
-            <div class="card reveal" data-animate data-story-hover="4">
+            <div class="card reveal" data-animate data-story-hover="4" tabindex="0" data-explain="Risolve il problema del touch in marcia: comandi brevi e conferme vocali senza distrazioni.">
               <span>Voce + copilota</span>
               <h3>Rimani in controllo</h3>
               <p>Log vocali e conferme TTS IT/EN: niente schermi da fissare, niente gesture complesse.
@@ -1116,7 +1181,7 @@
                 <span>Conferme vocali IT/EN</span>
               </div>
             </div>
-            <div class="card reveal" data-animate data-story-hover="6">
+            <div class="card reveal" data-animate data-story-hover="6" tabindex="0" data-explain="Evita di perdere il giro senza rete e ti permette di portarlo dove vuoi.">
               <span>Offline + export</span>
               <h3>Capisci il ritmo</h3>
               <p>Replay visuali, mappe offline e GPX standard ti aiutano a rivedere il giro
@@ -1126,7 +1191,7 @@
                 <span>GPX 1.1 completo</span>
               </div>
             </div>
-            <div class="card reveal" data-animate data-story-hover="7">
+            <div class="card reveal" data-animate data-story-hover="7" tabindex="0" data-explain="Gestisce le emergenze con calma: countdown e contatti pronti, niente falsi positivi.">
               <span>Safety reale</span>
               <h3>Protezione concreta</h3>
               <p>SOS con countdown, contatti configurabili e alert vocali: sicurezza guidata,
@@ -1149,7 +1214,7 @@
           <div class="feature-block reveal" data-animate>
             <h3>Disponibile ora</h3>
             <div class="grid cards">
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Ti garantisce un giro completo anche con pause o tratti difficili, senza perdere dati.">
                 <span class="tag">Tracking</span>
                 <h3>Registrazione completa del giro</h3>
                 <p>Avvio, pausa, ripresa e chiusura senza perdere il ritmo della guida.</p>
@@ -1160,7 +1225,7 @@
                   <li>Dati salvati in locale</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Cattura eventi importanti mentre guidi: la voce diventa appunti geolocalizzati.">
                 <span class="tag">Voce</span>
                 <h3>Comandi vocali + Copilota</h3>
                 <p>Eventi vocali per curve, pericoli e note personali, con conferme TTS IT/EN.</p>
@@ -1171,7 +1236,7 @@
                   <li>Parsing italiano robusto</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Ti orienta sempre, anche senza connessione, e rende il percorso rivedibile.">
                 <span class="tag">Mappa</span>
                 <h3>Mappa live + offline</h3>
                 <p>La strada resta visibile e rileggibile, anche senza connessione.</p>
@@ -1182,7 +1247,7 @@
                   <li>Mappe offline con regioni scaricabili</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Separa i dati per moto così le statistiche restano coerenti e utili.">
                 <span class="tag">Profili moto</span>
                 <h3>Multi‑moto, dati più veri</h3>
                 <p>Ogni moto ha la sua identità e statistiche dedicate.</p>
@@ -1192,7 +1257,7 @@
                   <li>Dati tecnici contestualizzati</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Sblocca condivisioni e backup senza perdere dettagli del giro.">
                 <span class="tag">GPX</span>
                 <h3>Export &amp; condivisione</h3>
                 <p>Formato standard pronto per Strava, Garmin e condivisioni rapide.</p>
@@ -1201,7 +1266,7 @@
                   <li>Share sheet Android</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Permette di chiedere aiuto in modo controllato e sicuro.">
                 <span class="tag">SOS</span>
                 <h3>Emergenze gestite bene</h3>
                 <p>SOS manuale con countdown, contatti dedicati e messaggi automatici.</p>
@@ -1211,7 +1276,7 @@
                   <li>Contatti rubrica e manuali</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Riduce i passaggi manuali: avvio e stop diventano fluidi.">
                 <span class="tag">Automazioni</span>
                 <h3>Android Intents</h3>
                 <p>Avvio e stop via NFC/Tasker/Automate per setup da rider.</p>
@@ -1221,7 +1286,7 @@
                   <li>Query stato per automazioni</li>
                 </ul>
               </div>
-              <div class="card">
+              <div class="card" tabindex="0" data-explain="Conserva i giri e gli eventi per imparare e ritrovare i tuoi momenti.">
                 <span class="tag">Storico</span>
                 <h3>Archivio giri</h3>
                 <p>Lista e dettaglio delle uscite, per tornare ai tuoi momenti migliori.</p>
@@ -1235,92 +1300,104 @@
           </div>
 
           <div class="feature-block reveal" data-animate>
-            <h3>In sviluppo (v2.0)</h3>
+            <h3>In corso (v3 — abbozzata)</h3>
             <div class="grid cards">
-              <div class="card">
-                <span class="tag">Sensori</span>
-                <h3>Fall detection + persistenza</h3>
-                <p>Calibrazione, filtri e salvataggio dati sensoriali per sicurezza evoluta.</p>
+              <div class="card" tabindex="0" data-explain="Porta la guida su tracce reali senza dover cambiare app.">
+                <span class="tag">Navigazione</span>
+                <h3>GPX navigation + import</h3>
+                <p>Seguire tracce e importare giri esterni, con indicazioni essenziali.</p>
                 <ul>
-                  <li>Accelerometro + giroscopio</li>
-                  <li>Algoritmi anti‑falso positivo</li>
-                  <li>Export e storico sensori</li>
+                  <li>Follow GPX</li>
+                  <li>Import giri esterni</li>
+                  <li>Routing turn‑by‑turn</li>
                 </ul>
               </div>
-              <div class="card">
-                <span class="tag">Data layer</span>
-                <h3>Sync‑ready per v3</h3>
-                <p>Strato dati pronto per eventuale sincronizzazione futura, senza backend ora.</p>
+              <div class="card" tabindex="0" data-explain="Risolve l'assenza di segnalazioni reali con contributi rapidi e condivisi.">
+                <span class="tag">Road alerts</span>
+                <h3>Segnalazioni reali</h3>
+                <p>Report rapidi e sync community opt‑in, senza frizione.</p>
                 <ul>
-                  <li>Refactor repository</li>
-                  <li>Schema versionato</li>
-                  <li>Preparazione sync opt‑in</li>
+                  <li>Report locale immediato</li>
+                  <li>Sync community opt‑in</li>
+                  <li>Filtri anti‑rumore</li>
                 </ul>
               </div>
-              <div class="card">
-                <span class="tag">UX</span>
-                <h3>Polish finale</h3>
-                <p>Touch target più grandi, contrasto migliorato, UI ancora più moto‑safe.</p>
+              <div class="card" tabindex="0" data-explain="Coordina i giri senza caos: confronto e condivisione solo quando serve.">
+                <span class="tag">Gruppi</span>
+                <h3>Sessioni di gruppo</h3>
+                <p>Confronto post‑giro e live sharing solo se vuoi.</p>
                 <ul>
-                  <li>Touch target 56dp</li>
-                  <li>Contrasti e leggibilità sole</li>
-                  <li>Rifinitura layout in sella</li>
+                  <li>Create/join con codice</li>
+                  <li>Confronto post‑ride</li>
+                  <li>Live sharing opzionale</li>
                 </ul>
               </div>
-              <div class="card">
-                <span class="tag">Voce &amp; AI</span>
-                <h3>FunctionGemma (deferred)</h3>
-                <p>NLU on‑device avanzata, rinviata per ricerca ML dedicata.</p>
+              <div class="card" tabindex="0" data-explain="Protegge i dati e li rende disponibili su più dispositivi con controllo totale.">
+                <span class="tag">Cloud</span>
+                <h3>Sync opt‑in + account</h3>
+                <p>Backup multi‑device con controllo totale sulla privacy.</p>
                 <ul>
-                  <li>Parsing conversazionale</li>
-                  <li>Azioni multi‑intento</li>
-                  <li>Training dedicato</li>
+                  <li>Sync opt‑in</li>
+                  <li>Account leggero</li>
+                  <li>Controlli privacy chiari</li>
+                </ul>
+              </div>
+              <div class="card" tabindex="0" data-explain="Aiuta a leggere la strada prima che arrivi, senza invadere.">
+                <span class="tag">Copilota</span>
+                <h3>Jarvis mode (in studio)</h3>
+                <p>Suggerimenti pre‑curva e profilo rider, con AI discreta.</p>
+                <ul>
+                  <li>Avvisi pre‑curva</li>
+                  <li>Profilo rider personale</li>
+                  <li>Curve ML in progresso</li>
+                </ul>
+              </div>
+              <div class="card" tabindex="0" data-explain="Aumenta la sicurezza con rilevamenti automatici ma sempre confermati.">
+                <span class="tag">Safety</span>
+                <h3>Sicurezza avanzata</h3>
+                <p>Fall detection e lean angle, sempre con conferma e safety‑first.</p>
+                <ul>
+                  <li>Fall detection automatico</li>
+                  <li>Lean angle tracking</li>
+                  <li>Niente gamification</li>
                 </ul>
               </div>
             </div>
           </div>
 
           <div class="feature-block reveal" data-animate>
-            <h3>Verso v3 (roadmap futura)</h3>
+            <h3>v4 (orizzonte sostenibilità)</h3>
             <div class="timeline">
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-card">
-                  <span>Navigazione</span>
-                  <h3>GPX navigation + import</h3>
-                  <p>Seguire tracce GPX, import di giri esterni e routing turn‑by‑turn.</p>
+                  <span>Sostenibilità</span>
+                  <h3>Modello solido nel tempo</h3>
+                  <p>Un equilibrio che mantiene il progetto sano senza sacrificare sicurezza e privacy.</p>
                 </div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-card">
-                  <span>Road alerts</span>
-                  <h3>Segnalazioni reali + sync</h3>
-                  <p>Report locale immediato e, in v3.1, sync community con backend.</p>
+                  <span>Scalabilità</span>
+                  <h3>Infrastruttura pronta a crescere</h3>
+                  <p>Base tecnica per supportare più rider senza degradare l’esperienza.</p>
                 </div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-card">
-                  <span>Sessioni di gruppo</span>
-                  <h3>Confronto giri e live opt‑in</h3>
-                  <p>Sessioni private con codice/QR, confronto post‑giro e live sharing opzionale.</p>
+                  <span>Affidabilità</span>
+                  <h3>Servizio stabile e resiliente</h3>
+                  <p>Processi e qualità per ridurre rischi e mantenere fiducia.</p>
                 </div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
                 <div class="timeline-card">
-                  <span>Profilo rider</span>
-                  <h3>Stile di guida personale</h3>
-                  <p>Profilo basato su GPS + IMU per capire ritmo, margini e abitudini reali.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                  <span>Curve ML</span>
-                  <h3>Predizione velocità su curve nuove</h3>
-                  <p>Modello TFLite‑ready per stimare velocità consigliata anche su strade mai percorse.</p>
+                  <span>Ecosistema</span>
+                  <h3>Valore condiviso, senza spoiler</h3>
+                  <p>Direzione business pensata per durare, senza entrare nei dettagli ora.</p>
                 </div>
               </div>
             </div>
@@ -1328,12 +1405,12 @@
 
           <div class="feature-block reveal" data-animate>
             <div class="callout">
-              <h3>Focus v3 in breve</h3>
+              <h3>Nota di roadmap</h3>
               <p class="section-subtitle">
-                Cloud sync opt‑in, backend per mappe/quote, aggiornamenti rapidi e un modello sostenibile
-                che premia chi contribuisce alla sicurezza.
+                v2 chiusa. v3 in corso e ancora in definizione. v4 orientata alla sostenibilità,
+                con dettagli che arriveranno quando saranno maturi.
               </p>
-              <strong>Safety first, privacy first: opt‑in esplicito e niente gamification della velocità.</strong>
+              <strong>Safety first, privacy first: scope iterativo e niente gamification della velocità.</strong>
             </div>
           </div>
 
@@ -1354,7 +1431,7 @@
             <h2 class="section-title">Moto Expo 2026 — presentazione</h2>
             <p class="section-subtitle">
               VRoom è stata presentata con tracking, voce e replay in tempo reale.
-              Ora la v2.0 continua con offline, GPX, SOS e automazioni.
+              La v2.0 è chiusa; la v3 è in corso.
             </p>
             <div class="highlight-grid">
               <div class="highlight-item">
@@ -1394,7 +1471,7 @@
 
         <section class="cta reveal" data-animate data-story-index="9">
           <h2>Ti va di farla crescere insieme?</h2>
-          <p>Se vuoi una companion che parla la lingua dei rider, entra nel progetto e segui la v2.0.</p>
+          <p>Se vuoi una companion che parla la lingua dei rider, entra nel progetto e segui la v3.</p>
           <div class="hero-actions">
             <a class="button primary" href="https://github.com/Datanal/Vroom4">Apri il repo</a>
             <a class="button ghost" href="https://github.com/Datanal/Vroom4#-getting-started">Come iniziare</a>
@@ -1406,16 +1483,16 @@
         <h4>Diario di viaggio</h4>
         <div class="story-progress"><span></span></div>
         <div class="story-lines">
-          <div class="story-line">Se guidi, lo sai: il momento giusto arriva in un attimo. Serve una compagna che non distrae.</div>
-          <div class="story-line">Notti, pioggia, statali deserte: la moto è un rituale, non solo chilometri.</div>
-          <div class="story-line">Non è velocità, è presenza: capire dove sei, cosa senti, e portare a casa la storia.</div>
-          <div class="story-line">Prima di partire apri la sessione: da lì VRoom raccoglie tutto senza farsi notare.</div>
-          <div class="story-line">La voce sostituisce il touch: comandi brevi e conferme TTS quando servono.</div>
-          <div class="story-line">Offline vero: mappe scaricabili e GPX pronto da condividere.</div>
-          <div class="story-line">Il replay non è un grafico: è il ricordo di un flow, di un passaggio, di un momento.</div>
-          <div class="story-line">SOS con countdown: sicurezza concreta, senza falsi positivi.</div>
-          <div class="story-line">Un solo developer, ma cura da officina: ogni dettaglio nasce in sella.</div>
-          <div class="story-line">VRoom è una promessa tra rider: sicurezza, memoria e rispetto della strada.</div>
+          <div class="story-line">VRoom nasce in sella: togliere rumore, non aggiungere app.</div>
+          <div class="story-line">La strada è atmosfera, non solo distanza.</div>
+          <div class="story-line">Presenza e sicurezza: capire dove sei e perché.</div>
+          <div class="story-line">Avvia e dimentica: la sessione scorre in background.</div>
+          <div class="story-line">La voce sostituisce il touch: note rapide e discrete.</div>
+          <div class="story-line">Ogni tappa lascia segni utili, non numeri freddi.</div>
+          <div class="story-line">v2 è chiusa: offline, GPX, SOS e automazioni sono reali.</div>
+          <div class="story-line">Dal vivo si è visto: ora la v3 è in corso.</div>
+          <div class="story-line">Un solo rider, cura da officina.</div>
+          <div class="story-line">v4 guarda alla sostenibilità: resta con noi.</div>
         </div>
       </aside>
     </div>
@@ -1454,8 +1531,9 @@
     const storyTargets = document.querySelectorAll('[data-story-index]');
     const hoverTargets = document.querySelectorAll('[data-story-hover]');
     const progressBar = document.querySelector('.story-progress span');
+    const cards = document.querySelectorAll('.card');
 
-    let scrollIndex = 0;
+    let activeIndex = 0;
     let hoverIndex = null;
     let typingTimer = null;
     let lastTypedIndex = null;
@@ -1484,14 +1562,22 @@
       }
     };
 
-    const updateStory = (activeIndex) => {
-      const visibleIndex = Math.max(scrollIndex, activeIndex ?? 0);
-      storyLines.forEach((line, index) => {
-        line.classList.toggle('is-visible', index <= visibleIndex);
-        line.classList.toggle('is-active', index === activeIndex);
+    const updateStory = (index = activeIndex) => {
+      const safeIndex = Math.max(0, Math.min(storyLines.length - 1, index));
+      storyLines.forEach((line, idx) => {
+        line.classList.toggle('is-visible', idx <= safeIndex);
+        line.classList.toggle('is-active', idx === safeIndex);
       });
-      if (activeIndex !== null && activeIndex !== undefined) {
-        triggerTyping(activeIndex);
+      triggerTyping(safeIndex);
+    };
+
+    const setActiveIndex = (index) => {
+      if (index === null || Number.isNaN(index)) {
+        return;
+      }
+      activeIndex = index;
+      if (hoverIndex === null) {
+        updateStory(activeIndex);
       }
     };
 
@@ -1522,17 +1608,21 @@
 
     const storyObserver = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = Number(entry.target.dataset.storyIndex || 0);
-            if (!Number.isNaN(index)) {
-              scrollIndex = Math.max(scrollIndex, index);
-              updateStory(index);
-            }
-          }
-        });
+        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
+        if (!visibleEntries.length) {
+          return;
+        }
+        const mostVisible = visibleEntries.reduce(
+          (maxEntry, entry) =>
+            entry.intersectionRatio > maxEntry.intersectionRatio ? entry : maxEntry,
+          visibleEntries[0]
+        );
+        const index = Number(mostVisible.target.dataset.storyIndex || 0);
+        if (!Number.isNaN(index)) {
+          setActiveIndex(index);
+        }
       },
-      { threshold: 0.35 }
+      { threshold: [0.2, 0.45, 0.7], rootMargin: '-10% 0px -55% 0px' }
     );
 
     storyTargets.forEach((section) => storyObserver.observe(section));
@@ -1547,16 +1637,50 @@
       });
       target.addEventListener('mouseleave', () => {
         hoverIndex = null;
-        updateStory(scrollIndex);
+        updateStory(activeIndex);
       });
       target.addEventListener('click', () => {
         const index = Number(target.dataset.storyHover || 0);
         if (!Number.isNaN(index)) {
-          scrollIndex = Math.max(scrollIndex, index);
-          updateStory(index);
+          setActiveIndex(index);
         }
       });
     });
+
+    const buildCardOverlay = (card) => {
+      const explain = card.dataset.explain;
+      if (!explain) {
+        return;
+      }
+      const overlay = document.createElement('div');
+      overlay.className = 'card-overlay';
+      overlay.innerHTML = `<span>Perché</span><p>${explain}</p>`;
+      card.appendChild(overlay);
+    };
+
+    const clearSelectedCards = () => {
+      cards.forEach((card) => card.classList.remove('is-selected'));
+    };
+
+    cards.forEach((card) => {
+      buildCardOverlay(card);
+      card.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const willSelect = !card.classList.contains('is-selected');
+        clearSelectedCards();
+        if (willSelect) {
+          card.classList.add('is-selected');
+        }
+      });
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          card.click();
+        }
+      });
+    });
+
+    document.addEventListener('click', clearSelectedCards);
 
     window.addEventListener('scroll', updateProgress, { passive: true });
     window.addEventListener('resize', updateProgress);
