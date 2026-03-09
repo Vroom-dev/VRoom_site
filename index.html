@@ -16,14 +16,20 @@
 
   <style>
     :root {
-      --black: #0a0a0f;
-      --black-light: #14141f;
-      --orange: #e85a1c;
-      --orange-glow: rgba(232, 90, 28, 0.4);
-      --white: #fafafa;
-      --gray: #6b6b7b;
-      --gray-dark: #2a2a3a;
-      --teal: #00c9a7;
+      --black: #050508;
+      --black-light: #0d0d14;
+      --black-card: #111118;
+      --orange: #ff6b2c;
+      --orange-bright: #ff8f4c;
+      --orange-glow: rgba(255, 107, 44, 0.6);
+      --white: #ffffff;
+      --gray: #8888a0;
+      --gray-light: #b0b0c8;
+      --gray-dark: #1a1a28;
+      --teal: #00e5bf;
+      --teal-glow: rgba(0, 229, 191, 0.5);
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.4);
 
       --font: 'Inter', -apple-system, sans-serif;
       --transition: cubic-bezier(0.4, 0, 0.2, 1);
@@ -44,7 +50,6 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-snap-type: y proximity;
     }
 
     body {
@@ -60,6 +65,46 @@
       color: var(--black);
     }
 
+    /* ============ ANIMATED BACKGROUND ============ */
+    .bg-gradient {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .bg-gradient::before {
+      content: '';
+      position: absolute;
+      width: 150vw;
+      height: 150vh;
+      top: -25vh;
+      left: -25vw;
+      background:
+        radial-gradient(ellipse 800px 600px at 20% 20%, var(--orange-glow), transparent 50%),
+        radial-gradient(ellipse 600px 500px at 80% 30%, var(--purple-glow), transparent 50%),
+        radial-gradient(ellipse 700px 500px at 60% 80%, var(--teal-glow), transparent 50%);
+      animation: bgFloat 20s ease-in-out infinite;
+      filter: blur(80px);
+    }
+
+    @keyframes bgFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(2%, 3%) rotate(1deg); }
+      50% { transform: translate(-1%, 5%) rotate(-1deg); }
+      75% { transform: translate(3%, 1%) rotate(2deg); }
+    }
+
+    /* ============ NOISE OVERLAY ============ */
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
     /* ============ LOADER ============ */
     .loader {
       position: fixed;
@@ -68,7 +113,7 @@
       display: grid;
       place-items: center;
       z-index: 9999;
-      transition: opacity 0.6s var(--transition), visibility 0.6s;
+      transition: opacity 0.8s var(--transition), visibility 0.8s;
     }
 
     .loader.hidden {
@@ -76,42 +121,83 @@
       visibility: hidden;
     }
 
+    .loader-content {
+      text-align: center;
+    }
+
     .loader-logo {
-      font-size: 3rem;
+      font-size: 4rem;
       font-weight: 900;
       letter-spacing: -0.02em;
-      animation: pulse 1.5s ease-in-out infinite;
+      background: linear-gradient(135deg, var(--white) 0%, var(--orange) 50%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: logoShine 2s ease-in-out infinite;
     }
 
-    .loader-logo span {
-      color: var(--orange);
+    @keyframes logoShine {
+      0%, 100% { filter: brightness(1); transform: scale(1); }
+      50% { filter: brightness(1.3); transform: scale(1.02); }
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 0.4; transform: scale(0.98); }
-      50% { opacity: 1; transform: scale(1); }
+    .loader-bar {
+      width: 200px;
+      height: 3px;
+      background: var(--gray-dark);
+      border-radius: 10px;
+      margin-top: 2rem;
+      overflow: hidden;
+    }
+
+    .loader-bar::after {
+      content: '';
+      display: block;
+      width: 40%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), var(--teal));
+      border-radius: 10px;
+      animation: loading 1s ease-in-out infinite;
+    }
+
+    @keyframes loading {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(350%); }
     }
 
     /* ============ CURSOR ============ */
     .cursor {
-      width: 12px;
-      height: 12px;
-      background: var(--orange);
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--orange);
       border-radius: 50%;
       position: fixed;
       pointer-events: none;
       z-index: 9998;
+      transition: transform 0.2s var(--transition), border-color 0.2s, background 0.2s;
+      display: none;
       mix-blend-mode: difference;
-      transition: transform 0.15s var(--transition);
+    }
+
+    .cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
       display: none;
     }
 
     @media (hover: hover) {
-      .cursor { display: block; }
+      .cursor, .cursor-dot { display: block; }
     }
 
     .cursor.hover {
-      transform: scale(3);
+      transform: scale(2.5);
+      background: rgba(255, 107, 44, 0.1);
+      border-color: var(--teal);
     }
 
     /* ============ NAV ============ */
@@ -125,37 +211,59 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      mix-blend-mode: difference;
+      backdrop-filter: blur(20px);
+      background: rgba(5, 5, 8, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .logo {
-      font-size: 1.25rem;
+      font-size: 1.5rem;
       font-weight: 900;
       letter-spacing: -0.02em;
       text-decoration: none;
-      color: var(--white);
+      background: linear-gradient(135deg, var(--white), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: transform 0.3s;
     }
 
-    .logo span {
-      color: var(--orange);
+    .logo:hover {
+      transform: scale(1.05);
     }
 
     .nav-links {
       display: flex;
-      gap: 2rem;
+      gap: 2.5rem;
     }
 
     .nav-links a {
-      color: var(--white);
+      color: var(--gray);
       text-decoration: none;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       font-weight: 500;
-      opacity: 0.7;
-      transition: opacity 0.3s;
+      transition: color 0.3s, transform 0.3s;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--teal));
+      transition: width 0.3s;
     }
 
     .nav-links a:hover {
-      opacity: 1;
+      color: var(--white);
+      transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
     }
 
     @media (max-width: 768px) {
@@ -165,198 +273,428 @@
     /* ============ SECTIONS ============ */
     section {
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 6rem 4vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8rem 4vw;
       position: relative;
-      scroll-snap-align: start;
     }
 
     .section-inner {
-      max-width: 1200px;
+      max-width: 1300px;
       width: 100%;
     }
 
     /* ============ HERO ============ */
     .hero {
-      background:
-        radial-gradient(ellipse at 70% 20%, var(--orange-glow), transparent 50%),
-        var(--black);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
       overflow: hidden;
+    }
+
+    .hero-bg-elements {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 107, 44, 0.2);
+      animation: circleFloat 15s ease-in-out infinite;
+    }
+
+    .hero-circle:nth-child(1) {
+      width: 600px;
+      height: 600px;
+      top: -100px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    .hero-circle:nth-child(2) {
+      width: 400px;
+      height: 400px;
+      bottom: 10%;
+      left: 5%;
+      border-color: rgba(0, 229, 191, 0.15);
+      animation-delay: -5s;
+    }
+
+    .hero-circle:nth-child(3) {
+      width: 250px;
+      height: 250px;
+      top: 40%;
+      right: 15%;
+      border-color: rgba(168, 85, 247, 0.15);
+      animation-delay: -10s;
+    }
+
+    @keyframes circleFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(20px, -30px) rotate(180deg); }
     }
 
     .hero-content {
       display: grid;
-      gap: 2rem;
-      max-width: 800px;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 968px) {
+      .hero-content { grid-template-columns: 1fr; text-align: center; }
     }
 
     .hero-tag {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--black-light);
-      border: 1px solid var(--gray-dark);
+      gap: 0.75rem;
+      padding: 0.6rem 1.2rem;
+      background: linear-gradient(135deg, rgba(255, 107, 44, 0.15), rgba(0, 229, 191, 0.1));
+      border: 1px solid rgba(255, 107, 44, 0.3);
       border-radius: 100px;
-      font-size: 0.75rem;
-      font-weight: 500;
+      font-size: 0.8rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--gray);
+      letter-spacing: 0.12em;
+      color: var(--orange-bright);
       width: fit-content;
+      animation: tagGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes tagGlow {
+      0%, 100% { box-shadow: 0 0 20px rgba(255, 107, 44, 0.2); }
+      50% { box-shadow: 0 0 40px rgba(255, 107, 44, 0.4); }
     }
 
     .hero-tag::before {
       content: '';
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       background: var(--teal);
       border-radius: 50%;
-      animation: blink 2s infinite;
+      box-shadow: 0 0 10px var(--teal);
+      animation: pulse 1.5s ease-in-out infinite;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.5; }
     }
 
     .hero h1 {
-      font-size: clamp(3rem, 10vw, 7rem);
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
       font-weight: 900;
       line-height: 0.95;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
+      margin: 1.5rem 0;
+    }
+
+    .hero h1 .line {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero h1 .line span {
+      display: block;
+      transform: translateY(100%);
+      animation: slideUp 0.8s var(--transition) forwards;
+    }
+
+    .hero h1 .line:nth-child(2) span { animation-delay: 0.1s; }
+    .hero h1 .line:nth-child(3) span { animation-delay: 0.2s; }
+
+    @keyframes slideUp {
+      to { transform: translateY(0); }
     }
 
     .hero h1 .accent {
-      color: var(--orange);
-      display: block;
+      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-bright) 50%, var(--teal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
     }
 
     .hero-sub {
       font-size: 1.25rem;
-      color: var(--gray);
-      max-width: 500px;
+      color: var(--gray-light);
+      max-width: 480px;
+      margin-bottom: 2rem;
     }
 
     .hero-cta {
       display: flex;
       gap: 1rem;
-      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 968px) {
+      .hero-tag, .hero-cta { justify-content: center; }
+      .hero-sub { margin: 0 auto 2rem; }
     }
 
     .btn {
-      padding: 1rem 2rem;
-      font-size: 0.875rem;
-      font-weight: 600;
+      padding: 1rem 2.2rem;
+      font-size: 0.9rem;
+      font-weight: 700;
       text-decoration: none;
       border-radius: 100px;
-      transition: all 0.3s var(--transition);
+      transition: all 0.4s var(--transition);
       cursor: pointer;
       border: none;
       font-family: inherit;
+      position: relative;
+      overflow: hidden;
     }
 
     .btn-primary {
-      background: var(--orange);
+      background: linear-gradient(135deg, var(--orange), var(--orange-bright));
       color: var(--black);
+      box-shadow: 0 10px 40px rgba(255, 107, 44, 0.4);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--orange-bright), var(--teal));
+      opacity: 0;
+      transition: opacity 0.4s;
     }
 
     .btn-primary:hover {
-      box-shadow: 0 0 40px var(--orange-glow);
-      transform: translateY(-2px);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 60px rgba(255, 107, 44, 0.5);
+    }
+
+    .btn-primary:hover::before {
+      opacity: 1;
+    }
+
+    .btn-primary span {
+      position: relative;
+      z-index: 1;
     }
 
     .btn-ghost {
-      background: transparent;
+      background: rgba(255, 255, 255, 0.05);
       color: var(--white);
-      border: 1px solid var(--gray-dark);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
     }
 
     .btn-ghost:hover {
-      border-color: var(--white);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--orange);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(255, 107, 44, 0.2);
     }
 
-    .scroll-indicator {
+    /* ============ HERO 3D CARD ============ */
+    .hero-visual {
+      perspective: 1000px;
+    }
+
+    .hero-card {
+      background: linear-gradient(145deg, var(--black-card), var(--black-light));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 2rem;
+      transform-style: preserve-3d;
+      transition: transform 0.5s var(--transition);
+      box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.5),
+        0 0 100px rgba(255, 107, 44, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
       position: absolute;
-      bottom: 3rem;
-      left: 50%;
-      transform: translateX(-50%);
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255, 107, 44, 0.1), transparent 50%, rgba(0, 229, 191, 0.1));
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .hero-card:hover::before {
+      opacity: 1;
+    }
+
+    .hero-card-header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .hero-card-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
       color: var(--gray);
-      font-size: 0.75rem;
+    }
+
+    .hero-card-badge {
+      padding: 0.4rem 0.8rem;
+      background: linear-gradient(135deg, var(--teal), rgba(0, 229, 191, 0.5));
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .hero-stat {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s;
+    }
+
+    .hero-stat:hover {
+      background: rgba(255, 107, 44, 0.05);
+      border-color: rgba(255, 107, 44, 0.2);
+      transform: translateY(-4px);
+    }
+
+    .hero-stat-value {
+      font-size: 2.5rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--orange), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .hero-stat-label {
+      font-size: 0.8rem;
+      color: var(--gray);
+      margin-top: 0.5rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
 
-    .scroll-indicator::after {
-      content: '';
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--gray), transparent);
-      animation: scrollDown 1.5s ease-in-out infinite;
-    }
-
-    @keyframes scrollDown {
-      0%, 100% { transform: scaleY(1); opacity: 1; }
-      50% { transform: scaleY(0.5); opacity: 0.5; }
-    }
-
     /* ============ PHILOSOPHY ============ */
     .philosophy {
-      background: var(--black-light);
+      background: linear-gradient(180deg, transparent, rgba(255, 107, 44, 0.02), transparent);
+    }
+
+    .philosophy-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .philosophy-header h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+    .philosophy-header p {
+      color: var(--gray);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .philosophy-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--gray-dark);
-      border: 1px solid var(--gray-dark);
+      gap: 2rem;
+      perspective: 1000px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 968px) {
       .philosophy-grid { grid-template-columns: 1fr; }
     }
 
-    .philosophy-item {
-      background: var(--black-light);
-      padding: 3rem;
-      display: grid;
-      gap: 1rem;
-      transition: background 0.3s;
+    .philosophy-card {
+      background: linear-gradient(145deg, var(--black-card), var(--black-light));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 24px;
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.5s var(--transition);
+      transform-style: preserve-3d;
     }
 
-    .philosophy-item:hover {
-      background: var(--black);
+    .philosophy-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--orange), var(--teal));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s var(--transition);
     }
 
-    .philosophy-item h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
+    .philosophy-card:hover::before {
+      transform: scaleX(1);
     }
 
-    .philosophy-item p {
-      color: var(--gray);
-      font-size: 0.95rem;
+    .philosophy-card:hover {
+      transform: translateY(-10px) rotateX(5deg);
+      border-color: rgba(255, 107, 44, 0.3);
+      box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.4),
+        0 0 60px rgba(255, 107, 44, 0.1);
     }
 
     .philosophy-icon {
-      width: 48px;
-      height: 48px;
-      background: var(--orange);
-      border-radius: 12px;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--orange), var(--orange-bright));
+      border-radius: 20px;
       display: grid;
       place-items: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 30px rgba(255, 107, 44, 0.3);
+      transition: transform 0.5s, box-shadow 0.5s;
+    }
+
+    .philosophy-card:hover .philosophy-icon {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 15px 40px rgba(255, 107, 44, 0.5);
+    }
+
+    .philosophy-card h3 {
       font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+
+    .philosophy-card p {
+      color: var(--gray);
+      font-size: 1rem;
+      line-height: 1.7;
     }
 
     /* ============ FEATURES ============ */
     .features {
-      background: var(--black);
+      position: relative;
     }
 
     .features-header {
@@ -365,84 +703,150 @@
     }
 
     .features-header h2 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 900;
       margin-bottom: 1rem;
     }
 
     .features-header p {
       color: var(--gray);
-      max-width: 600px;
-      margin: 0 auto;
+      font-size: 1.1rem;
     }
 
     .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 1.5rem;
     }
 
     .feature-card {
-      background: var(--black-light);
-      border: 1px solid var(--gray-dark);
-      border-radius: 16px;
+      background: linear-gradient(145deg, var(--black-card), var(--black-light));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 20px;
       padding: 2rem;
-      transition: all 0.3s var(--transition);
-      cursor: pointer;
       position: relative;
       overflow: hidden;
+      transition: all 0.4s var(--transition);
+      cursor: pointer;
     }
 
-    .feature-card::before {
+    .feature-card::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--orange), var(--teal));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s var(--transition);
+      inset: 0;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 107, 44, 0.15), transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
     }
 
-    .feature-card:hover::before {
-      transform: scaleX(1);
+    .feature-card:hover::after {
+      opacity: 1;
     }
 
     .feature-card:hover {
-      border-color: var(--gray);
-      transform: translateY(-4px);
-    }
-
-    .feature-card h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-
-    .feature-card p {
-      color: var(--gray);
-      font-size: 0.9rem;
+      transform: translateY(-8px);
+      border-color: rgba(255, 107, 44, 0.3);
+      box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 107, 44, 0.1);
     }
 
     .feature-tag {
       display: inline-block;
-      padding: 0.25rem 0.75rem;
-      background: var(--gray-dark);
+      padding: 0.4rem 1rem;
+      background: linear-gradient(135deg, rgba(0, 229, 191, 0.2), rgba(0, 229, 191, 0.05));
+      border: 1px solid rgba(0, 229, 191, 0.3);
       border-radius: 100px;
       font-size: 0.7rem;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
       color: var(--teal);
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-card h4 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-card > p {
+      color: var(--gray);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-expand {
+      margin-top: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .feature-expand summary {
+      cursor: pointer;
+      color: var(--orange);
+      font-size: 0.85rem;
+      font-weight: 600;
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      transition: color 0.3s;
+    }
+
+    .feature-expand summary:hover {
+      color: var(--orange-bright);
+    }
+
+    .feature-expand summary::after {
+      content: '→';
+      transition: transform 0.3s;
+    }
+
+    .feature-expand[open] summary::after {
+      transform: rotate(90deg);
+    }
+
+    .feature-detail {
+      margin-top: 1rem;
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .feature-detail ul {
+      list-style: none;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .feature-detail li {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .feature-detail li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: linear-gradient(135deg, var(--orange), var(--teal));
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
     /* ============ JOURNEY ============ */
     .journey {
-      background:
-        linear-gradient(180deg, var(--black) 0%, var(--black-light) 50%, var(--black) 100%);
+      background: linear-gradient(180deg, transparent, rgba(0, 229, 191, 0.02), transparent);
     }
 
     .journey-header {
@@ -451,82 +855,133 @@
     }
 
     .journey-header h2 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 900;
     }
 
     .journey-timeline {
       position: relative;
-      max-width: 600px;
+      max-width: 700px;
       margin: 0 auto;
     }
 
-    .journey-timeline::before {
-      content: '';
+    .journey-line {
       position: absolute;
-      left: 20px;
+      left: 30px;
       top: 0;
       bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, var(--orange), var(--teal), var(--orange));
+      width: 3px;
+      background: linear-gradient(180deg, var(--orange), var(--purple), var(--teal));
+      border-radius: 10px;
     }
 
     .journey-item {
       display: grid;
-      grid-template-columns: 40px 1fr;
+      grid-template-columns: 60px 1fr;
       gap: 2rem;
       padding: 2rem 0;
       position: relative;
     }
 
     .journey-dot {
-      width: 40px;
-      height: 40px;
-      background: var(--black);
-      border: 2px solid var(--orange);
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--black-card), var(--black));
+      border: 3px solid var(--orange);
       border-radius: 50%;
       display: grid;
       place-items: center;
-      font-weight: 700;
-      font-size: 0.875rem;
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: var(--orange);
       z-index: 1;
+      transition: all 0.4s var(--transition);
+      box-shadow: 0 0 30px rgba(255, 107, 44, 0.3);
+    }
+
+    .journey-item:hover .journey-dot {
+      background: linear-gradient(135deg, var(--orange), var(--orange-bright));
+      color: var(--black);
+      transform: scale(1.15);
+      box-shadow: 0 0 50px rgba(255, 107, 44, 0.5);
+    }
+
+    .journey-content {
+      padding: 1.5rem;
+      background: linear-gradient(145deg, var(--black-card), var(--black-light));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      transition: all 0.4s var(--transition);
+    }
+
+    .journey-item:hover .journey-content {
+      border-color: rgba(255, 107, 44, 0.3);
+      transform: translateX(10px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
     }
 
     .journey-content h4 {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 1.4rem;
+      font-weight: 800;
       margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--white), var(--gray-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .journey-content p {
       color: var(--gray);
-      font-size: 0.95rem;
+      font-size: 1rem;
+      line-height: 1.6;
     }
 
     /* ============ CTA ============ */
     .cta {
-      background:
-        radial-gradient(ellipse at 30% 80%, var(--orange-glow), transparent 50%),
-        var(--black);
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(255, 107, 44, 0.15), transparent 60%);
+      animation: ctaPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes ctaPulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
     }
 
     .cta-content {
-      max-width: 600px;
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
       margin: 0 auto;
     }
 
     .cta h2 {
-      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-size: clamp(3rem, 7vw, 5rem);
       font-weight: 900;
       margin-bottom: 1.5rem;
-      line-height: 1.1;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
     }
 
-    .cta p {
-      color: var(--gray);
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
+    .cta h2 span {
+      background: linear-gradient(135deg, var(--orange), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cta > p {
+      color: var(--gray-light);
+      margin-bottom: 2.5rem;
+      font-size: 1.2rem;
     }
 
     .cta-buttons {
@@ -536,39 +991,55 @@
       flex-wrap: wrap;
     }
 
-    .cta-meta {
-      margin-top: 3rem;
+    .cta-stats {
+      margin-top: 4rem;
       display: flex;
       justify-content: center;
-      gap: 3rem;
+      gap: 4rem;
       flex-wrap: wrap;
     }
 
-    .cta-meta-item {
+    .cta-stat {
       text-align: center;
     }
 
-    .cta-meta-item strong {
-      display: block;
-      font-size: 2rem;
+    .cta-stat-value {
+      font-size: 3.5rem;
       font-weight: 900;
-      color: var(--orange);
+      background: linear-gradient(135deg, var(--orange), var(--orange-bright));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
     }
 
-    .cta-meta-item span {
-      font-size: 0.875rem;
+    .cta-stat-label {
+      font-size: 0.9rem;
       color: var(--gray);
+      margin-top: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
     /* ============ FOOTER ============ */
     footer {
       padding: 3rem 4vw;
-      border-top: 1px solid var(--gray-dark);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 1rem;
+      gap: 1.5rem;
+      background: var(--black);
+    }
+
+    .footer-logo {
+      font-size: 1.25rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--white), var(--orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .footer-links {
@@ -579,23 +1050,23 @@
     .footer-links a {
       color: var(--gray);
       text-decoration: none;
-      font-size: 0.875rem;
+      font-size: 0.9rem;
       transition: color 0.3s;
     }
 
     .footer-links a:hover {
-      color: var(--white);
+      color: var(--orange);
     }
 
     .footer-copy {
       color: var(--gray);
-      font-size: 0.875rem;
+      font-size: 0.85rem;
     }
 
-    /* ============ REVEAL ANIMATIONS ============ */
+    /* ============ ANIMATIONS ============ */
     .reveal {
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(40px);
       transition: opacity 0.8s var(--transition), transform 0.8s var(--transition);
     }
 
@@ -608,66 +1079,29 @@
     .reveal-delay-2 { transition-delay: 0.2s; }
     .reveal-delay-3 { transition-delay: 0.3s; }
     .reveal-delay-4 { transition-delay: 0.4s; }
-
-    /* ============ DETAILS/EXPAND ============ */
-    details {
-      margin-top: 1rem;
-    }
-
-    details summary {
-      cursor: pointer;
-      color: var(--orange);
-      font-size: 0.875rem;
-      font-weight: 500;
-      list-style: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    details summary::after {
-      content: '+';
-      transition: transform 0.3s;
-    }
-
-    details[open] summary::after {
-      transform: rotate(45deg);
-    }
-
-    details .detail-content {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: var(--black);
-      border-radius: 8px;
-      font-size: 0.9rem;
-      color: var(--gray);
-    }
-
-    details .detail-content ul {
-      list-style: none;
-      display: grid;
-      gap: 0.5rem;
-    }
-
-    details .detail-content li::before {
-      content: '—';
-      color: var(--orange);
-      margin-right: 0.5rem;
-    }
+    .reveal-delay-5 { transition-delay: 0.5s; }
   </style>
 </head>
 <body>
+  <!-- Animated Background -->
+  <div class="bg-gradient"></div>
+  <div class="noise"></div>
+
   <!-- Loader -->
   <div class="loader" id="loader">
-    <div class="loader-logo">V<span>Room</span></div>
+    <div class="loader-content">
+      <div class="loader-logo">VRoom</div>
+      <div class="loader-bar"></div>
+    </div>
   </div>
 
   <!-- Custom Cursor -->
   <div class="cursor" id="cursor"></div>
+  <div class="cursor-dot" id="cursorDot"></div>
 
   <!-- Navigation -->
   <nav>
-    <a href="#" class="logo">V<span>Room</span></a>
+    <a href="#" class="logo">VRoom</a>
     <div class="nav-links">
       <a href="#philosophy">Filosofia</a>
       <a href="#features">Funzioni</a>
@@ -678,44 +1112,84 @@
 
   <!-- Hero -->
   <section class="hero" id="hero">
+    <div class="hero-bg-elements">
+      <div class="hero-circle"></div>
+      <div class="hero-circle"></div>
+      <div class="hero-circle"></div>
+    </div>
     <div class="section-inner">
       <div class="hero-content">
-        <div class="hero-tag reveal">alpha.69 live</div>
-        <h1 class="reveal reveal-delay-1">
-          La strada.
-          <span class="accent">Nient'altro.</span>
-        </h1>
-        <p class="hero-sub reveal reveal-delay-2">
-          Companion per motociclisti. Voce, navigazione, sicurezza.
-          Tutto funziona offline. Zero distrazioni.
-        </p>
-        <div class="hero-cta reveal reveal-delay-3">
-          <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary">Esplora il progetto</a>
-          <a href="#philosophy" class="btn btn-ghost">Scopri di più</a>
+        <div class="hero-text">
+          <div class="hero-tag">
+            <span>alpha.69 live</span>
+          </div>
+          <h1>
+            <span class="line"><span>La strada.</span></span>
+            <span class="line"><span class="accent">Nient'altro.</span></span>
+          </h1>
+          <p class="hero-sub">
+            Companion per motociclisti. Voce, navigazione, sicurezza.
+            Tutto offline. Zero distrazioni. By riders, for riders.
+          </p>
+          <div class="hero-cta">
+            <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary"><span>Esplora il progetto</span></a>
+            <a href="#philosophy" class="btn btn-ghost">Scopri di più</a>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card" id="heroCard">
+            <div class="hero-card-header">
+              <span class="hero-card-title">Dashboard Live</span>
+              <span class="hero-card-badge">v3 Alpha</span>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-value">63%</div>
+                <div class="hero-stat-label">Completato</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-value">51</div>
+                <div class="hero-stat-label">Bug risolti</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-value">10</div>
+                <div class="hero-stat-label">Fasi totali</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-value">∞</div>
+                <div class="hero-stat-label">Km possibili</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="scroll-indicator">Scroll</div>
   </section>
 
   <!-- Philosophy -->
   <section class="philosophy" id="philosophy">
     <div class="section-inner">
+      <div class="philosophy-header reveal">
+        <h2>Tre principi. Zero compromessi.</h2>
+        <p>VRoom è costruita su fondamenta solide. Ogni decisione parte da qui.</p>
+      </div>
+
       <div class="philosophy-grid">
-        <div class="philosophy-item reveal">
-          <div class="philosophy-icon">🛡</div>
+        <div class="philosophy-card reveal">
+          <div class="philosophy-icon">🛡️</div>
           <h3>Safety-first</h3>
-          <p>Mai distrarre chi guida. SOS con countdown, fall detection, alert vocali. La sicurezza non è un'opzione.</p>
+          <p>Mai distrarre chi guida. SOS con countdown, fall detection automatico, alert vocali. La sicurezza non è una feature, è la base.</p>
         </div>
-        <div class="philosophy-item reveal reveal-delay-1">
+        <div class="philosophy-card reveal reveal-delay-1">
           <div class="philosophy-icon">📴</div>
           <h3>Offline-first</h3>
           <p>Tutto funziona senza rete. Mappe, navigazione, comandi vocali. Il cloud è un bonus, non una dipendenza.</p>
         </div>
-        <div class="philosophy-item reveal reveal-delay-2">
+        <div class="philosophy-card reveal reveal-delay-2">
           <div class="philosophy-icon">🔒</div>
           <h3>Privacy-first</h3>
-          <p>I tuoi dati restano tuoi. Opt-in per tutto. Mai classifiche di velocità pubbliche. Mai.</p>
+          <p>I tuoi dati restano tuoi. Opt-in per tutto. Mai classifiche di velocità pubbliche. Mai. Punto.</p>
         </div>
       </div>
     </div>
@@ -733,13 +1207,13 @@
         <div class="feature-card reveal">
           <span class="feature-tag">Voce</span>
           <h4>Comandi hands-free</h4>
-          <p>Parla, VRoom ascolta. Funziona offline, con casco e vento.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
+          <p>Parla, VRoom ascolta. Funziona offline, con casco e vento a 130 km/h.</p>
+          <details class="feature-expand">
+            <summary>Scopri di più</summary>
+            <div class="feature-detail">
               <ul>
                 <li>Riconoscimento vocale offline</li>
-                <li>Conferme TTS italiano/inglese</li>
+                <li>Conferme TTS italiano e inglese</li>
                 <li>Wake word personalizzabile</li>
                 <li>Bluetooth intercom supportati</li>
               </ul>
@@ -750,15 +1224,15 @@
         <div class="feature-card reveal reveal-delay-1">
           <span class="feature-tag">Navigazione</span>
           <h4>Turn-by-turn vocale</h4>
-          <p>Ti guida a destinazione. Funziona anche senza segnale.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
+          <p>Ti guida a destinazione con istruzioni chiare. Funziona anche senza segnale.</p>
+          <details class="feature-expand">
+            <summary>Scopri di più</summary>
+            <div class="feature-detail">
               <ul>
-                <li>Mappe offline scaricabili</li>
-                <li>Ricalcolo automatico</li>
-                <li>Import percorsi GPX</li>
-                <li>Istruzioni vocali chiare</li>
+                <li>Mappe offline scaricabili per regione</li>
+                <li>Ricalcolo automatico del percorso</li>
+                <li>Import tracciati GPX esterni</li>
+                <li>Istruzioni vocali in italiano</li>
               </ul>
             </div>
           </details>
@@ -767,15 +1241,15 @@
         <div class="feature-card reveal reveal-delay-2">
           <span class="feature-tag">Sicurezza</span>
           <h4>SOS intelligente</h4>
-          <p>Countdown 30 secondi, contatti di emergenza, posizione condivisa.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
+          <p>Countdown 30 secondi, contatti di emergenza, posizione GPS condivisa.</p>
+          <details class="feature-expand">
+            <summary>Scopri di più</summary>
+            <div class="feature-detail">
               <ul>
-                <li>Fall detection automatico</li>
-                <li>SMS + chiamata di emergenza</li>
-                <li>Countdown annullabile</li>
-                <li>Contatti configurabili</li>
+                <li>Fall detection con accelerometro</li>
+                <li>SMS + chiamata automatica</li>
+                <li>Countdown annullabile vocalmente</li>
+                <li>Contatti emergenza configurabili</li>
               </ul>
             </div>
           </details>
@@ -785,14 +1259,14 @@
           <span class="feature-tag">Telemetria</span>
           <h4>Conosci la tua guida</h4>
           <p>Angolo di piega, G-force, analisi curve. Per migliorare, non per competere.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
+          <details class="feature-expand">
+            <summary>Scopri di più</summary>
+            <div class="feature-detail">
               <ul>
                 <li>Lean angle in tempo reale</li>
                 <li>Rilevamento curve automatico</li>
                 <li>Profilo rider personale</li>
-                <li>Statistiche aggregate</li>
+                <li>Statistiche aggregate per moto</li>
               </ul>
             </div>
           </details>
@@ -801,66 +1275,32 @@
         <div class="feature-card reveal reveal-delay-4">
           <span class="feature-tag">Crew</span>
           <h4>Guida insieme</h4>
-          <p>Crea gruppi, condividi posizione in tempo reale, confronta i tracciati dopo.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
+          <p>Crea gruppi, condividi posizione live, confronta tracciati dopo il giro.</p>
+          <details class="feature-expand">
+            <summary>Scopri di più</summary>
+            <div class="feature-detail">
               <ul>
                 <li>Gruppi pubblici o privati</li>
                 <li>Live sharing opt-in</li>
                 <li>Confronto post-ride</li>
-                <li>Alert di gruppo vocali</li>
+                <li>Alert vocali di gruppo</li>
               </ul>
             </div>
           </details>
         </div>
 
-        <div class="feature-card reveal">
-          <span class="feature-tag">Routes</span>
-          <h4>Import & Export</h4>
-          <p>Porta i tuoi percorsi ovunque. GPX standard, compatibile con tutto.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
-              <ul>
-                <li>Import GPX e URL esterni</li>
-                <li>Preview con mappa</li>
-                <li>Export ottimizzato</li>
-                <li>Waypoint intelligenti</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-card reveal reveal-delay-5">
           <span class="feature-tag">Alert</span>
           <h4>Community safety</h4>
-          <p>Segnala pericoli, ricevi avvisi da altri rider. La strada più sicura si costruisce insieme.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
+          <p>Segnala pericoli, ricevi avvisi da altri rider. Insieme siamo più sicuri.</p>
+          <details class="feature-expand">
+            <summary>Scopri di più</summary>
+            <div class="feature-detail">
               <ul>
-                <li>30+ tipi di alert</li>
+                <li>30+ tipi di segnalazione</li>
                 <li>Conferma dalla community</li>
-                <li>Notifiche vocali</li>
+                <li>Notifiche vocali in tempo reale</li>
                 <li>Filtri personalizzabili</li>
-              </ul>
-            </div>
-          </details>
-        </div>
-
-        <div class="feature-card reveal reveal-delay-2">
-          <span class="feature-tag">Prossimamente</span>
-          <h4>Track Mode</h4>
-          <p>Per il circuito. Lap timing automatico, settori, personal best vocale.</p>
-          <details>
-            <summary>Dettagli</summary>
-            <div class="detail-content">
-              <ul>
-                <li>Rilevamento giri GPS</li>
-                <li>Delta time vocale</li>
-                <li>Settori personalizzati</li>
-                <li>Mai classifiche pubbliche</li>
               </ul>
             </div>
           </details>
@@ -877,11 +1317,13 @@
       </div>
 
       <div class="journey-timeline">
+        <div class="journey-line"></div>
+
         <div class="journey-item reveal">
           <div class="journey-dot">1</div>
           <div class="journey-content">
             <h4>Parti</h4>
-            <p>Un tap o un comando vocale. VRoom si attiva e sparisce. Tu guidi.</p>
+            <p>Un tap o un comando vocale. VRoom si attiva e sparisce. Tu guidi, lei ascolta.</p>
           </div>
         </div>
 
@@ -889,7 +1331,7 @@
           <div class="journey-dot">2</div>
           <div class="journey-content">
             <h4>Guida</h4>
-            <p>Navigazione vocale, telemetria in background, alert dalla community. Tutto senza toccare lo schermo.</p>
+            <p>Navigazione vocale, telemetria in background, alert dalla community. Zero distrazioni.</p>
           </div>
         </div>
 
@@ -905,7 +1347,7 @@
           <div class="journey-dot">4</div>
           <div class="journey-content">
             <h4>Rivivi</h4>
-            <p>Replay del giro, statistiche, export. Il tuo percorso resta tuo.</p>
+            <p>Replay del giro, statistiche, export GPX. Il tuo percorso resta tuo, per sempre.</p>
           </div>
         </div>
       </div>
@@ -916,25 +1358,25 @@
   <section class="cta" id="cta">
     <div class="section-inner">
       <div class="cta-content reveal">
-        <h2>Costruita da un rider.<br>Per i rider.</h2>
-        <p>VRoom è open source. L'alpha è disponibile. Se credi nella sicurezza prima della velocità, unisciti.</p>
+        <h2>Costruita da un rider.<br><span>Per i rider.</span></h2>
+        <p>VRoom è open source. Se credi nella sicurezza prima della velocità, unisciti a noi.</p>
         <div class="cta-buttons">
-          <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary">Apri GitHub</a>
+          <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary"><span>Apri GitHub</span></a>
           <a href="https://github.com/Vroom-dev/VRoom_app#-getting-started" class="btn btn-ghost">Come iniziare</a>
         </div>
 
-        <div class="cta-meta">
-          <div class="cta-meta-item">
-            <strong>63%</strong>
-            <span>v3 completata</span>
+        <div class="cta-stats">
+          <div class="cta-stat">
+            <div class="cta-stat-value">63%</div>
+            <div class="cta-stat-label">Completato</div>
           </div>
-          <div class="cta-meta-item">
-            <strong>51</strong>
-            <span>bug verificati</span>
+          <div class="cta-stat">
+            <div class="cta-stat-value">51</div>
+            <div class="cta-stat-label">Bug risolti</div>
           </div>
-          <div class="cta-meta-item">
-            <strong>10</strong>
-            <span>fasi totali</span>
+          <div class="cta-stat">
+            <div class="cta-stat-value">10</div>
+            <div class="cta-stat-label">Fasi</div>
           </div>
         </div>
       </div>
@@ -943,10 +1385,11 @@
 
   <!-- Footer -->
   <footer>
+    <div class="footer-logo">VRoom</div>
     <div class="footer-links">
       <a href="https://github.com/Vroom-dev/VRoom_app">Repository</a>
       <a href="https://github.com/Vroom-dev/VRoom_app/issues">Feedback</a>
-      <a href="https://github.com/Vroom-dev/VRoom_app/blob/main/LICENSE">Licenza MIT</a>
+      <a href="https://github.com/Vroom-dev/VRoom_app/blob/main/LICENSE">MIT License</a>
     </div>
     <div class="footer-copy">© 2026 VRoom · By riders, for riders</div>
   </footer>
@@ -956,19 +1399,66 @@
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
-      }, 800);
+      }, 1200);
     });
 
     // Custom cursor
     const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursorDot');
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
     document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX - 6 + 'px';
-      cursor.style.top = e.clientY - 6 + 'px';
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX - 3 + 'px';
+      cursorDot.style.top = mouseY - 3 + 'px';
     });
 
-    document.querySelectorAll('a, button, .feature-card, details summary').forEach(el => {
+    // Smooth cursor follow
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      cursor.style.left = cursorX - 10 + 'px';
+      cursor.style.top = cursorY - 10 + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Cursor hover states
+    document.querySelectorAll('a, button, .feature-card, .philosophy-card, .journey-item, details summary').forEach(el => {
       el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
       el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // Hero card 3D tilt
+    const heroCard = document.getElementById('heroCard');
+    if (heroCard) {
+      heroCard.addEventListener('mousemove', (e) => {
+        const rect = heroCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 20;
+        const rotateY = (centerX - x) / 20;
+        heroCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      });
+
+      heroCard.addEventListener('mouseleave', () => {
+        heroCard.style.transform = 'rotateX(0) rotateY(0)';
+      });
+    }
+
+    // Feature cards mouse follow effect
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', x + '%');
+        card.style.setProperty('--mouse-y', y + '%');
+      });
     });
 
     // Reveal on scroll
@@ -979,9 +1469,19 @@
           entry.target.classList.add('visible');
         }
       });
-    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
 
     reveals.forEach(el => observer.observe(el));
+
+    // Parallax on scroll
+    window.addEventListener('scroll', () => {
+      const scrolled = window.pageYOffset;
+      const circles = document.querySelectorAll('.hero-circle');
+      circles.forEach((circle, i) => {
+        const speed = 0.1 + (i * 0.05);
+        circle.style.transform = `translateY(${scrolled * speed}px)`;
+      });
+    });
   </script>
 </body>
 </html>
