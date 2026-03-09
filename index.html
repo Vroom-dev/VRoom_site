@@ -1,1729 +1,987 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="VRoom è la ride companion per motociclisti: navigazione turn-by-turn con voce, road alert dalla comunità, telemetria e SOS. Safety-first, offline-first, zero gamification." />
-  <meta name="keywords" content="motorcycle, rider, safety, ride companion, voice, community" />
-  <meta name="author" content="Datanal" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VRoom. La strada, nient'altro. Companion per motociclisti: voce, navigazione, sicurezza. Tutto offline.">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta property="og:title" content="VRoom — By riders, for riders">
+  <meta property="og:description" content="La strada, nient'altro. Safety-first, offline-first, privacy-first.">
+  <meta property="og:type" content="website">
+  <title>VRoom</title>
 
-  <meta property="og:title" content="VRoom — By riders, for riders" />
-  <meta property="og:description" content="alpha.69: navigazione, alert, crew, telemetria e routes. Social complete, track mode in arrivo. Safety-first, privacy-first." />
-  <meta property="og:type" content="website" />
-
-  <title>VRoom — By riders, for riders</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;600;700&display=swap');
-
     :root {
-      --bg-0: #030304;
-      --bg-1: #0a0b10;
-      --bg-2: #12141c;
-      --text: #f4f5f9;
-      --muted: #a0a6b3;
-      --accent: #ff7a18;
-      --accent-2: #15f4d0;
-      --accent-3: #ff2d95;
-      --card: rgba(12, 14, 20, 0.86);
-      --stroke: rgba(255, 255, 255, 0.08);
-      --glow: rgba(255, 122, 24, 0.35);
-      --radius: 18px;
-      --max: 1180px;
+      --black: #0a0a0f;
+      --black-light: #14141f;
+      --orange: #e85a1c;
+      --orange-glow: rgba(232, 90, 28, 0.4);
+      --white: #fafafa;
+      --gray: #6b6b7b;
+      --gray-dark: #2a2a3a;
+      --teal: #00c9a7;
+
+      --font: 'Inter', -apple-system, sans-serif;
+      --transition: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-snap-type: y proximity;
     }
 
     body {
-      font-family: "Space Grotesk", "Segoe UI", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(900px 500px at 80% -10%, rgba(255, 45, 149, 0.25), transparent 60%),
-        radial-gradient(1000px 520px at 10% 10%, rgba(21, 244, 208, 0.2), transparent 55%),
-        linear-gradient(160deg, var(--bg-0), var(--bg-1) 45%, var(--bg-2) 100%);
-      min-height: 100vh;
+      font-family: var(--font);
+      background: var(--black);
+      color: var(--white);
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    body::before,
-    body::after {
-      content: "";
+    ::selection {
+      background: var(--orange);
+      color: var(--black);
+    }
+
+    /* ============ LOADER ============ */
+    .loader {
       position: fixed;
       inset: 0;
+      background: var(--black);
+      display: grid;
+      place-items: center;
+      z-index: 9999;
+      transition: opacity 0.6s var(--transition), visibility 0.6s;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      font-size: 3rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    .loader-logo span {
+      color: var(--orange);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: scale(0.98); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ============ CURSOR ============ */
+    .cursor {
+      width: 12px;
+      height: 12px;
+      background: var(--orange);
+      border-radius: 50%;
+      position: fixed;
       pointer-events: none;
-      z-index: -1;
+      z-index: 9998;
+      mix-blend-mode: difference;
+      transition: transform 0.15s var(--transition);
+      display: none;
     }
 
-    body::before {
-      background:
-        radial-gradient(600px 260px at 80% 25%, rgba(255, 122, 24, 0.25), transparent 70%),
-        radial-gradient(520px 240px at 20% 80%, rgba(21, 244, 208, 0.18), transparent 70%);
-      filter: blur(12px);
-      animation: glowShift 10s ease-in-out infinite alternate;
+    @media (hover: hover) {
+      .cursor { display: block; }
     }
 
-    body::after {
-      background: linear-gradient(120deg, rgba(255, 255, 255, 0.06), transparent 60%);
-      mix-blend-mode: screen;
-      opacity: 0.45;
+    .cursor.hover {
+      transform: scale(3);
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    .container {
-      width: min(100% - 2.5rem, var(--max));
-      margin: 0 auto;
-    }
-
-    header {
-      position: sticky;
+    /* ============ NAV ============ */
+    nav {
+      position: fixed;
       top: 0;
-      z-index: 10;
-      backdrop-filter: blur(18px);
-      background: rgba(6, 7, 10, 0.85);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .nav {
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 4vw;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 1rem 0;
-      gap: 1.5rem;
+      align-items: center;
+      mix-blend-mode: difference;
     }
 
     .logo {
-      font-family: "Unbounded", "Space Grotesk", sans-serif;
-      font-size: 1.3rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-decoration: none;
+      color: var(--white);
     }
 
     .logo span {
-      color: var(--accent);
+      color: var(--orange);
     }
 
     .nav-links {
       display: flex;
-      gap: 1.6rem;
-      font-size: 0.95rem;
-      color: var(--muted);
+      gap: 2rem;
     }
 
     .nav-links a {
-      transition: color 0.2s ease;
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      opacity: 0.7;
+      transition: opacity 0.3s;
     }
 
     .nav-links a:hover {
-      color: var(--text);
-    }
-
-    .nav-cta {
-      display: flex;
-      gap: 0.8rem;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(9, 12, 18, 0.65);
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-
-    .button {
-      padding: 0.85rem 1.6rem;
-      border-radius: 999px;
-      border: 1px solid transparent;
-      font-weight: 600;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.95rem;
-    }
-
-    .button.primary {
-      background: linear-gradient(135deg, var(--accent), #ff9a3d 50%, var(--accent));
-      color: #0b0f15;
-      box-shadow: 0 18px 35px rgba(255, 122, 24, 0.35);
-    }
-
-    .button.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 24px 40px rgba(255, 122, 24, 0.45);
-    }
-
-    .button.ghost {
-      border-color: rgba(255, 255, 255, 0.18);
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .button.ghost:hover {
-      transform: translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.35);
-    }
-
-    main {
-      padding-bottom: 5rem;
-    }
-
-    .page-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 280px;
-      gap: 3rem;
-      align-items: start;
-    }
-
-    .story {
-      position: sticky;
-      top: 96px;
-      align-self: start;
-      padding: 1.5rem;
-      border-radius: 20px;
-      background: rgba(8, 10, 14, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-    }
-
-    .story h4 {
-      font-family: "Unbounded", sans-serif;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      margin-bottom: 1rem;
-      color: var(--accent-2);
-    }
-
-    .story-progress {
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-      overflow: hidden;
-      margin-bottom: 1rem;
-    }
-
-    .story-progress span {
-      display: block;
-      height: 100%;
-      width: 0%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
-      box-shadow: 0 0 14px rgba(255, 122, 24, 0.4);
-      transition: width 0.2s ease;
-    }
-
-    .story-lines {
-      display: grid;
-      gap: 0.9rem;
-    }
-
-    .story-line {
-      font-size: 0.92rem;
-      color: var(--muted);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
-      position: relative;
-      padding-left: 1.2rem;
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .story-line::before {
-      content: "";
-      position: absolute;
-      left: -5px;
-      top: 0.35rem;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .story-line.is-visible {
       opacity: 1;
-      transform: translateY(0);
     }
 
-    .story-line.is-active {
-      color: var(--text);
-      text-shadow: 0 0 12px rgba(255, 122, 24, 0.35);
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
     }
 
-    .story-line.is-active::before {
-      background: var(--accent);
-      box-shadow: 0 0 10px rgba(255, 122, 24, 0.6);
-    }
-
-    .story-line.is-typing {
-      animation: typePulse 0.6s ease;
-    }
-
-    .hero {
-      padding: 5.5rem 0 3.5rem;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 3rem;
-      align-items: center;
-    }
-
-    .hero-copy h1 {
-      font-family: "Unbounded", sans-serif;
-      font-size: clamp(2.5rem, 4.2vw, 4.2rem);
-      line-height: 1.05;
-      margin: 1.4rem 0 1rem;
-    }
-
-    .hero-copy h1 span {
-      color: var(--accent);
-    }
-
-    .hero-copy p {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 560px;
-      margin-bottom: 1.8rem;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 2.2rem;
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .hero-meta strong {
-      color: var(--text);
-      font-size: 1.1rem;
-      display: block;
-    }
-
-    .hero-visual {
-      position: relative;
+    /* ============ SECTIONS ============ */
+    section {
+      min-height: 100vh;
       display: grid;
       place-items: center;
-    }
-
-    .visuals {
-      padding-top: 1rem;
-    }
-
-    .visuals-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 1.6rem;
-    }
-
-    .visual-card {
+      padding: 6rem 4vw;
       position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 22px 40px rgba(0, 0, 0, 0.45);
-      background: #06070b;
-      min-height: 240px;
+      scroll-snap-align: start;
     }
 
-    .visual-card img {
+    .section-inner {
+      max-width: 1200px;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(1.15) contrast(1.05);
-      transform: scale(1.02);
-      transition: transform 0.6s ease;
     }
 
-    .visual-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(6, 7, 11, 0) 0%, rgba(6, 7, 11, 0.75) 100%);
-    }
-
-    .visual-card:hover img {
-      transform: scale(1.08);
-    }
-
-    .visual-card figcaption {
-      position: absolute;
-      left: 1.4rem;
-      right: 1.4rem;
-      bottom: 1.2rem;
-      z-index: 1;
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .visual-card span {
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-size: 0.7rem;
-      color: var(--accent-2);
-    }
-
-    .visual-card strong {
-      font-size: 1.15rem;
-    }
-
-    .device {
-      width: min(100%, 360px);
-      aspect-ratio: 9 / 19;
-      border-radius: 28px;
-      padding: 1.1rem;
-      background: linear-gradient(180deg, rgba(22, 28, 40, 0.9), rgba(10, 12, 18, 0.95));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.55);
-      position: relative;
+    /* ============ HERO ============ */
+    .hero {
+      background:
+        radial-gradient(ellipse at 70% 20%, var(--orange-glow), transparent 50%),
+        var(--black);
       overflow: hidden;
     }
 
-    .device::before {
-      content: "";
-      position: absolute;
-      inset: -40% 30% auto;
-      height: 120%;
-      background: linear-gradient(120deg, rgba(21, 244, 208, 0.2), transparent 55%);
-      transform: rotate(12deg);
-      opacity: 0.7;
+    .hero-content {
+      display: grid;
+      gap: 2rem;
+      max-width: 800px;
     }
 
-    .device-screen {
-      height: 100%;
-      border-radius: 20px;
-      background: radial-gradient(circle at 30% 20%, rgba(21, 244, 208, 0.3), transparent 45%),
-        linear-gradient(150deg, rgba(255, 122, 24, 0.2), transparent 55%),
-        #0a0e15;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 1.2rem;
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--black-light);
+      border: 1px solid var(--gray-dark);
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+      width: fit-content;
+    }
+
+    .hero-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--teal);
+      border-radius: 50%;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 10vw, 7rem);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.03em;
+    }
+
+    .hero h1 .accent {
+      color: var(--orange);
+      display: block;
+    }
+
+    .hero-sub {
+      font-size: 1.25rem;
+      color: var(--gray);
+      max-width: 500px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 100px;
+      transition: all 0.3s var(--transition);
+      cursor: pointer;
+      border: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--orange);
+      color: var(--black);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 40px var(--orange-glow);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--gray-dark);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--white);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--gray);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .scroll-indicator::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--gray), transparent);
+      animation: scrollDown 1.5s ease-in-out infinite;
+    }
+
+    @keyframes scrollDown {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50% { transform: scaleY(0.5); opacity: 0.5; }
+    }
+
+    /* ============ PHILOSOPHY ============ */
+    .philosophy {
+      background: var(--black-light);
+    }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--gray-dark);
+      border: 1px solid var(--gray-dark);
+    }
+
+    @media (max-width: 768px) {
+      .philosophy-grid { grid-template-columns: 1fr; }
+    }
+
+    .philosophy-item {
+      background: var(--black-light);
+      padding: 3rem;
+      display: grid;
       gap: 1rem;
-      position: relative;
+      transition: background 0.3s;
     }
 
-    .map-card {
-      background: rgba(12, 18, 28, 0.9);
-      border-radius: 16px;
-      padding: 1rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: grid;
-      gap: 0.75rem;
+    .philosophy-item:hover {
+      background: var(--black);
     }
 
-    .route-line {
-      height: 120px;
+    .philosophy-item h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .philosophy-item p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .philosophy-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--orange);
       border-radius: 12px;
-      background: linear-gradient(120deg, rgba(21, 244, 208, 0.8), rgba(255, 122, 24, 0.8));
-      mask: radial-gradient(circle at 15% 20%, transparent 0 12px, black 13px),
-        linear-gradient(90deg, black, black);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .route-line::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-      animation: sweep 2.5s linear infinite;
-    }
-
-    .map-stats {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.6rem;
-      font-size: 0.85rem;
-      color: var(--muted);
+      place-items: center;
+      font-size: 1.5rem;
     }
 
-    .map-stats span {
-      color: var(--text);
-      font-weight: 600;
+    /* ============ FEATURES ============ */
+    .features {
+      background: var(--black);
     }
 
-    .floating-tag {
-      position: absolute;
-      right: -30px;
-      top: 20px;
-      padding: 0.7rem 1rem;
-      border-radius: 14px;
-      background: rgba(8, 11, 16, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      font-size: 0.85rem;
-      color: var(--muted);
-      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.4);
-      animation: float 3.2s ease-in-out infinite;
+    .features-header {
+      text-align: center;
+      margin-bottom: 4rem;
     }
 
-    .floating-tag strong {
-      color: var(--text);
-    }
-
-    section {
-      padding: 4.2rem 0;
-    }
-
-    .section-title {
-      font-family: "Unbounded", sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
+    .features-header h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
       margin-bottom: 1rem;
     }
 
-    .section-subtitle {
-      color: var(--muted);
-      max-width: 640px;
-      margin-bottom: 2.5rem;
-      font-size: 1.05rem;
+    .features-header p {
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    .grid {
+    .features-grid {
       display: grid;
-      gap: 1.6rem;
-    }
-
-    .grid.cards {
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    }
-
-    .card {
-      position: relative;
-      overflow: hidden;
-      padding: 1.6rem;
-      border-radius: var(--radius);
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(14px);
-      cursor: pointer;
-      transition: transform 0.25s ease, border 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(140% 90% at 20% 0%, rgba(255, 255, 255, 0.08), transparent 55%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 18px 38px rgba(255, 122, 24, 0.2);
-    }
-
-    .card:hover::before,
-    .card.is-selected::before,
-    .card:focus-within::before {
-      opacity: 1;
-    }
-
-    .card.is-selected {
-      background: #050607;
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow:
-        0 26px 60px rgba(0, 0, 0, 0.55),
-        0 0 45px rgba(255, 122, 24, 0.22),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-    }
-
-    .card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.6rem;
-    }
-
-    .card p {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .card-overlay {
-      position: absolute;
-      inset: 0;
-      padding: 1.6rem;
-      display: grid;
-      gap: 0.7rem;
-      background:
-        radial-gradient(120% 80% at 20% 0%, rgba(255, 255, 255, 0.06), transparent 60%),
-        rgba(5, 6, 8, 0.92);
-      opacity: 0;
-      transform: translateY(10px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-
-    .card-overlay span {
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-size: 0.7rem;
-      color: var(--accent-2);
-    }
-
-    .card-overlay p {
-      color: var(--text);
-      font-size: 0.95rem;
-      line-height: 1.45;
-    }
-
-    .card:hover .card-overlay,
-    .card.is-selected .card-overlay,
-    .card:focus-within .card-overlay {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .feature-rail {
-      display: grid;
-      gap: 1.4rem;
-    }
-
-    .feature-rail .card {
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .feature-rail .card span {
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-size: 0.75rem;
-      color: var(--accent-2);
-    }
-
-    .tag {
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.7rem;
-      color: var(--accent-2);
-    }
-
-    .card ul {
-      list-style: none;
-      display: grid;
-      gap: 0.4rem;
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-
-    .card ul li::before {
-      content: "• ";
-      color: var(--accent);
-    }
-
-    .feature-points {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .feature-points span {
-      font-size: 0.75rem;
-      padding: 0.3rem 0.6rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: var(--muted);
-    }
-
-    .timeline {
-      position: relative;
-      display: grid;
-      gap: 1.4rem;
-      margin-top: 2rem;
-    }
-
-    .timeline::before {
-      content: "";
-      position: absolute;
-      left: 12px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, rgba(255, 122, 24, 0.8), rgba(21, 244, 208, 0.2));
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 24px 1fr;
-      gap: 1.2rem;
-      align-items: start;
-    }
-
-    .timeline-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 12px rgba(255, 122, 24, 0.6);
-      margin-top: 0.45rem;
-    }
-
-    .timeline-card {
-      padding: 1.2rem 1.4rem;
-      border-radius: 16px;
-      background: rgba(9, 12, 18, 0.9);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .timeline-card span {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--accent-3);
-    }
-
-    .feature-block {
-      display: grid;
-      gap: 1.6rem;
-      margin-top: 2.5rem;
-    }
-
-    .feature-block h3 {
-      font-size: 1.6rem;
-      font-family: "Unbounded", sans-serif;
-    }
-
-    .callout {
-      padding: 2rem;
-      border-radius: 20px;
-      background: linear-gradient(135deg, rgba(255, 122, 24, 0.25), rgba(21, 244, 208, 0.18));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      display: grid;
-      gap: 1rem;
-    }
-
-    .callout strong {
-      color: var(--text);
-    }
-
-    .highlight {
-      position: relative;
-      border-radius: 24px;
-      padding: 2.5rem;
-      background: linear-gradient(135deg, rgba(255, 122, 24, 0.24), rgba(255, 45, 149, 0.2));
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 18px 40px rgba(255, 45, 149, 0.15);
-    }
-
-    .highlight-grid {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      margin-top: 2rem;
-    }
-
-    .highlight-item {
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .highlight-item span {
-      font-size: 0.85rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-
-    .steps {
-      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
     }
 
-    .step {
-      display: grid;
-      gap: 0.8rem;
-      padding: 1.6rem;
-      border-radius: 18px;
-      background: rgba(10, 12, 18, 0.92);
-      border: 1px solid var(--stroke);
+    .feature-card {
+      background: var(--black-light);
+      border: 1px solid var(--gray-dark);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: all 0.3s var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
-    .step strong {
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--orange), var(--teal));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s var(--transition);
+    }
+
+    .feature-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .feature-card:hover {
+      border-color: var(--gray);
+      transform: translateY(-4px);
+    }
+
+    .feature-card h4 {
       font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
     }
 
-    .manifesto {
-      padding: 2.5rem;
-      border-radius: 26px;
-      background: rgba(7, 9, 14, 0.92);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+    .feature-card p {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .feature-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--gray-dark);
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--teal);
+      margin-bottom: 1rem;
+    }
+
+    /* ============ JOURNEY ============ */
+    .journey {
+      background:
+        linear-gradient(180deg, var(--black) 0%, var(--black-light) 50%, var(--black) 100%);
+    }
+
+    .journey-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .journey-header h2 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+    }
+
+    .journey-timeline {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .journey-timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--orange), var(--teal), var(--orange));
+    }
+
+    .journey-item {
       display: grid;
-      gap: 1.4rem;
-      box-shadow: 0 20px 38px rgba(0, 0, 0, 0.4);
+      grid-template-columns: 40px 1fr;
+      gap: 2rem;
+      padding: 2rem 0;
+      position: relative;
     }
 
-    .manifesto strong {
-      color: var(--accent-2);
+    .journey-dot {
+      width: 40px;
+      height: 40px;
+      background: var(--black);
+      border: 2px solid var(--orange);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.875rem;
+      z-index: 1;
     }
 
+    .journey-content h4 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .journey-content p {
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    /* ============ CTA ============ */
     .cta {
-      margin-top: 4rem;
-      padding: 3rem;
-      border-radius: 28px;
-      background: linear-gradient(135deg, rgba(255, 122, 24, 0.28), rgba(21, 244, 208, 0.2));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      display: grid;
-      gap: 1.2rem;
-      align-items: center;
+      background:
+        radial-gradient(ellipse at 30% 80%, var(--orange-glow), transparent 50%),
+        var(--black);
+      text-align: center;
+    }
+
+    .cta-content {
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .cta h2 {
-      font-family: "Unbounded", sans-serif;
-      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      line-height: 1.1;
     }
 
     .cta p {
-      color: var(--muted);
-      font-size: 1.05rem;
-    }
-
-    footer {
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 2.5rem 0 3rem;
-      color: var(--muted);
-    }
-
-    .footer-grid {
-      display: grid;
-      gap: 2rem;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      color: var(--gray);
       margin-bottom: 2rem;
+      font-size: 1.1rem;
     }
 
-    .footer-grid h4 {
-      color: var(--text);
-      margin-bottom: 0.6rem;
-      font-size: 1rem;
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
-    .footer-grid a {
-      color: var(--muted);
+    .cta-meta {
+      margin-top: 3rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-meta-item {
+      text-align: center;
+    }
+
+    .cta-meta-item strong {
       display: block;
-      margin-bottom: 0.4rem;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--orange);
     }
 
-    .footer-grid a:hover {
-      color: var(--text);
+    .cta-meta-item span {
+      font-size: 0.875rem;
+      color: var(--gray);
     }
 
-    .footer-credits {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
+    /* ============ FOOTER ============ */
+    footer {
+      padding: 3rem 4vw;
+      border-top: 1px solid var(--gray-dark);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
-    .footer-credits a {
-      color: var(--accent-2);
+    .footer-links {
+      display: flex;
+      gap: 2rem;
     }
 
+    .footer-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.875rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--white);
+    }
+
+    .footer-copy {
+      color: var(--gray);
+      font-size: 0.875rem;
+    }
+
+    /* ============ REVEAL ANIMATIONS ============ */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: translateY(30px);
+      transition: opacity 0.8s var(--transition), transform 0.8s var(--transition);
     }
 
-    .reveal.is-visible {
+    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    @keyframes glowShift {
-      from {
-        transform: translateY(-2%);
-      }
-      to {
-        transform: translateY(2%);
-      }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ============ DETAILS/EXPAND ============ */
+    details {
+      margin-top: 1rem;
     }
 
-    @keyframes sweep {
-      from {
-        transform: translateX(-120%);
-      }
-      to {
-        transform: translateX(120%);
-      }
+    details summary {
+      cursor: pointer;
+      color: var(--orange);
+      font-size: 0.875rem;
+      font-weight: 500;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
-    @keyframes float {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-      50% {
-        transform: translateY(-10px);
-      }
+    details summary::after {
+      content: '+';
+      transition: transform 0.3s;
     }
 
-    @keyframes typePulse {
-      0% {
-        letter-spacing: 0.04em;
-        opacity: 0.6;
-      }
-      100% {
-        letter-spacing: 0;
-        opacity: 1;
-      }
+    details[open] summary::after {
+      transform: rotate(45deg);
     }
 
-    @media (max-width: 1040px) {
-      .page-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .visuals-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .story {
-        position: static;
-        order: 2;
-      }
-
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .hero {
-        padding-top: 3.5rem;
-      }
-
-      .hero-meta {
-        gap: 1.2rem;
-      }
-
-      .floating-tag {
-        right: 10px;
-      }
+    details .detail-content {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--black);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--gray);
     }
 
-    @media (max-width: 600px) {
-      .nav {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    details .detail-content ul {
+      list-style: none;
+      display: grid;
+      gap: 0.5rem;
+    }
 
-      .nav-cta {
-        width: 100%;
-        justify-content: flex-start;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .button {
-        width: 100%;
-        justify-content: center;
-      }
-
-      .cta {
-        padding: 2rem;
-      }
+    details .detail-content li::before {
+      content: '—';
+      color: var(--orange);
+      margin-right: 0.5rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <a class="logo" href="#top">V<span>Room</span></a>
-      <div class="nav-links">
-        <a href="#why">Perché</a>
-        <a href="#how">Come funziona</a>
-        <a href="#journey">Percorso</a>
-        <a href="#features">Feature</a>
-        <a href="#expo">Moto Expo</a>
-        <a href="#manifesto">Manifesto</a>
-      </div>
-      <div class="nav-cta">
-        <a class="button ghost" href="https://github.com/Vroom-dev/VRoom_app">GitHub</a>
-        <a class="button primary" href="#expo">Demo Live</a>
-      </div>
+  <!-- Loader -->
+  <div class="loader" id="loader">
+    <div class="loader-logo">V<span>Room</span></div>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#" class="logo">V<span>Room</span></a>
+    <div class="nav-links">
+      <a href="#philosophy">Filosofia</a>
+      <a href="#features">Funzioni</a>
+      <a href="#journey">Percorso</a>
+      <a href="https://github.com/Vroom-dev/VRoom_app">GitHub</a>
     </div>
-  </header>
+  </nav>
 
-  <main id="top">
-    <div class="container page-grid">
-      <div class="content">
-        <section class="hero" data-story-index="0">
-          <div class="hero-grid">
-            <div class="hero-copy reveal" data-animate>
-              <span class="pill">🚀 alpha.69 · v3 al 63% · routes + track mode in arrivo</span>
-              <h1>Una compagna di viaggio nata <span>in sella</span>.</h1>
-              <p>
-                VRoom non vuole “aggiungere un’app” alla tua guida: vuole togliere rumore.
-                Navigazione live con voce, alert dalla comunità, crew session, telemetria e import/export routes:
-                la v3 è al 63% e ogni settimana si aggiunge qualcosa di concreto. Track mode per il circuito è in costruzione.
-              </p>
-              <div class="hero-actions">
-                <a class="button primary" href="https://github.com/Vroom-dev/VRoom_app">Scopri il progetto</a>
-                <a class="button ghost" href="#why">Leggi il perché</a>
-                <a class="button ghost" href="#features">Tutte le feature</a>
-              </div>
-              <div class="hero-meta">
-                <div>
-                  <strong>Safety-first</strong>
-                  <span>SOS + fall detection + alert vocali</span>
-                </div>
-                <div>
-                  <strong>Offline vero</strong>
-                  <span>Mappe + routing senza rete</span>
-                </div>
-                <div>
-                  <strong>Crew & Routes</strong>
-                  <span>Guida insieme + import/export</span>
-                </div>
-              </div>
-            </div>
-            <div class="hero-visual reveal" data-animate>
-              <div class="device">
-                <div class="device-screen">
-                  <div class="map-card">
-                    <div class="route-line"></div>
-                    <div class="map-stats">
-                      <div><span>128 km</span><br />Percorso</div>
-                      <div><span>+980 m</span><br />Dislivello</div>
-                      <div><span>42 eventi</span><br />Annotati</div>
-                      <div><span>2h 18m</span><br />Tempo in sella</div>
-                    </div>
-                  </div>
-                  <div class="map-card">
-                    <strong>Export pronto</strong>
-                    <p>GPX 1.1 · share sheet · eventi inclusi</p>
-                  </div>
-                </div>
-              </div>
-              <div class="floating-tag">⚡ <strong>Safety first</strong><br />Nessuna gamification</div>
-            </div>
-          </div>
-        </section>
-
-        <section id="visuals" class="visuals" data-story-index="1">
-          <h2 class="section-title reveal" data-animate>La strada ha un suono, ma anche una luce.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            VRoom nasce per catturare quell’atmosfera: notti, pioggia, curve e momenti che ti rimangono addosso.
-          </p>
-          <div class="visuals-grid">
-            <figure class="visual-card reveal" data-animate data-story-hover="1">
-              <img src="https://images.pexels.com/photos/9325653/pexels-photo-9325653.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1800&w=2400" alt="Motociclista su strada notturna illuminata dalla città" loading="lazy" />
-              <figcaption>
-                <span>Notte & strada</span>
-                <strong>La moto è atmosfera, non solo distanza.</strong>
-              </figcaption>
-            </figure>
-            <figure class="visual-card reveal" data-animate data-story-hover="1">
-              <img src="https://images.pexels.com/photos/15433605/pexels-photo-15433605.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=1800&w=2400" alt="Casco da moto appoggiato sulla sella" loading="lazy" />
-              <figcaption>
-                <span>Dettagli</span>
-                <strong>Ogni uscita è un racconto inciso sul casco.</strong>
-              </figcaption>
-            </figure>
-          </div>
-        </section>
-
-        <section id="why" data-story-index="2">
-          <h2 class="section-title reveal" data-animate>Perché esiste VRoom.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            Le app per moto parlano di velocità. VRoom parla di presenza: capire dove sei, cosa senti,
-            e portare a casa una storia pulita, utile, condivisibile. Niente numeri freddi: solo
-            contesto, memoria e sicurezza.
-          </p>
-          <div class="grid cards">
-            <div class="card reveal" data-animate data-story-hover="4" tabindex="0" data-explain="Riduce le interazioni in marcia: registra e tagga per te, così resti concentrato sulla strada.">
-              <h3>Meno distrazioni</h3>
-              <p>La strada è intensa. VRoom prende appunti al posto tuo con log vocali e tagging automatico,
-                così puoi restare dove conta: in sella, con la testa libera.</p>
-            </div>
-            <div class="card reveal" data-animate data-story-hover="6" tabindex="0" data-explain="Trasforma il giro in un racconto leggibile, così ricordi punti critici senza numeri freddi.">
-              <h3>Memoria della strada</h3>
-              <p>Curve, pericoli e passaggi chiave diventano un racconto ordinato: note vocali, punti
-                salienti, replay e mappe che ti riportano esattamente lì.</p>
-            </div>
-            <div class="card reveal" data-animate data-story-hover="7" tabindex="0" data-explain="Rende la sicurezza concreta con azioni rapide e chiare quando serve davvero.">
-              <h3>Safety che protegge</h3>
-              <p>Quando succede qualcosa, il supporto è concreto: SOS con countdown, contatti dedicati
-                e alert vocali per restare lucidi.</p>
-            </div>
-          </div>
-        </section>
-
-        <section id="how" data-story-index="4">
-          <h2 class="section-title reveal" data-animate>Come funziona davvero.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            Una companion silenziosa che ascolta, registra e restituisce insight chiari. Tutto pensato
-            per chi guida: attivazione rapida, log automatici, replay emotivo, senza interfacce invadenti.
-          </p>
-          <div class="steps">
-            <div class="step reveal" data-animate data-story-hover="3">
-              <strong>1. Avvia e dimentica</strong>
-              <span class="section-subtitle">Un tap o un comando vocale. Da lì, sei solo tu e la strada:
-                GPS in background, note vocali pronte, zero frizioni.</span>
-            </div>
-            <div class="step reveal" data-animate data-story-hover="4">
-              <strong>2. Racconta mentre guidi</strong>
-              <span class="section-subtitle">Curve, pericoli, note: tutto viene trascritto e geolocalizzato
-                senza interrompere il flusso o guardare lo schermo.</span>
-            </div>
-            <div class="step reveal" data-animate data-story-hover="6">
-              <strong>3. Rivedi e condividi</strong>
-              <span class="section-subtitle">Ritorni sui momenti chiave con un replay chiaro e decidi cosa
-                esportare o condividere, senza gamification.</span>
-            </div>
-          </div>
-        </section>
-
-        <section id="journey" data-story-index="5">
-          <h2 class="section-title reveal" data-animate>Il viaggio in 5 tappe.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            Ogni giro ha un ritmo. VRoom segue quel ritmo e lo trasforma in un racconto utile
-            per te e per chi guiderà dopo di te.
-          </p>
-          <div class="timeline">
-            <div class="timeline-item reveal" data-animate data-story-hover="3">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <span>Partenza</span>
-                <h3>Metti a fuoco la giornata</h3>
-                <p>Apri la sessione, scegli il livello di privacy e lascia che VRoom prepari il logging.</p>
-              </div>
-            </div>
-            <div class="timeline-item reveal" data-animate data-story-hover="4">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <span>In strada</span>
-                <h3>Parla, lei prende nota</h3>
-                <p>Curve, soste, imprevisti: i comandi vocali diventano tag geolocalizzati.</p>
-              </div>
-            </div>
-            <div class="timeline-item reveal" data-animate data-story-hover="5">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <span>Momento delicato</span>
-                <h3>Segnala e proteggi</h3>
-                <p>Un guardrail scivoloso? Una curva cieca? Lo segnali e chi arriva dopo ti ringrazia.</p>
-              </div>
-            </div>
-            <div class="timeline-item reveal" data-animate data-story-hover="6">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <span>Ritorno</span>
-                <h3>Rivedi il flow</h3>
-                <p>Replay, note e statistiche emotive per capire cosa ha funzionato davvero.</p>
-              </div>
-            </div>
-            <div class="timeline-item reveal" data-animate data-story-hover="7">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card">
-                <span>Condivisione</span>
-                <h3>Porta il giro dove vuoi</h3>
-                <p>Export GPX completo, storico e replay: il tuo giro resta tuo e riutilizzabile.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section data-story-index="6">
-          <h2 class="section-title reveal" data-animate>Soluzioni ai problemi reali.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            VRoom nasce per risolvere quello che manca in sella: consapevolezza, fiducia e memoria.
-            La v3 è al 63%: navigazione, voce offline, telemetria, community alert, crew e routes sono reali.
-            Track mode per il circuito è in costruzione. La v4 guarda a sostenibilità e scala.
-          </p>
-          <div class="feature-rail">
-            <div class="card reveal" data-animate data-story-hover="4" tabindex="0" data-explain="Risolve il problema del touch in marcia: comandi brevi e conferme vocali senza distrazioni.">
-              <span>Voce + copilota</span>
-              <h3>Rimani in controllo</h3>
-              <p>Log vocali e conferme TTS IT/EN: niente schermi da fissare, niente gesture complesse.
-                Solo comandi naturali e feedback brevi, quando servono.</p>
-              <div class="feature-points">
-                <span>8 comandi vocali</span>
-                <span>Conferme vocali IT/EN</span>
-              </div>
-            </div>
-            <div class="card reveal" data-animate data-story-hover="6" tabindex="0" data-explain="Evita di perdere il giro senza rete e ti permette di portarlo dove vuoi.">
-              <span>Offline + export</span>
-              <h3>Capisci il ritmo</h3>
-              <p>Replay visuali, mappe offline e GPX standard ti aiutano a rivedere il giro
-                e portarlo dove vuoi, senza perdere dati.</p>
-              <div class="feature-points">
-                <span>Mappe offline</span>
-                <span>GPX 1.1 completo</span>
-              </div>
-            </div>
-            <div class="card reveal" data-animate data-story-hover="7" tabindex="0" data-explain="Gestisce le emergenze con calma: countdown e contatti pronti, niente falsi positivi.">
-              <span>Safety reale</span>
-              <h3>Protezione concreta</h3>
-              <p>SOS con countdown, contatti configurabili e alert vocali: sicurezza guidata,
-                senza falsi positivi e senza gamification.</p>
-              <div class="feature-points">
-                <span>Countdown 30s</span>
-                <span>SMS + chiamata</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="features">
-          <h2 class="section-title reveal" data-animate>Tutte le feature, senza fumo.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            Qui trovi cosa è già reale, cosa stiamo costruendo e cosa arriverà dopo. Solo funzioni
-            che servono a guidare meglio, non a correre di più.
-          </p>
-
-          <div class="feature-block reveal" data-animate>
-            <h3>Disponibile ora</h3>
-            <div class="grid cards">
-              <div class="card" tabindex="0" data-explain="Ti garantisce un giro completo anche con pause o tratti difficili, senza perdere dati.">
-                <span class="tag">Tracking</span>
-                <h3>Registrazione completa del giro</h3>
-                <p>Avvio, pausa, ripresa e chiusura senza perdere il ritmo della guida.</p>
-                <ul>
-                  <li>Tracking continuo in background</li>
-                  <li>Rilevamento GPS spento + guida attivazione</li>
-                  <li>Ripresa immediata dopo stop brevi</li>
-                  <li>Dati salvati in locale</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Cattura eventi importanti mentre guidi: la voce diventa appunti geolocalizzati.">
-                <span class="tag">Voce</span>
-                <h3>Comandi vocali + Copilota</h3>
-                <p>Eventi vocali per curve, pericoli e note personali, con conferme TTS IT/EN.</p>
-                <ul>
-                  <li>Curve, pericoli, autovelox, incidenti</li>
-                  <li>Note libere e marker geolocalizzati</li>
-                  <li>Conferme vocali e queue intelligente</li>
-                  <li>Parsing italiano robusto</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Ti orienta sempre, anche senza connessione, e rende il percorso rivedibile.">
-                <span class="tag">Mappa</span>
-                <h3>Mappa live + offline</h3>
-                <p>La strada resta visibile e rileggibile, anche senza connessione.</p>
-                <ul>
-                  <li>Polyline del percorso</li>
-                  <li>Marker eventi vocali</li>
-                  <li>Replay del giro</li>
-                  <li>Mappe offline con regioni scaricabili</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Separa i dati per moto così le statistiche restano coerenti e utili.">
-                <span class="tag">Profili moto</span>
-                <h3>Multi‑moto, dati più veri</h3>
-                <p>Ogni moto ha la sua identità e statistiche dedicate.</p>
-                <ul>
-                  <li>Selezione moto all’avvio giro</li>
-                  <li>Statistiche aggregate per veicolo</li>
-                  <li>Dati tecnici contestualizzati</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Sblocca condivisioni e backup senza perdere dettagli del giro.">
-                <span class="tag">GPX</span>
-                <h3>Export &amp; condivisione</h3>
-                <p>Formato standard pronto per Strava, Garmin e condivisioni rapide.</p>
-                <ul>
-                  <li>GPX 1.1 con punti ed eventi</li>
-                  <li>Share sheet Android</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Permette di chiedere aiuto in modo controllato e sicuro.">
-                <span class="tag">SOS</span>
-                <h3>Emergenze gestite bene</h3>
-                <p>SOS manuale con countdown, contatti dedicati e messaggi automatici.</p>
-                <ul>
-                  <li>Countdown 30s annullabile</li>
-                  <li>SMS con posizione + chiamata</li>
-                  <li>Contatti rubrica e manuali</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Riduce i passaggi manuali: avvio e stop diventano fluidi.">
-                <span class="tag">Automazioni</span>
-                <h3>Android Intents</h3>
-                <p>Avvio e stop via NFC/Tasker/Automate per setup da rider.</p>
-                <ul>
-                  <li>Start/Stop ride via intent</li>
-                  <li>Report hazard con tipo</li>
-                  <li>Query stato per automazioni</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Conserva i giri e gli eventi per imparare e ritrovare i tuoi momenti.">
-                <span class="tag">Storico</span>
-                <h3>Archivio giri</h3>
-                <p>Lista e dettaglio delle uscite, per tornare ai tuoi momenti migliori.</p>
-                <ul>
-                  <li>Storico locale</li>
-                  <li>Dettaglio con mappa</li>
-                  <li>Eventi e note in timeline</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="feature-block reveal" data-animate>
-            <h3>Arrivato con v3</h3>
-            <div class="grid cards">
-              <div class="card" tabindex="0" data-explain="Navigazione completa con voce: ti porta a destinazione senza toccare lo schermo.">
-                <span class="tag">Navigazione</span>
-                <h3>Turn-by-turn con voce</h3>
-                <p>Routing completo con istruzioni vocali, ricalcolo automatico e import GPX.</p>
-                <ul>
-                  <li>Turn-by-turn con voce IT</li>
-                  <li>Ricalcolo automatico</li>
-                  <li>Import GPX esterno</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Segnalazioni reali dai rider per i rider: pericoli, rallentamenti e zone delicate in tempo reale.">
-                <span class="tag">Road alerts</span>
-                <h3>Alert dalla comunità</h3>
-                <p>Pericoli segnalati dai rider, filtrati e geolocalizzati: la strada più sicura si costruisce insieme.</p>
-                <ul>
-                  <li>Segnalazione rapida in marcia</li>
-                  <li>Sync community opt‑in</li>
-                  <li>Filtri anti‑rumore</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Coordina i giri senza caos: confronto e condivisione solo quando serve.">
-                <span class="tag">Gruppi</span>
-                <h3>Sessioni di gruppo</h3>
-                <p>Condividi il giro con chi vuoi, confronta i tracciati e rivivi il percorso insieme.</p>
-                <ul>
-                  <li>Create/join con codice</li>
-                  <li>Confronto post‑ride</li>
-                  <li>Live sharing opzionale</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="I tuoi giri su tutti i tuoi dispositivi, con controllo totale su cosa condividi.">
-                <span class="tag">Cloud</span>
-                <h3>Sync opt‑in + account</h3>
-                <p>Backup multi‑device con controllo totale sulla privacy: attivi solo quello che vuoi.</p>
-                <ul>
-                  <li>Sync opt‑in</li>
-                  <li>Account leggero</li>
-                  <li>Controlli privacy chiari</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Analisi delle curve e dello stile di guida per conoscere meglio come affronti la strada.">
-                <span class="tag">Telemetria</span>
-                <h3>Profilo rider &amp; curve</h3>
-                <p>Angolo di inclinazione, rilevamento curve e profilo di guida per conoscerti meglio in sella.</p>
-                <ul>
-                  <li>Angolo di inclinazione live</li>
-                  <li>Analisi curve automatica</li>
-                  <li>Profilo rider personale</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Rileva una caduta e avvia il countdown SOS automaticamente, sempre con conferma umana.">
-                <span class="tag">Safety</span>
-                <h3>Fall detection automatico</h3>
-                <p>Rileva la caduta e parte il countdown SOS. Sempre con conferma umana, sempre safety‑first.</p>
-                <ul>
-                  <li>Rilevamento accelerometrico</li>
-                  <li>SOS automatico con conferma</li>
-                  <li>Niente falsi positivi</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Porta i tuoi percorsi ovunque: importa tracciati esterni o esportali verso altre app.">
-                <span class="tag">Routes</span>
-                <h3>Import & export intelligente</h3>
-                <p>Importa tracciati GPX o percorsi da altre app. Esporta con preview mappa, waypoint ottimizzati e condivisione rapida.</p>
-                <ul>
-                  <li>Import GPX e URL esterni</li>
-                  <li>Preview con polyline colorata</li>
-                  <li>Export con waypoint smart</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="feature-block reveal" data-animate>
-            <h3>In costruzione: Track Mode</h3>
-            <div class="grid cards">
-              <div class="card" tabindex="0" data-explain="Porta VRoom in pista: timing automatico e confronto con i tuoi tempi, non con gli altri.">
-                <span class="tag">Circuito</span>
-                <h3>Timing automatico</h3>
-                <p>Rilevamento lap via GPS, settori configurabili e personal best vocale. Zero classifiche pubbliche.</p>
-                <ul>
-                  <li>Lap detection automatico</li>
-                  <li>Settori personalizzati</li>
-                  <li>Confronto con il tuo best</li>
-                </ul>
-              </div>
-              <div class="card" tabindex="0" data-explain="Feedback vocale in tempo reale per migliorare senza guardare lo schermo.">
-                <span class="tag">Feedback</span>
-                <h3>Coach vocale</h3>
-                <p>Delta time annunciato in curva, settore per settore. La voce ti dice dove stai migliorando.</p>
-                <ul>
-                  <li>Delta vocale live</li>
-                  <li>Annunci settore</li>
-                  <li>Focus sul miglioramento personale</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="feature-block reveal" data-animate>
-            <h3>v4 (orizzonte sostenibilità)</h3>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                  <span>Sostenibilità</span>
-                  <h3>Modello solido nel tempo</h3>
-                  <p>Un equilibrio che mantiene il progetto sano senza sacrificare sicurezza e privacy.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                  <span>Scalabilità</span>
-                  <h3>Infrastruttura pronta a crescere</h3>
-                  <p>Base tecnica per supportare più rider senza degradare l’esperienza.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                  <span>Affidabilità</span>
-                  <h3>Servizio stabile e resiliente</h3>
-                  <p>Processi e qualità per ridurre rischi e mantenere fiducia.</p>
-                </div>
-              </div>
-              <div class="timeline-item">
-                <div class="timeline-dot"></div>
-                <div class="timeline-card">
-                  <span>Ecosistema</span>
-                  <h3>Valore condiviso, senza spoiler</h3>
-                  <p>Direzione business pensata per durare, senza entrare nei dettagli ora.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="feature-block reveal" data-animate>
-            <div class="callout">
-              <h3>Dove siamo</h3>
-              <p class="section-subtitle">
-                v3 al 63%: navigazione, voce offline, telemetria, alert, crew e routes sono reali.
-                Track mode per il circuito è in costruzione: timing automatico, settori, personal best vocale.
-                La v4 guarda alla sostenibilità, con dettagli che arriveranno quando saranno maturi.
-              </p>
-              <strong>Safety first, privacy first: scope iterativo e niente gamification della velocità.</strong>
-            </div>
-          </div>
-
-          <div class="feature-block reveal" data-animate>
-            <div class="callout">
-              <h3>Cose che non faremo</h3>
-              <p class="section-subtitle">
-                VRoom è safety‑first: niente classifiche di velocità, niente gare, niente pressione a correre.
-                La strada è rispetto.
-              </p>
-              <strong>Se una feature spinge a rischiare, non entra nel progetto.</strong>
-            </div>
-          </div>
-        </section>
-
-        <section id="expo" data-story-index="7">
-          <div class="highlight reveal" data-animate>
-            <h2 class="section-title">Moto Expo 2026 — presentazione</h2>
-            <p class="section-subtitle">
-              VRoom è stata presentata con tracking, voce e replay in tempo reale.
-              Da allora la v3 ha fatto passi enormi: navigazione live, telemetria, community alert, crew session e routes sono realtà.
-              Track mode per il circuito è la prossima frontiera.
-            </p>
-            <div class="highlight-grid">
-              <div class="highlight-item">
-                <span>Quando</span>
-                <strong>25 gennaio 2026</strong>
-              </div>
-              <div class="highlight-item">
-                <span>Ora</span>
-                <strong>Social + Routes live</strong>
-              </div>
-              <div class="highlight-item">
-                <span>Direzione</span>
-                <strong>Safety-first, offline, zero gamification</strong>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="manifesto" data-story-index="8">
-          <h2 class="section-title reveal" data-animate>Un solo rider, un prodotto serio.</h2>
-          <p class="section-subtitle reveal" data-animate>
-            VRoom è sviluppato da una sola persona, con la cura di un team. Un contesto evoluto,
-            una visione chiara e tanta strada sotto le ruote.
-          </p>
-          <div class="manifesto reveal" data-animate data-story-hover="8">
-            <p>
-              <strong>Non è un prototipo.</strong> È una scelta di vita: creare qualcosa che protegga
-              chi guida ogni giorno. Dal primo sketch alla build finale, ogni dettaglio è pensato
-              per chi vive la moto come identità.
-            </p>
-            <p>
-              <strong>VRoom cresce con la community.</strong> Ogni feedback è un chilometro in più
-              verso una companion che ascolta davvero.
-            </p>
-          </div>
-        </section>
-
-        <section class="cta reveal" data-animate data-story-index="9">
-          <h2>Ti va di farla crescere insieme?</h2>
-          <p>L'alpha è disponibile: se vuoi provare una companion pensata davvero per i rider, il progetto è aperto.</p>
-          <div class="hero-actions">
-            <a class="button primary" href="https://github.com/Vroom-dev/VRoom_app">Apri il repo</a>
-            <a class="button ghost" href="https://github.com/Vroom-dev/VRoom_app#-getting-started">Come iniziare</a>
-          </div>
-        </section>
-      </div>
-
-      <aside class="story">
-        <h4>Diario di viaggio</h4>
-        <div class="story-progress"><span></span></div>
-        <div class="story-lines">
-          <div class="story-line">VRoom nasce in sella: togliere rumore, non aggiungere app.</div>
-          <div class="story-line">La strada è atmosfera, non solo distanza.</div>
-          <div class="story-line">La voce guida, la mappa segue: niente schermi da fissare.</div>
-          <div class="story-line">Avvia e dimentica: navigazione e log scorrono in background.</div>
-          <div class="story-line">Ogni segnalazione diventa protezione per chi arriva dopo.</div>
-          <div class="story-line">La telemetria ti mostra come guidi davvero, senza giudicarti.</div>
-          <div class="story-line">v3 al 63%: crew, routes, track mode in costruzione.</div>
-          <div class="story-line">Fall detection, lean angle, curve: la moto che ti conosce.</div>
-          <div class="story-line">Un solo rider, cura da officina.</div>
-          <div class="story-line">Il prossimo capitolo si costruisce insieme.</div>
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="section-inner">
+      <div class="hero-content">
+        <div class="hero-tag reveal">alpha.69 live</div>
+        <h1 class="reveal reveal-delay-1">
+          La strada.
+          <span class="accent">Nient'altro.</span>
+        </h1>
+        <p class="hero-sub reveal reveal-delay-2">
+          Companion per motociclisti. Voce, navigazione, sicurezza.
+          Tutto funziona offline. Zero distrazioni.
+        </p>
+        <div class="hero-cta reveal reveal-delay-3">
+          <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary">Esplora il progetto</a>
+          <a href="#philosophy" class="btn btn-ghost">Scopri di più</a>
         </div>
-      </aside>
+      </div>
     </div>
-  </main>
+    <div class="scroll-indicator">Scroll</div>
+  </section>
 
+  <!-- Philosophy -->
+  <section class="philosophy" id="philosophy">
+    <div class="section-inner">
+      <div class="philosophy-grid">
+        <div class="philosophy-item reveal">
+          <div class="philosophy-icon">🛡</div>
+          <h3>Safety-first</h3>
+          <p>Mai distrarre chi guida. SOS con countdown, fall detection, alert vocali. La sicurezza non è un'opzione.</p>
+        </div>
+        <div class="philosophy-item reveal reveal-delay-1">
+          <div class="philosophy-icon">📴</div>
+          <h3>Offline-first</h3>
+          <p>Tutto funziona senza rete. Mappe, navigazione, comandi vocali. Il cloud è un bonus, non una dipendenza.</p>
+        </div>
+        <div class="philosophy-item reveal reveal-delay-2">
+          <div class="philosophy-icon">🔒</div>
+          <h3>Privacy-first</h3>
+          <p>I tuoi dati restano tuoi. Opt-in per tutto. Mai classifiche di velocità pubbliche. Mai.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="section-inner">
+      <div class="features-header reveal">
+        <h2>Quello che serve. Nient'altro.</h2>
+        <p>Ogni funzione esiste per un motivo. Nessun bloat, nessuna distrazione.</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card reveal">
+          <span class="feature-tag">Voce</span>
+          <h4>Comandi hands-free</h4>
+          <p>Parla, VRoom ascolta. Funziona offline, con casco e vento.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Riconoscimento vocale offline</li>
+                <li>Conferme TTS italiano/inglese</li>
+                <li>Wake word personalizzabile</li>
+                <li>Bluetooth intercom supportati</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <span class="feature-tag">Navigazione</span>
+          <h4>Turn-by-turn vocale</h4>
+          <p>Ti guida a destinazione. Funziona anche senza segnale.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Mappe offline scaricabili</li>
+                <li>Ricalcolo automatico</li>
+                <li>Import percorsi GPX</li>
+                <li>Istruzioni vocali chiare</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <span class="feature-tag">Sicurezza</span>
+          <h4>SOS intelligente</h4>
+          <p>Countdown 30 secondi, contatti di emergenza, posizione condivisa.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Fall detection automatico</li>
+                <li>SMS + chiamata di emergenza</li>
+                <li>Countdown annullabile</li>
+                <li>Contatti configurabili</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-3">
+          <span class="feature-tag">Telemetria</span>
+          <h4>Conosci la tua guida</h4>
+          <p>Angolo di piega, G-force, analisi curve. Per migliorare, non per competere.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Lean angle in tempo reale</li>
+                <li>Rilevamento curve automatico</li>
+                <li>Profilo rider personale</li>
+                <li>Statistiche aggregate</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-4">
+          <span class="feature-tag">Crew</span>
+          <h4>Guida insieme</h4>
+          <p>Crea gruppi, condividi posizione in tempo reale, confronta i tracciati dopo.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Gruppi pubblici o privati</li>
+                <li>Live sharing opt-in</li>
+                <li>Confronto post-ride</li>
+                <li>Alert di gruppo vocali</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal">
+          <span class="feature-tag">Routes</span>
+          <h4>Import & Export</h4>
+          <p>Porta i tuoi percorsi ovunque. GPX standard, compatibile con tutto.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Import GPX e URL esterni</li>
+                <li>Preview con mappa</li>
+                <li>Export ottimizzato</li>
+                <li>Waypoint intelligenti</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-1">
+          <span class="feature-tag">Alert</span>
+          <h4>Community safety</h4>
+          <p>Segnala pericoli, ricevi avvisi da altri rider. La strada più sicura si costruisce insieme.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>30+ tipi di alert</li>
+                <li>Conferma dalla community</li>
+                <li>Notifiche vocali</li>
+                <li>Filtri personalizzabili</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <div class="feature-card reveal reveal-delay-2">
+          <span class="feature-tag">Prossimamente</span>
+          <h4>Track Mode</h4>
+          <p>Per il circuito. Lap timing automatico, settori, personal best vocale.</p>
+          <details>
+            <summary>Dettagli</summary>
+            <div class="detail-content">
+              <ul>
+                <li>Rilevamento giri GPS</li>
+                <li>Delta time vocale</li>
+                <li>Settori personalizzati</li>
+                <li>Mai classifiche pubbliche</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Journey -->
+  <section class="journey" id="journey">
+    <div class="section-inner">
+      <div class="journey-header reveal">
+        <h2>Il tuo giro, in 4 momenti.</h2>
+      </div>
+
+      <div class="journey-timeline">
+        <div class="journey-item reveal">
+          <div class="journey-dot">1</div>
+          <div class="journey-content">
+            <h4>Parti</h4>
+            <p>Un tap o un comando vocale. VRoom si attiva e sparisce. Tu guidi.</p>
+          </div>
+        </div>
+
+        <div class="journey-item reveal reveal-delay-1">
+          <div class="journey-dot">2</div>
+          <div class="journey-content">
+            <h4>Guida</h4>
+            <p>Navigazione vocale, telemetria in background, alert dalla community. Tutto senza toccare lo schermo.</p>
+          </div>
+        </div>
+
+        <div class="journey-item reveal reveal-delay-2">
+          <div class="journey-dot">3</div>
+          <div class="journey-content">
+            <h4>Segnala</h4>
+            <p>Pericolo? Curva insidiosa? Lo dici a voce. Chi arriva dopo ti ringrazia.</p>
+          </div>
+        </div>
+
+        <div class="journey-item reveal reveal-delay-3">
+          <div class="journey-dot">4</div>
+          <div class="journey-content">
+            <h4>Rivivi</h4>
+            <p>Replay del giro, statistiche, export. Il tuo percorso resta tuo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="cta">
+    <div class="section-inner">
+      <div class="cta-content reveal">
+        <h2>Costruita da un rider.<br>Per i rider.</h2>
+        <p>VRoom è open source. L'alpha è disponibile. Se credi nella sicurezza prima della velocità, unisciti.</p>
+        <div class="cta-buttons">
+          <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary">Apri GitHub</a>
+          <a href="https://github.com/Vroom-dev/VRoom_app#-getting-started" class="btn btn-ghost">Come iniziare</a>
+        </div>
+
+        <div class="cta-meta">
+          <div class="cta-meta-item">
+            <strong>63%</strong>
+            <span>v3 completata</span>
+          </div>
+          <div class="cta-meta-item">
+            <strong>51</strong>
+            <span>bug verificati</span>
+          </div>
+          <div class="cta-meta-item">
+            <strong>10</strong>
+            <span>fasi totali</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
   <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div>
-          <h4>VRoom</h4>
-          <p>Ride companion per motociclisti. Navigazione, sicurezza, telemetria e passione condivisa.</p>
-        </div>
-        <div>
-          <h4>Project</h4>
-          <a href="https://github.com/Vroom-dev/VRoom_app">Repository</a>
-          <a href="https://github.com/Vroom-dev/VRoom_app/issues">Issues & Feedback</a>
-          <a href="https://github.com/Vroom-dev/VRoom_app/blob/main/CONTRIBUTING.md">Contributing</a>
-        </div>
-        <div>
-          <h4>Docs</h4>
-          <a href="https://github.com/Vroom-dev/VRoom_app/tree/main/docs">Documentazione</a>
-          <a href="https://github.com/Vroom-dev/VRoom_app/blob/main/LICENSE">Licenza MIT</a>
-        </div>
-      </div>
-      <div class="footer-credits">
-        Foto: <a href="https://www.pexels.com/photo/person-riding-a-motorcycle-in-the-city-at-night-9325653/">Pexels #9325653</a> e
-        <a href="https://www.pexels.com/photo/photo-of-a-motorcycle-helmet-on-a-motorbike-15433605/">Pexels #15433605</a>.
-      </div>
-      <div>© 2026 VRoom · By riders, for riders · alpha.69</div>
+    <div class="footer-links">
+      <a href="https://github.com/Vroom-dev/VRoom_app">Repository</a>
+      <a href="https://github.com/Vroom-dev/VRoom_app/issues">Feedback</a>
+      <a href="https://github.com/Vroom-dev/VRoom_app/blob/main/LICENSE">Licenza MIT</a>
     </div>
+    <div class="footer-copy">© 2026 VRoom · By riders, for riders</div>
   </footer>
 
   <script>
-    const revealItems = document.querySelectorAll('[data-animate]');
-    const storyLines = Array.from(document.querySelectorAll('.story-line'));
-    const storyTargets = document.querySelectorAll('[data-story-index]');
-    const hoverTargets = document.querySelectorAll('[data-story-hover]');
-    const progressBar = document.querySelector('.story-progress span');
-    const cards = document.querySelectorAll('.card');
-
-    let activeIndex = 0;
-    let hoverIndex = null;
-    let typingTimer = null;
-    let lastTypedIndex = null;
-
-    const triggerTyping = (index) => {
-      if (index === null || Number.isNaN(index)) {
-        return;
-      }
-      if (index === lastTypedIndex) {
-        return;
-      }
-      if (typingTimer) {
-        clearTimeout(typingTimer);
-      }
-      if (lastTypedIndex !== null && storyLines[lastTypedIndex]) {
-        storyLines[lastTypedIndex].classList.remove('is-typing');
-      }
-      lastTypedIndex = index;
-      if (storyLines[index]) {
-        storyLines[index].classList.add('is-typing');
-        typingTimer = setTimeout(() => {
-          if (storyLines[index]) {
-            storyLines[index].classList.remove('is-typing');
-          }
-        }, 700);
-      }
-    };
-
-    const updateStory = (index = activeIndex) => {
-      const safeIndex = Math.max(0, Math.min(storyLines.length - 1, index));
-      storyLines.forEach((line, idx) => {
-        line.classList.toggle('is-visible', idx <= safeIndex);
-        line.classList.toggle('is-active', idx === safeIndex);
-      });
-      triggerTyping(safeIndex);
-    };
-
-    const setActiveIndex = (index) => {
-      if (index === null || Number.isNaN(index)) {
-        return;
-      }
-      activeIndex = index;
-      if (hoverIndex === null) {
-        updateStory(activeIndex);
-      }
-    };
-
-    const updateProgress = () => {
-      if (!progressBar) {
-        return;
-      }
-      const doc = document.documentElement;
-      const scrollTop = window.scrollY || doc.scrollTop || 0;
-      const height = doc.scrollHeight - window.innerHeight;
-      const progress = height > 0 ? scrollTop / height : 0;
-      progressBar.style.width = `${Math.min(100, Math.max(0, progress * 100))}%`;
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    revealItems.forEach((item) => observer.observe(item));
-
-    const storyObserver = new IntersectionObserver(
-      (entries) => {
-        const visibleEntries = entries.filter((entry) => entry.isIntersecting);
-        if (!visibleEntries.length) {
-          return;
-        }
-        const mostVisible = visibleEntries.reduce(
-          (maxEntry, entry) =>
-            entry.intersectionRatio > maxEntry.intersectionRatio ? entry : maxEntry,
-          visibleEntries[0]
-        );
-        const index = Number(mostVisible.target.dataset.storyIndex || 0);
-        if (!Number.isNaN(index)) {
-          setActiveIndex(index);
-        }
-      },
-      { threshold: [0.2, 0.45, 0.7], rootMargin: '-10% 0px -55% 0px' }
-    );
-
-    storyTargets.forEach((section) => storyObserver.observe(section));
-
-    hoverTargets.forEach((target) => {
-      target.addEventListener('mouseenter', () => {
-        const index = Number(target.dataset.storyHover || 0);
-        hoverIndex = Number.isNaN(index) ? null : index;
-        if (hoverIndex !== null) {
-          updateStory(hoverIndex);
-        }
-      });
-      target.addEventListener('mouseleave', () => {
-        hoverIndex = null;
-        updateStory(activeIndex);
-      });
-      target.addEventListener('click', () => {
-        const index = Number(target.dataset.storyHover || 0);
-        if (!Number.isNaN(index)) {
-          setActiveIndex(index);
-        }
-      });
+    // Loader
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+      }, 800);
     });
 
-    const buildCardOverlay = (card) => {
-      const explain = card.dataset.explain;
-      if (!explain) {
-        return;
-      }
-      const overlay = document.createElement('div');
-      overlay.className = 'card-overlay';
-      overlay.innerHTML = `<span>Perché</span><p>${explain}</p>`;
-      card.appendChild(overlay);
-    };
-
-    const clearSelectedCards = () => {
-      cards.forEach((card) => card.classList.remove('is-selected'));
-    };
-
-    cards.forEach((card) => {
-      buildCardOverlay(card);
-      card.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const willSelect = !card.classList.contains('is-selected');
-        clearSelectedCards();
-        if (willSelect) {
-          card.classList.add('is-selected');
-        }
-      });
-      card.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          card.click();
-        }
-      });
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX - 6 + 'px';
+      cursor.style.top = e.clientY - 6 + 'px';
     });
 
-    document.addEventListener('click', clearSelectedCards);
+    document.querySelectorAll('a, button, .feature-card, details summary').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
 
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    window.addEventListener('resize', updateProgress);
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    updateStory(0);
-    updateProgress();
+    reveals.forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
