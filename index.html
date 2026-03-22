@@ -2,25 +2,26 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <script>(function(){try{var l=localStorage.getItem('vroom-lang');if(l==='en'||l==='it'){document.documentElement.lang=l}else if(navigator.language&&navigator.language.startsWith('en')){document.documentElement.lang='en'}}catch(e){}})();</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="VRoom. La strada, nient'altro. Companion per motociclisti: voce, navigazione, sicurezza. Tutto offline.">
+  <meta name="description" content="VRoom. La strada, nient'altro. Companion per motociclisti: voce, navigazione, sicurezza. Tutto offline." data-i18n-content="meta.description">
   <meta name="theme-color" content="#0a0a0f">
   <meta name="color-scheme" content="dark">
-  <meta name="author" content="VRoom — By riders, for riders">
+  <meta name="author" content="VRoom — Da rider, per rider">
   <meta name="robots" content="index, follow">
-  <meta property="og:title" content="VRoom — By riders, for riders">
-  <meta property="og:description" content="La strada, nient'altro. Safety-first, offline-first, privacy-first.">
+  <meta property="og:title" content="VRoom — Companion per Motociclisti" data-i18n-content="meta.og_title">
+  <meta property="og:description" content="Voce offline, navigazione hands-free, sicurezza automatica. Tutto pensato per chi guida la moto, non per chi guarda lo schermo." data-i18n-content="meta.og_description">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://vroom-dev.github.io/VRoom_site/og-image.svg">
+  <meta property="og:image" content="https://vroom-dev.github.io/VRoom_site/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="VRoom — By riders, for riders">
+  <meta name="twitter:title" content="VRoom — Companion per Motociclisti">
   <meta name="twitter:description" content="La strada, nient'altro. Companion per motociclisti.">
   <link rel="canonical" href="https://vroom-dev.github.io/VRoom_site/">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'%3E%3Cpath fill='%23E94560' d='M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z'/%3E%3Cline x1='36' y1='85' x2='72' y2='85' stroke='%23E94560' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23050508'/%3E%3Cpath fill='%23E94560' d='M90,35 L55,140 L70,140 L90,75 L110,140 L125,140 L90,35 Z'/%3E%3Cline x1='62' y1='148' x2='118' y2='148' stroke='%23E94560' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
-  <title>VRoom</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'%3E%3Cpath fill='%23DC2626' d='M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z'/%3E%3Cline x1='36' y1='85' x2='72' y2='85' stroke='%23DC2626' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23050508'/%3E%3Cpath fill='%23DC2626' d='M90,35 L55,140 L70,140 L90,75 L110,140 L125,140 L90,35 Z'/%3E%3Cline x1='62' y1='148' x2='118' y2='148' stroke='%23DC2626' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+  <title>VRoom — Companion per Motociclisti | Voce, Navigazione, Sicurezza</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,10 +33,12 @@
       --black: #050508;
       --black-light: #0d0d14;
       --black-card: #111118;
-      --vroom-red: #E94560;
-      --vroom-red-bright: #ff5a75;
-      --vroom-red-glow: rgba(233, 69, 96, 0.5);
+      --vroom-red: #DC2626;
+      --vroom-red-bright: #EF4444;
+      --vroom-red-glow: rgba(220, 38, 38, 0.4);
       --vroom-dark: #1A1A2E;
+      --vroom-blue: #2563EB;
+      --vroom-blue-glow: rgba(37, 99, 235, 0.4);
       --orange: #ff6b2c;
       --orange-glow: rgba(255, 107, 44, 0.5);
       --white: #ffffff;
@@ -247,6 +250,54 @@
     }
     .nav-links a:hover { color: var(--white); }
     .nav-links a:hover::after { width: 100%; }
+    /* ============ LANG TOGGLE ============ */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      padding: 3px;
+      flex-shrink: 0;
+    }
+    .lang-btn {
+      appearance: none;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font);
+      min-width: 44px;
+      min-height: 36px;
+      padding: 0 10px;
+      line-height: 36px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--gray);
+      border-radius: 100px;
+      transition: color 0.2s var(--transition), background 0.2s var(--transition);
+      position: relative;
+    }
+    .lang-btn:hover:not(.active) {
+      color: var(--gray-light);
+    }
+    .lang-btn.active {
+      background: var(--teal);
+      color: var(--black);
+    }
+    .lang-btn:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+    }
+    @media (max-width: 768px) {
+      .lang-btn {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 0 8px;
+      }
+    }
+
     /* ============ HAMBURGER MENU ============ */
     .nav-hamburger {
       display: none;
@@ -334,8 +385,8 @@
       align-items: center;
       gap: 0.75rem;
       padding: 0.5rem 1rem;
-      background: rgba(233, 69, 96, 0.15);
-      border: 1px solid rgba(233, 69, 96, 0.3);
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.3);
       border-radius: 100px;
       font-size: 0.75rem;
       font-weight: 600;
@@ -363,6 +414,8 @@
       line-height: 1;
       letter-spacing: -0.04em;
       margin-bottom: 1.5rem;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
     .hero h1 .accent {
       background: linear-gradient(135deg, var(--vroom-red), var(--vroom-red-bright), var(--orange));
@@ -522,7 +575,7 @@
     }
 
     /* ============ BEHAVIOUR SECTION ============ */
-    .behaviour { background: linear-gradient(180deg, transparent, rgba(233, 69, 96, 0.03), transparent); }
+    .behaviour { background: linear-gradient(180deg, transparent, rgba(220, 38, 38, 0.03), transparent); }
     .behaviour-header { text-align: center; margin-bottom: 4rem; }
     .behaviour-header h2 {
       font-size: clamp(2.5rem, 5vw, 4rem);
@@ -538,7 +591,7 @@
       top: 0;
       bottom: 0;
       width: 3px;
-      background: linear-gradient(180deg, var(--vroom-red), var(--teal), var(--orange), var(--vroom-red));
+      background: linear-gradient(180deg, var(--vroom-blue), var(--teal), var(--vroom-red), var(--vroom-blue));
       transform: translateX(-50%);
       border-radius: 10px;
     }
@@ -639,8 +692,7 @@
       border-color: var(--vroom-red);
       box-shadow: 0 0 60px var(--vroom-red-glow);
     }
-    .tier-card.featured::before {
-      content: 'Popolare';
+    .tier-card.featured .featured-badge {
       position: absolute;
       top: 1rem;
       right: -2rem;
@@ -692,6 +744,27 @@
       color: var(--gray);
       text-align: center;
       font-style: italic;
+    }
+    .tier-cta {
+      width: 100%;
+      padding: 14px 24px;
+      margin-top: 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      background: var(--teal, #00e5bf);
+      color: #050508;
+    }
+    .tier-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,229,191,0.3);
+    }
+    .tier-card.featured .tier-cta {
+      background: linear-gradient(135deg, #DC2626, #ff6b2c);
+      color: white;
     }
 
     /* ============ COMMUNITY SECTION ============ */
@@ -794,6 +867,8 @@
       font-weight: 900;
       margin-bottom: 1.5rem;
       line-height: 1.05;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
     .cta h2 span {
       background: linear-gradient(135deg, var(--vroom-red), var(--teal));
@@ -869,8 +944,8 @@
     }
     .cinema-atmosphere__gradient--hero {
       background:
-        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(233, 69, 96, 0.15), transparent 60%),
-        radial-gradient(ellipse 40% 50% at 80% 70%, rgba(233, 69, 96, 0.08), transparent 50%);
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(220, 38, 38, 0.15), transparent 60%),
+        radial-gradient(ellipse 40% 50% at 80% 70%, rgba(220, 38, 38, 0.08), transparent 50%);
     }
     .cinema-atmosphere__gradient--behaviour {
       background:
@@ -889,13 +964,13 @@
     }
     .cinema-atmosphere__gradient--features {
       background:
-        radial-gradient(ellipse 50% 50% at 60% 40%, rgba(233, 69, 96, 0.12), transparent 60%),
+        radial-gradient(ellipse 50% 50% at 60% 40%, rgba(37, 99, 235, 0.12), transparent 60%),
         radial-gradient(ellipse 40% 50% at 30% 70%, rgba(0, 229, 191, 0.08), transparent 50%);
     }
     .cinema-atmosphere__gradient--cta {
       background:
         radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0, 229, 191, 0.15), transparent 55%),
-        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(233, 69, 96, 0.1), transparent 50%);
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(220, 38, 38, 0.1), transparent 50%);
     }
 
     .noise { will-change: transform; }
@@ -978,20 +1053,18 @@
       transform: translateY(0) scale(1) rotate(0deg);
     }
 
-    .cinema-hscroll-sticky {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
+    /* Features carousel — infinite mouse-driven loop */
+    section.features.hscroll-active {
+      overflow: hidden !important;
+    }
+    section.features.hscroll-active .section-inner {
+      max-width: none !important;
     }
     .cinema-hscroll-track {
       display: flex;
       gap: 1.5rem;
-      padding: 0 4vw;
+      padding: 0 2rem;
       will-change: transform;
-      transition: none;
     }
     .cinema-hscroll-track .feature-card {
       min-width: 340px;
@@ -999,7 +1072,6 @@
       flex-shrink: 0;
     }
     @media (max-width: 968px) {
-      .cinema-hscroll-sticky { position: relative; height: auto; }
       .cinema-hscroll-track { flex-wrap: wrap; justify-content: center; }
       .cinema-hscroll-track .feature-card { min-width: 0; max-width: none; width: 100%; }
     }
@@ -1078,7 +1150,7 @@
     .hero--3d-ready .hero-text { text-shadow: 0 2px 40px rgba(0, 0, 0, 0.8); }
     .hero--3d-ready .hero h1 {
       font-size: clamp(3.5rem, 9vw, 6.5rem);
-      text-shadow: 0 0 80px rgba(233, 69, 96, 0.3), 0 4px 20px rgba(0, 0, 0, 0.9);
+      text-shadow: 0 0 80px rgba(220, 38, 38, 0.3), 0 4px 20px rgba(0, 0, 0, 0.9);
     }
     .hero--3d-ready .hero-sub {
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
@@ -1169,12 +1241,12 @@
     .btn:hover::before { left: 100%; }
     .btn-primary { box-shadow: 0 10px 40px var(--vroom-red-glow); }
     .btn-primary.spring-hover {
-      box-shadow: 0 16px 50px var(--vroom-red-glow), 0 0 30px rgba(233, 69, 96, 0.3);
+      box-shadow: 0 16px 50px var(--vroom-red-glow), 0 0 30px rgba(220, 38, 38, 0.3);
     }
     .btn-ghost.spring-hover {
       background: rgba(255, 255, 255, 0.08);
       border-color: var(--vroom-red);
-      box-shadow: 0 10px 30px rgba(233, 69, 96, 0.15);
+      box-shadow: 0 10px 30px rgba(220, 38, 38, 0.15);
     }
 
     /* ---------- 3. CARD 3D TILT ---------- */
@@ -1210,7 +1282,7 @@
       z-index: 0;
       opacity: 0;
       transition: opacity 0.3s ease;
-      background: radial-gradient(circle 200px at var(--glow-x, 50%) var(--glow-y, 50%), rgba(233,69,96,0.4) 0%, transparent 70%);
+      background: radial-gradient(circle 200px at var(--glow-x, 50%) var(--glow-y, 50%), rgba(220,38,38,0.4) 0%, transparent 70%);
       -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
@@ -1227,7 +1299,7 @@
       background: rgba(5, 5, 8, 0.65);
       backdrop-filter: blur(24px) saturate(1.4);
       -webkit-backdrop-filter: blur(24px) saturate(1.4);
-      border-bottom-color: rgba(233, 69, 96, 0.08);
+      border-bottom-color: rgba(220, 38, 38, 0.08);
     }
     nav.nav-hidden-init { transform: translateY(-100%); opacity: 0; }
     nav.nav-visible { transform: translateY(0); opacity: 1; }
@@ -1251,8 +1323,8 @@
     .nav-logo svg { animation: navLogoPulse 3s ease-in-out infinite; }
     .nav-logo:hover svg { animation: none; }
     @keyframes navLogoPulse {
-      0%, 100% { filter: drop-shadow(0 0 4px rgba(233, 69, 96, 0.3)); }
-      50% { filter: drop-shadow(0 0 12px rgba(233, 69, 96, 0.6)); }
+      0%, 100% { filter: drop-shadow(0 0 4px rgba(220, 38, 38, 0.3)); }
+      50% { filter: drop-shadow(0 0 12px rgba(220, 38, 38, 0.6)); }
     }
 
     /* ---------- 5. TEXT & LINK INTERACTIONS ---------- */
@@ -1267,10 +1339,10 @@
     .tier-price { position: relative; }
     .tier-card.featured .tier-price { animation: priceGlow 3s ease-in-out infinite; }
     @keyframes priceGlow {
-      0%, 100% { text-shadow: 0 0 10px rgba(233, 69, 96, 0.2); }
-      50% { text-shadow: 0 0 25px rgba(233, 69, 96, 0.5), 0 0 50px rgba(233, 69, 96, 0.2); }
+      0%, 100% { text-shadow: 0 0 10px rgba(220, 38, 38, 0.2); }
+      50% { text-shadow: 0 0 25px rgba(220, 38, 38, 0.5), 0 0 50px rgba(220, 38, 38, 0.2); }
     }
-    .tier-card.featured::before { background-size: 200% 100%; animation: shimmerSweep 3s ease-in-out infinite; }
+    .tier-card.featured .featured-badge { background-size: 200% 100%; animation: shimmerSweep 3s ease-in-out infinite; }
     @keyframes shimmerSweep {
       0% { background-position: 100% 0; }
       50% { background-position: 0% 0; }
@@ -1330,7 +1402,7 @@
     #scroll-top {
       position: fixed; bottom: 2rem; right: 2rem;
       width: 48px; height: 48px; border-radius: 50%;
-      border: 1px solid rgba(233, 69, 96, 0.3);
+      border: 1px solid rgba(220, 38, 38, 0.3);
       background: rgba(5, 5, 8, 0.7);
       backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       z-index: 99; cursor: none;
@@ -1417,7 +1489,7 @@
 
     /* ============ TRACK MODE SECTION ============ */
     .track-mode {
-      background: linear-gradient(180deg, transparent, rgba(233, 69, 96, 0.04), transparent);
+      background: linear-gradient(180deg, transparent, rgba(220, 38, 38, 0.04), transparent);
     }
     .track-mode-header {
       text-align: center;
@@ -1439,8 +1511,8 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.4rem 1rem;
-      background: rgba(233, 69, 96, 0.15);
-      border: 1px solid rgba(233, 69, 96, 0.3);
+      background: rgba(220, 38, 38, 0.15);
+      border: 1px solid rgba(220, 38, 38, 0.3);
       border-radius: 100px;
       font-size: 0.7rem;
       font-weight: 700;
@@ -1460,7 +1532,7 @@
     }
     .track-mode-card {
       background: linear-gradient(145deg, var(--black-card), var(--black-light));
-      border: 1px solid rgba(233, 69, 96, 0.12);
+      border: 1px solid rgba(220, 38, 38, 0.12);
       border-radius: 20px;
       padding: 2rem;
       text-align: center;
@@ -1535,7 +1607,7 @@
       transition: border-color 0.3s ease;
     }
     .faq-item:hover {
-      border-color: rgba(233, 69, 96, 0.2);
+      border-color: rgba(220, 38, 38, 0.2);
     }
     .faq-item summary {
       padding: 1.5rem 2rem;
@@ -1581,13 +1653,20 @@
     /* ============ CINEMA ATMOSPHERE — new sections ============ */
     .cinema-atmosphere__gradient--track {
       background:
-        radial-gradient(ellipse 55% 50% at 50% 40%, rgba(233, 69, 96, 0.14), transparent 60%),
+        radial-gradient(ellipse 55% 50% at 50% 40%, rgba(220, 38, 38, 0.14), transparent 60%),
         radial-gradient(ellipse 40% 40% at 70% 70%, rgba(255, 107, 44, 0.08), transparent 50%);
     }
     .cinema-atmosphere__gradient--faq {
       background:
         radial-gradient(ellipse 50% 50% at 40% 50%, rgba(0, 229, 191, 0.10), transparent 60%),
         radial-gradient(ellipse 40% 40% at 60% 30%, rgba(0, 229, 191, 0.05), transparent 50%);
+    }
+
+
+    /* ============ ACCESSIBILITY ============ */
+    *:focus-visible {
+      outline: 2px solid #00e5c8;
+      outline-offset: 2px;
     }
 
   </style>
@@ -1603,8 +1682,8 @@
       <svg class="loader-logo vroom-logo-large" viewBox="0 0 108 108">
         <defs>
           <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style="stop-color:#E94560"/>
-            <stop offset="100%" style="stop-color:#ff5a75"/>
+            <stop offset="0%" style="stop-color:#DC2626"/>
+            <stop offset="100%" style="stop-color:#EF4444"/>
           </linearGradient>
           <filter id="glow">
             <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -1616,7 +1695,7 @@
         <line x1="42" y1="91" x2="66" y2="91" stroke="url(#logoGrad)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
         <line x1="48" y1="96" x2="60" y2="96" stroke="url(#logoGrad)" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
       </svg>
-      <div class="loader-text">VROOM</div>
+      <div class="loader-text" data-i18n="loader.text">VROOM</div>
       <div class="loader-road"></div>
     </div>
   </div>
@@ -1628,20 +1707,24 @@
   <nav>
     <a href="#" class="nav-logo">
       <svg class="vroom-logo" viewBox="0 0 108 108" style="width:36px;height:36px">
-        <defs><linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#E94560"/><stop offset="100%" style="stop-color:#ff5a75"/></linearGradient></defs>
+        <defs><linearGradient id="navGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#DC2626"/><stop offset="100%" style="stop-color:#EF4444"/></linearGradient></defs>
         <path fill="url(#navGrad)" d="M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z"/>
         <line x1="36" y1="85" x2="72" y2="85" stroke="url(#navGrad)" stroke-width="3" stroke-linecap="round"/>
       </svg>
       <span>VRoom</span>
     </a>
     <div class="nav-links">
-      <a href="#behaviour" class="nav-link" data-section="behaviour">Come funziona</a>
-      <a href="#tiers" class="nav-link" data-section="tiers">Piani</a>
-      <a href="#community" class="nav-link" data-section="community">Community</a>
-      <a href="#features" class="nav-link" data-section="features">Funzioni</a>
-      <a href="#track" class="nav-link" data-section="track">Track</a>
-      <a href="#faq" class="nav-link" data-section="faq">FAQ</a>
-      <a href="https://github.com/Vroom-dev/VRoom_app">GitHub</a>
+      <a href="#behaviour" class="nav-link" data-section="behaviour" data-i18n="nav.how_it_works">Come funziona</a>
+      <a href="#tiers" class="nav-link" data-section="tiers" data-i18n="nav.plans">Piani</a>
+      <a href="#community" class="nav-link" data-section="community" data-i18n="nav.community">Community</a>
+      <a href="#features" class="nav-link" data-section="features" data-i18n="nav.features">Funzioni</a>
+      <a href="#track" class="nav-link" data-section="track" data-i18n="nav.track">Track</a>
+      <a href="#faq" class="nav-link" data-section="faq" data-i18n="nav.faq">FAQ</a>
+      <a href="#waitlist" data-i18n="nav.waitlist">Waitlist</a>
+    </div>
+    <div class="lang-toggle" role="radiogroup" aria-label="Seleziona lingua / Select language">
+      <button class="lang-btn active" data-lang="it" aria-pressed="true" title="Italiano">IT</button>
+      <button class="lang-btn" data-lang="en" aria-pressed="false" title="English">EN</button>
     </div>
     <button class="nav-hamburger" id="navHamburger" aria-label="Menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1658,36 +1741,36 @@
         <div class="hero-text">
           <div class="hero-logo-large">
             <svg class="vroom-logo" viewBox="0 0 108 108" style="width:70px;height:70px">
-              <defs><linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#E94560"/><stop offset="100%" style="stop-color:#ff5a75"/></linearGradient></defs>
+              <defs><linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#DC2626"/><stop offset="100%" style="stop-color:#EF4444"/></linearGradient></defs>
               <path fill="url(#heroGrad)" d="M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z"/>
               <line x1="36" y1="85" x2="72" y2="85" stroke="url(#heroGrad)" stroke-width="3" stroke-linecap="round"/>
               <line x1="42" y1="91" x2="66" y2="91" stroke="url(#heroGrad)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
             </svg>
             <span>VRoom</span>
           </div>
-          <div class="hero-tag cinema-stagger"><span>alpha.74 live</span></div>
-          <h1 class="cinema-heading">La strada.<br><span class="accent">Nient'altro.</span></h1>
-          <p class="hero-sub cinema-subtitle">Companion per motociclisti. Voce offline, navigazione hands-free, sicurezza automatica, telemetria di bordo. Tutto pensato per chi guida, non per chi guarda lo schermo.</p>
+          <div class="hero-tag cinema-stagger"><span data-i18n="hero.tag">Accesso Anticipato</span></div>
+          <h1 class="cinema-heading" data-i18n="hero.title">La strada.<br><span class="accent">Nient'altro.</span></h1>
+          <p class="hero-sub cinema-subtitle" data-i18n="hero.subtitle">Companion per motociclisti. Voce offline, navigazione hands-free, sicurezza automatica, telemetria di bordo. Tutto pensato per chi guida, non per chi guarda lo schermo.</p>
           <div class="hero-cta cinema-stagger">
-            <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary">Esplora il progetto</a>
-            <a href="#behaviour" class="btn btn-ghost">Come funziona</a>
+            <a href="#waitlist" class="btn btn-primary" data-i18n="hero.cta.primary">Unisciti alla Waitlist</a>
+            <a href="#behaviour" class="btn btn-ghost" data-i18n="hero.cta.secondary">Come funziona</a>
           </div>
         </div>
 
         <div class="hero-visual hero-visual--fallback cinema-stagger">
           <div class="map-container" id="mapContainer">
             <div class="map-header">
-              <span class="map-title">Replay in corso</span>
-              <span class="map-badge">LIVE</span>
+              <span class="map-title" data-i18n="hero.map.title">Replay in corso</span>
+              <span class="map-badge" data-i18n="hero.map.badge">LIVE</span>
             </div>
             <div class="map-view">
               <div class="map-route">
                 <svg viewBox="0 0 400 240" preserveAspectRatio="none">
                   <defs>
                     <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" style="stop-color:#E94560"/>
+                      <stop offset="0%" style="stop-color:#2563EB"/>
                       <stop offset="50%" style="stop-color:#00e5bf"/>
-                      <stop offset="100%" style="stop-color:#ff6b2c"/>
+                      <stop offset="100%" style="stop-color:#2563EB"/>
                     </linearGradient>
                   </defs>
                   <path class="route-glow" d="M30,200 Q80,180 120,120 T200,80 Q240,60 280,100 T370,50"/>
@@ -1695,21 +1778,21 @@
                 </svg>
               </div>
               <svg class="map-cursor" viewBox="0 0 108 108">
-                <path fill="#E94560" d="M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z"/>
+                <path fill="#DC2626" d="M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z"/>
               </svg>
             </div>
             <div class="map-stats">
               <div class="map-stat">
                 <div class="map-stat-value">127</div>
-                <div class="map-stat-label">km</div>
+                <div class="map-stat-label" data-i18n="hero.map.stat1.label">km</div>
               </div>
               <div class="map-stat">
                 <div class="map-stat-value">2:18</div>
-                <div class="map-stat-label">ore</div>
+                <div class="map-stat-label" data-i18n="hero.map.stat2.label">ore</div>
               </div>
               <div class="map-stat">
                 <div class="map-stat-value">34°</div>
-                <div class="map-stat-label">piega max</div>
+                <div class="map-stat-label" data-i18n="hero.map.stat3.label">piega max</div>
               </div>
             </div>
           </div>
@@ -1722,8 +1805,8 @@
   <section class="behaviour" id="behaviour" data-cinema="behaviour">
     <div class="section-inner">
       <div class="behaviour-header">
-        <h2 class="cinema-heading">Come funziona VRoom</h2>
-        <p class="cinema-subtitle">Un flusso semplice pensato per chi guida. Naviga, registra, importa, esporta. Tutto con la voce, tutto offline.</p>
+        <h2 class="cinema-heading" data-i18n="behaviour.title">Come funziona VRoom</h2>
+        <p class="cinema-subtitle" data-i18n="behaviour.subtitle">Un flusso semplice pensato per chi guida. Naviga, registra, importa, esporta. Tutto con la voce, tutto offline.</p>
       </div>
 
       <div class="flow-container">
@@ -1731,13 +1814,13 @@
 
         <div class="flow-step">
           <div class="flow-content cinema-stagger" data-tilt>
-            <h3>Scegli: Naviga o Registra</h3>
-            <p>Due modalita principali, una filosofia sola: mani sul manubrio. <strong>Naviga</strong> usa Mapbox turn-by-turn con guida vocale e ricalcolo automatico quando sbagli strada. <strong>Registra</strong> attiva il GPS tracking con telemetria completa: piega, G-force, curve, velocita, dislivello. Oppure attiva il <strong>Track Mode</strong> per sessioni in circuito con lap timing e settori. Tutto parte con un comando vocale o un tap.</p>
+            <h3 data-i18n="behaviour.step1.title">Scegli: Naviga o Registra</h3>
+            <p data-i18n="behaviour.step1.body">Due modalita principali, una filosofia sola: mani sul manubrio. <strong>Naviga</strong> usa la navigazione turn-by-turn con guida vocale e ricalcolo automatico quando sbagli strada. <strong>Registra</strong> attiva il GPS tracking con telemetria completa: piega, G-force, curve, velocita, dislivello. Oppure attiva il <strong>Track Mode</strong> per sessioni in circuito con lap timing e settori. Tutto parte con un comando vocale o un tap.</p>
             <div class="flow-tags">
-              <span class="flow-tag">Turn-by-turn</span>
-              <span class="flow-tag">GPS tracking</span>
-              <span class="flow-tag">Voce</span>
-              <span class="flow-tag">Track Mode</span>
+              <span class="flow-tag" data-i18n="behaviour.step1.tag1">Turn-by-turn</span>
+              <span class="flow-tag" data-i18n="behaviour.step1.tag2">GPS tracking</span>
+              <span class="flow-tag" data-i18n="behaviour.step1.tag3">Voce</span>
+              <span class="flow-tag" data-i18n="behaviour.step1.tag4">Track Mode</span>
             </div>
           </div>
           <div class="flow-number cinema-stagger">1</div>
@@ -1746,13 +1829,13 @@
 
         <div class="flow-step">
           <div class="flow-content cinema-stagger" data-tilt>
-            <h3>Importa itinerari</h3>
-            <p>Hai un percorso GPX da un amico o da Komoot? Importalo dal file picker. Hai un link Google Maps? Incollalo e VRoom lo converte in GPX automaticamente, estraendo coordinate e waypoint dal URL senza bisogno di rete. Una volta importato, scegli: <strong>visualizza</strong> la preview con polyline sulla mappa e scarica le mappe offline per la regione, oppure <strong>segui</strong> il percorso con navigazione vocale turn-by-turn.</p>
+            <h3 data-i18n="behaviour.step2.title">Importa itinerari</h3>
+            <p data-i18n="behaviour.step2.body">Hai un percorso GPX da un amico o da Komoot? Importalo dal file picker. Hai un link Google Maps? Incollalo e VRoom lo converte in GPX automaticamente, estraendo coordinate e waypoint dal URL senza bisogno di rete. Una volta importato, scegli: <strong>visualizza</strong> la preview con polyline sulla mappa e scarica le mappe offline per la regione, oppure <strong>segui</strong> il percorso con navigazione vocale turn-by-turn.</p>
             <div class="flow-tags">
-              <span class="flow-tag">GPX import</span>
-              <span class="flow-tag">Google Maps URL</span>
-              <span class="flow-tag">Preview mappa</span>
-              <span class="flow-tag">Offline maps</span>
+              <span class="flow-tag" data-i18n="behaviour.step2.tag1">GPX import</span>
+              <span class="flow-tag" data-i18n="behaviour.step2.tag2">Google Maps URL</span>
+              <span class="flow-tag" data-i18n="behaviour.step2.tag3">Preview mappa</span>
+              <span class="flow-tag" data-i18n="behaviour.step2.tag4">Offline maps</span>
             </div>
           </div>
           <div class="flow-number cinema-stagger">2</div>
@@ -1761,13 +1844,13 @@
 
         <div class="flow-step">
           <div class="flow-content cinema-stagger" data-tilt>
-            <h3>Guida hands-free</h3>
-            <p>Durante il giro, tutto funziona a voce attraverso il tuo intercom Bluetooth (Cardo, Sena, o qualsiasi SCO-compatible). Dici "Ehi VRoom" e il wake word Porcupine attiva l'ascolto. Vosk riconosce il comando offline, senza mandare nulla a nessun server. Segnala pericoli con la voce e VRoom li geolocalizza per chi arriva dopo. Ricevi alert dalla community letti dal TTS. Se cadi, l'accelerometro e il giroscopio rilevano l'impatto e parte il countdown SOS di 30 secondi.</p>
+            <h3 data-i18n="behaviour.step3.title">Guida hands-free</h3>
+            <p data-i18n="behaviour.step3.body">Durante il giro, tutto funziona a voce attraverso il tuo intercom Bluetooth (Cardo, Sena, o qualsiasi intercom compatibile). Dici "Ehi VRoom" e l'attivazione vocale parte in ascolto. Il riconoscimento vocale offline capta il comando senza mandare nulla a nessun server. Segnala pericoli con la voce e VRoom li geolocalizza per chi arriva dopo. Ricevi alert dalla community come annunci vocali nel casco. Se cadi, l'accelerometro e il giroscopio rilevano l'impatto e parte il countdown SOS di 30 secondi.</p>
             <div class="flow-tags">
-              <span class="flow-tag">Comandi vocali</span>
-              <span class="flow-tag">Alert community</span>
-              <span class="flow-tag">SOS automatico</span>
-              <span class="flow-tag">Bluetooth SCO</span>
+              <span class="flow-tag" data-i18n="behaviour.step3.tag1">Comandi vocali</span>
+              <span class="flow-tag" data-i18n="behaviour.step3.tag2">Alert community</span>
+              <span class="flow-tag" data-i18n="behaviour.step3.tag3">SOS automatico</span>
+              <span class="flow-tag" data-i18n="behaviour.step3.tag4">Audio intercom</span>
             </div>
           </div>
           <div class="flow-number cinema-stagger">3</div>
@@ -1776,13 +1859,13 @@
 
         <div class="flow-step">
           <div class="flow-content cinema-stagger" data-tilt>
-            <h3>Esporta ovunque</h3>
-            <p>Finito il giro? Esporta in GPX standard per Strava, Komoot, o qualsiasi app che legge tracciati. Oppure genera un link Google Maps con i waypoint ottimizzati tramite algoritmo Ramer-Douglas-Peucker e condividilo via share sheet con chi non usa VRoom. Replay completo con polyline colorata (piega, velocita), grafici telemetrici e curve teleprompter. Il circuito? Esporta la sessione con tempi per settore e delta rispetto al giro migliore.</p>
+            <h3 data-i18n="behaviour.step4.title">Esporta ovunque</h3>
+            <p data-i18n="behaviour.step4.body">Finito il giro? Esporta in GPX standard per Strava, Komoot, o qualsiasi app che legge tracciati. Oppure genera un link Google Maps con i waypoint ottimizzati automaticamente e condividilo via share sheet con chi non usa VRoom. Replay completo con polyline colorata (piega, velocita), grafici telemetrici e curve teleprompter. Il circuito? Esporta la sessione con tempi per settore e delta rispetto al giro migliore.</p>
             <div class="flow-tags">
-              <span class="flow-tag">GPX export</span>
-              <span class="flow-tag">Google Maps link</span>
-              <span class="flow-tag">Share sheet</span>
-              <span class="flow-tag">Replay</span>
+              <span class="flow-tag" data-i18n="behaviour.step4.tag1">GPX export</span>
+              <span class="flow-tag" data-i18n="behaviour.step4.tag2">Google Maps link</span>
+              <span class="flow-tag" data-i18n="behaviour.step4.tag3">Share sheet</span>
+              <span class="flow-tag" data-i18n="behaviour.step4.tag4">Replay</span>
             </div>
           </div>
           <div class="flow-number cinema-stagger">4</div>
@@ -1796,54 +1879,58 @@
   <section class="tiers" id="tiers" data-cinema="tiers">
     <div class="section-inner">
       <div class="tiers-header">
-        <h2 class="cinema-heading">Scegli il tuo ritmo</h2>
-        <p class="cinema-subtitle">Inizia gratis, scala quando vuoi. Nessun blocco, nessuna pressione.</p>
+        <h2 class="cinema-heading" data-i18n="tiers.title">Scegli il tuo ritmo</h2>
+        <p class="cinema-subtitle" data-i18n="tiers.subtitle">Inizia gratis, scala quando vuoi. Nessun blocco, nessuna pressione.</p>
       </div>
 
       <div class="tiers-grid">
         <div class="tier-card cinema-stagger">
-          <div class="tier-name">Free</div>
-          <div class="tier-price">€0</div>
-          <div class="tier-desc">Per iniziare e provare VRoom</div>
+          <div class="tier-name" data-i18n="tiers.free.name">Free</div>
+          <div class="tier-price" data-i18n="tiers.free.price">€0</div>
+          <div class="tier-desc" data-i18n="tiers.free.desc">Per iniziare e provare VRoom</div>
           <ul class="tier-features">
-            <li>Registrazione giri base</li>
-            <li>1 moto nel profilo</li>
-            <li>Community alerts (input + output)</li>
-            <li>SOS con countdown</li>
-            <li>Statistiche essenziali</li>
+            <li data-i18n="tiers.free.feature1">Registrazione giri base</li>
+            <li data-i18n="tiers.free.feature2">1 moto nel profilo</li>
+            <li data-i18n="tiers.free.feature3">Community alerts (input + output)</li>
+            <li data-i18n="tiers.free.feature4">SOS con countdown</li>
+            <li data-i18n="tiers.free.feature5">Statistiche essenziali</li>
           </ul>
-          <div class="tier-note">Sempre gratis, per sempre</div>
+          <div class="tier-note" data-i18n="tiers.free.note">Sempre gratis, per sempre</div>
+          <button class="tier-cta" data-i18n="tiers.free.cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Inizia Gratis</button>
         </div>
 
         <div class="tier-card featured cinema-stagger">
-          <div class="tier-name">Rider</div>
-          <div class="tier-price">€4.99<span>/mese</span></div>
-          <div class="tier-desc">Per chi guida ogni settimana</div>
+          <span class="featured-badge" data-i18n="tiers.featured_badge">Popolare</span>
+          <div class="tier-name" data-i18n="tiers.rider.name">Rider</div>
+          <div class="tier-price"><span data-i18n="tiers.rider.price">€4.99</span><span data-i18n="tiers.rider.price_period">/mese</span></div>
+          <div class="tier-desc" data-i18n="tiers.rider.desc">Per chi guida ogni settimana</div>
           <ul class="tier-features">
-            <li>Tutto di Free +</li>
-            <li>Comandi vocali completi</li>
-            <li>Navigazione offline turn-by-turn</li>
-            <li>Telemetria completa (piega, G-force)</li>
-            <li>Cloud sync multi-device</li>
-            <li>Multi-moto illimitato</li>
-            <li>Alert filtri + push</li>
+            <li data-i18n="tiers.rider.feature1">Tutto di Free +</li>
+            <li data-i18n="tiers.rider.feature2">Comandi vocali completi</li>
+            <li data-i18n="tiers.rider.feature3">Navigazione offline turn-by-turn</li>
+            <li data-i18n="tiers.rider.feature4">Telemetria completa (piega, G-force)</li>
+            <li data-i18n="tiers.rider.feature5">Cloud sync multi-device</li>
+            <li data-i18n="tiers.rider.feature6">Multi-moto illimitato</li>
+            <li data-i18n="tiers.rider.feature7">Alert filtri + push</li>
           </ul>
-          <div class="tier-note">€39.99/anno (risparmia 33%)</div>
+          <div class="tier-note" data-i18n="tiers.rider.note">€39.99/anno (risparmia 33%)</div>
+          <button class="tier-cta" data-i18n="tiers.rider.cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Unisciti alla Waitlist</button>
         </div>
 
         <div class="tier-card cinema-stagger">
-          <div class="tier-name">Pro</div>
-          <div class="tier-price">€9.99<span>/mese</span></div>
-          <div class="tier-desc">Per chi vuole il massimo</div>
+          <div class="tier-name" data-i18n="tiers.pro.name">Pro</div>
+          <div class="tier-price"><span data-i18n="tiers.pro.price">€9.99</span><span data-i18n="tiers.pro.price_period">/mese</span></div>
+          <div class="tier-desc" data-i18n="tiers.pro.desc">Per chi vuole il massimo</div>
           <ul class="tier-features">
-            <li>Tutto di Rider +</li>
-            <li>Video overlay generator</li>
-            <li>Track mode (circuito)</li>
-            <li>AI Coach (v4)</li>
-            <li>Export avanzato</li>
-            <li>Route marketplace access</li>
+            <li data-i18n="tiers.pro.feature1">Tutto di Rider +</li>
+            <li data-i18n="tiers.pro.feature2">Video overlay generator</li>
+            <li data-i18n="tiers.pro.feature3">Track mode (circuito)</li>
+            <li data-i18n="tiers.pro.feature4">AI Coach (v4)</li>
+            <li data-i18n="tiers.pro.feature5">Export avanzato</li>
+            <li data-i18n="tiers.pro.feature6">Route marketplace access</li>
           </ul>
-          <div class="tier-note">€79.99/anno (risparmia 33%)</div>
+          <div class="tier-note" data-i18n="tiers.pro.note">€79.99/anno (risparmia 33%)</div>
+          <button class="tier-cta" data-i18n="tiers.pro.cta" onclick="document.getElementById('waitlist').scrollIntoView({behavior:'smooth'})">Unisciti alla Waitlist</button>
         </div>
       </div>
     </div>
@@ -1853,33 +1940,33 @@
   <section class="community" id="community" data-cinema="community">
     <div class="section-inner">
       <div class="community-header">
-        <h2 class="cinema-heading">Insieme siamo più sicuri</h2>
-        <p class="cinema-subtitle">Ogni segnalazione protegge chi arriva dopo. La community VRoom costruisce strade più sicure, un alert alla volta.</p>
+        <h2 class="cinema-heading" data-i18n="community.title">Insieme siamo più sicuri</h2>
+        <p class="cinema-subtitle" data-i18n="community.subtitle">Ogni segnalazione protegge chi arriva dopo. La community VRoom costruisce strade più sicure, un alert alla volta.</p>
       </div>
 
       <div class="community-grid">
         <div class="community-card cinema-stagger" data-tilt>
           <div class="community-icon">🚧</div>
-          <h3>Segnala in tempo reale</h3>
-          <p>Pericolo, lavori in corso, buche, animali sulla carreggiata, rallentamenti, olio sull'asfalto. Lo dici a voce mentre guidi: "Ehi VRoom, pericolo strada" e il sistema geolocalizza la segnalazione e la condivide istantaneamente con chi arriva dopo di te. Le categorie sono gerarchiche: ogni alert ha un tipo (DANGER, ROAD, SLOWDOWN) e un sottotipo specifico per massima precisione. Funziona anche senza connessione dati -- le segnalazioni si sincronizzano appena torni online.</p>
+          <h3 data-i18n="community.card1.title">Segnala in tempo reale</h3>
+          <p data-i18n="community.card1.body">Pericolo, lavori in corso, buche, animali sulla carreggiata, rallentamenti, olio sull'asfalto. Lo dici a voce mentre guidi: "Ehi VRoom, pericolo strada" e il sistema geolocalizza la segnalazione e la condivide istantaneamente con chi arriva dopo di te. Le categorie sono gerarchiche: ogni alert ha un tipo (DANGER, ROAD, SLOWDOWN) e un sottotipo specifico per massima precisione. Funziona anche senza connessione dati -- le segnalazioni si sincronizzano appena torni online.</p>
         </div>
 
         <div class="community-card cinema-stagger" data-tilt>
           <div class="community-icon">🔔</div>
-          <h3>Ricevi alert vocali</h3>
-          <p>Avvicinandoti a una segnalazione attiva, VRoom ti avvisa con un annuncio TTS nel casco tramite Bluetooth SCO. Niente schermi da guardare, niente notifiche da leggere -- solo la voce che dice "Attenzione, buca segnalata tra 200 metri". La priorita degli alert segue la stessa logica di tutto il sistema vocale: SOS prima di tutto, poi pericoli, poi navigazione, poi informazioni generali. Puoi filtrare per categoria e raggio.</p>
+          <h3 data-i18n="community.card2.title">Ricevi alert vocali</h3>
+          <p data-i18n="community.card2.body">Avvicinandoti a una segnalazione attiva, VRoom ti avvisa con un annuncio vocale nel casco tramite il tuo intercom Bluetooth. Niente schermi da guardare, niente notifiche da leggere -- solo la voce che dice "Attenzione, buca segnalata tra 200 metri". La priorita degli alert segue la stessa logica di tutto il sistema vocale: SOS prima di tutto, poi pericoli, poi navigazione, poi informazioni generali. Puoi filtrare per categoria e raggio.</p>
         </div>
 
         <div class="community-card cinema-stagger" data-tilt>
           <div class="community-icon">✅</div>
-          <h3>Conferma o smentisci</h3>
-          <p>Passi su un pericolo segnalato e non c'e piu? Dici "falso allarme" a voce e il sistema registra il feedback negativo. Confermi che c'e ancora? Lo confermi con un comando vocale. Il meccanismo di voto ponderato usa il consenso della community per decidere il TTL di ogni alert. Piu conferme riceve, piu a lungo resta attivo. Piu smentite, piu velocemente decade. Nessun intervento manuale necessario -- il sistema impara e filtra il rumore da solo.</p>
+          <h3 data-i18n="community.card3.title">Conferma o smentisci</h3>
+          <p data-i18n="community.card3.body">Passi su un pericolo segnalato e non c'e piu? Dici "falso allarme" a voce e il sistema registra il feedback negativo. Confermi che c'e ancora? Lo confermi con un comando vocale. Il feedback della community decide per quanto tempo ogni alert resta attivo. Piu conferme riceve, piu a lungo resta attivo. Piu smentite, piu velocemente decade. Nessun intervento manuale necessario -- il sistema impara e filtra il rumore da solo.</p>
         </div>
 
         <div class="community-card cinema-stagger" data-tilt>
           <div class="community-icon">🛡️</div>
-          <h3>Feedback che protegge</h3>
-          <p>Ogni tua interazione migliora la qualita degli alert per tutti i rider nella zona. Non e gamification, non ci sono punti o classifiche -- e sicurezza collettiva pura. Nel tuo Room (gruppo di fino a 20 rider), gli alert sono condivisi in tempo reale con posizioni live. Su strada aperta, le segnalazioni sono anonime e visibili a chiunque usi VRoom nella stessa area. Il risultato: strade piu sicure per chi arriva dopo di te.</p>
+          <h3 data-i18n="community.card4.title">Feedback che protegge</h3>
+          <p data-i18n="community.card4.body">Ogni tua interazione migliora la qualita degli alert per tutti i rider nella zona. Non e gamification, non ci sono punti o classifiche -- e sicurezza collettiva pura. Nel tuo Room (gruppo di fino a 20 rider), gli alert sono condivisi in tempo reale con posizioni live. Su strada aperta, le segnalazioni sono anonime e visibili a chiunque usi VRoom nella stessa area. Il risultato: strade piu sicure per chi arriva dopo di te.</p>
         </div>
       </div>
     </div>
@@ -1889,107 +1976,107 @@
   <section class="features" id="features" data-cinema="features">
     <div class="section-inner">
       <div class="features-header">
-        <h2 class="cinema-heading">Quello che serve. Nient'altro.</h2>
-        <p class="cinema-subtitle">Ogni funzione esiste per un motivo. Nessun bloat.</p>
+        <h2 class="cinema-heading" data-i18n="features.title">Quello che serve. Nient'altro.</h2>
+        <p class="cinema-subtitle" data-i18n="features.subtitle">Ogni funzione esiste per un motivo. Nessun bloat.</p>
       </div>
 
       <div class="features-grid">
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag">Voce</span>
-          <h4>"Ehi VRoom" -- Comandi hands-free</h4>
-          <p>Il sistema vocale e il cuore di VRoom. Riconoscimento vocale Vosk completamente offline -- funziona in galleria, in montagna, ovunque non c'e campo. Il wake word "Ehi VRoom" e gestito da Porcupine, attivo in background con consumo minimo di batteria. Attraverso il routing Bluetooth SCO, funziona perfettamente con intercom moto come Cardo e Sena, anche col vento a 130 km/h. Il Natural Language Understanding via FunctionGemma interpreta comandi in italiano naturale con disambiguazione intelligente.</p>
+          <span class="feature-tag" data-i18n="features.voice.tag">Voce</span>
+          <h4 data-i18n="features.voice.title">"Ehi VRoom" -- Comandi hands-free</h4>
+          <p data-i18n="features.voice.body">Il sistema vocale e il cuore di VRoom. Riconoscimento vocale completamente offline -- funziona in galleria, in montagna, ovunque non c'e campo. L'attivazione vocale "Ehi VRoom" rimane in ascolto in background con consumo minimo di batteria. Attraverso la connessione audio per intercom, funziona perfettamente con Cardo, Sena e altri intercom, anche col vento a 130 km/h. La comprensione naturale dei comandi interpreta quello che dici in italiano senza formule fisse.</p>
           <ul class="feature-highlights">
-            <li>Vosk ASR offline -- nessun dato inviato a server</li>
-            <li>Bluetooth SCO per intercom moto (Cardo, Sena)</li>
-            <li>Priorita comandi: SOS > Pericolo > Navigazione > Info</li>
+            <li data-i18n="features.voice.highlight1">Riconoscimento vocale offline -- nessun dato inviato a server</li>
+            <li data-i18n="features.voice.highlight2">Audio Bluetooth per intercom moto (Cardo, Sena)</li>
+            <li data-i18n="features.voice.highlight3">Priorita comandi: SOS > Pericolo > Navigazione > Info</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag">Navigazione</span>
-          <h4>Turn-by-turn vocale</h4>
-          <p>Navigazione Mapbox con guida vocale completa e ricalcolo automatico della rotta quando esci dal percorso. Scarica le mappe di qualsiasi regione per navigare senza connessione dati. La modalita HUD usa icone grandi (64dp), testo bold a 32sp e alto contrasto -- leggibile con un colpo d'occhio anche sotto il sole diretto. Dici "naviga a Roma" e VRoom calcola il percorso, lo mostra sulla mappa e inizia a guidarti curva per curva.</p>
+          <span class="feature-tag" data-i18n="features.nav.tag">Navigazione</span>
+          <h4 data-i18n="features.nav.title">Turn-by-turn vocale</h4>
+          <p data-i18n="features.nav.body">Navigazione con guida vocale completa e ricalcolo automatico della rotta quando esci dal percorso. Scarica le mappe di qualsiasi regione per navigare senza connessione dati. La modalita HUD usa icone grandi (64dp), testo bold a 32sp e alto contrasto -- leggibile con un colpo d'occhio anche sotto il sole diretto. Dici "naviga a Roma" e VRoom calcola il percorso, lo mostra sulla mappa e inizia a guidarti curva per curva.</p>
           <ul class="feature-highlights">
-            <li>Mappe offline scaricabili per regione</li>
-            <li>Ricalcolo rotta automatico fuori percorso</li>
-            <li>HUD mode: icone 64dp, testo bold, alto contrasto</li>
+            <li data-i18n="features.nav.highlight1">Mappe offline scaricabili per regione</li>
+            <li data-i18n="features.nav.highlight2">Ricalcolo rotta automatico fuori percorso</li>
+            <li data-i18n="features.nav.highlight3">HUD mode: icone 64dp, testo bold, alto contrasto</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag" style="background:rgba(233,69,96,0.15);border-color:rgba(233,69,96,0.3);color:var(--vroom-red-bright);">Sicurezza</span>
-          <h4>SOS + Fall Detection</h4>
-          <p>L'accelerometro e il giroscopio del telefono monitorano costantemente i pattern di movimento. Se rilevano un impatto compatibile con una caduta, parte un countdown di 30 secondi con allarme sonoro. Se non annulli, VRoom invia automaticamente un SMS con le tue coordinate GPS ai contatti di emergenza preconfigurati, poi tenta una chiamata al primo contatto. Funziona anche senza dati mobili grazie all'SMS come canale primario.</p>
+          <span class="feature-tag" style="background:rgba(220,38,38,0.15);border-color:rgba(220,38,38,0.3);color:var(--vroom-red-bright);" data-i18n="features.safety.tag">Sicurezza</span>
+          <h4 data-i18n="features.safety.title">SOS + Fall Detection</h4>
+          <p data-i18n="features.safety.body">L'accelerometro e il giroscopio del telefono monitorano costantemente i pattern di movimento. Se rilevano un impatto compatibile con una caduta, parte un countdown di 30 secondi con allarme sonoro. Se non annulli, VRoom invia automaticamente un SMS con le tue coordinate GPS ai contatti di emergenza preconfigurati, poi tenta una chiamata al primo contatto. Funziona anche senza dati mobili grazie all'SMS come canale primario.</p>
           <ul class="feature-highlights">
-            <li>Fall detection via accelerometro + giroscopio IMU</li>
-            <li>SMS con coordinate GPS -- funziona senza internet</li>
-            <li>Countdown 30s annullabile + chiamata automatica</li>
+            <li data-i18n="features.safety.highlight1">Fall detection via accelerometro + giroscopio del telefono</li>
+            <li data-i18n="features.safety.highlight2">SMS con coordinate GPS -- funziona senza internet</li>
+            <li data-i18n="features.safety.highlight3">Countdown 30s annullabile + chiamata automatica</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag">Telemetria</span>
-          <h4>Piega, G-force, curve</h4>
-          <p>I sensori IMU del telefono diventano la tua centralina di bordo. VRoom calcola l'angolo di piega in tempo reale, misura le forze G in accelerazione, frenata e laterale, e classifica automaticamente ogni curva del percorso (tornante, curvone, chicane). Velocita, distanza, dislivello, durata -- tutto registrato secondo per secondo. Il profilo rider analizza il tuo stile di guida nel tempo. Tutto elaborato on-device, mai caricato senza il tuo consenso esplicito.</p>
+          <span class="feature-tag" data-i18n="features.telemetry.tag">Telemetria</span>
+          <h4 data-i18n="features.telemetry.title">Piega, G-force, curve</h4>
+          <p data-i18n="features.telemetry.body">I sensori del telefono diventano la tua centralina di bordo. VRoom calcola l'angolo di piega in tempo reale, misura le forze G in accelerazione, frenata e laterale, e classifica automaticamente ogni curva del percorso (tornante, curvone, chicane). Velocita, distanza, dislivello, durata -- tutto registrato secondo per secondo. Il profilo rider analizza il tuo stile di guida nel tempo. Tutto elaborato on-device, mai caricato senza il tuo consenso esplicito.</p>
           <ul class="feature-highlights">
-            <li>Angolo di piega e G-force da sensori IMU</li>
-            <li>Classificazione automatica curve (tornante, curvone, chicane)</li>
-            <li>Profilo rider -- evoluzione del tuo stile nel tempo</li>
+            <li data-i18n="features.telemetry.highlight1">Angolo di piega e G-force dai sensori del telefono</li>
+            <li data-i18n="features.telemetry.highlight2">Classificazione automatica curve (tornante, curvone, chicane)</li>
+            <li data-i18n="features.telemetry.highlight3">Profilo rider -- evoluzione del tuo stile nel tempo</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag" style="background:rgba(255,107,44,0.15);border-color:rgba(255,107,44,0.3);color:var(--orange);">NUOVO</span>
-          <h4>Track Mode -- Circuito</h4>
-          <p>La stessa telemetria di bordo, portata in pista. Attiva il Track Mode con un comando vocale ("inizia pista") e VRoom rileva automaticamente la linea di traguardo tramite GPS fence. Ogni giro viene cronometrato, i settori generati automaticamente o marcati a voce con "segna settore". Il delta timing stile F1 ti dice in tempo reale se stai migliorando rispetto al tuo giro migliore. Il TTS annuncia tempo al giro, split per settore e record personali direttamente nel casco.</p>
+          <span class="feature-tag" style="background:rgba(255,107,44,0.15);border-color:rgba(255,107,44,0.3);color:var(--orange);" data-i18n="features.track.tag">NUOVO</span>
+          <h4 data-i18n="features.track.title">Track Mode -- Circuito</h4>
+          <p data-i18n="features.track.body">La stessa telemetria di bordo, portata in pista. Attiva il Track Mode con un comando vocale ("inizia pista") e VRoom rileva automaticamente la linea di traguardo quando ripassi dal punto di partenza. Ogni giro viene cronometrato, i settori generati automaticamente o marcati a voce con "segna settore". Il delta timing stile F1 ti dice in tempo reale se stai migliorando rispetto al tuo giro migliore. La voce nel casco annuncia tempo al giro, split per settore e record personali direttamente nell'orecchio.</p>
           <ul class="feature-highlights">
-            <li>Lap timing con finish line detection via GPS fence</li>
-            <li>Delta timing F1: confronto in tempo reale col best lap</li>
-            <li>TTS coaching: tempi, settori, record nel casco</li>
+            <li data-i18n="features.track.highlight1">Lap timing con rilevamento automatico della linea di partenza</li>
+            <li data-i18n="features.track.highlight2">Delta timing F1: confronto in tempo reale col best lap</li>
+            <li data-i18n="features.track.highlight3">Coaching vocale nel casco: tempi, settori, record personali</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.3);color:var(--purple);">Room</span>
-          <h4>Guida insieme</h4>
-          <p>Crea un Room con fino a 20 rider e organizza uscite di gruppo. Proponi un giro con percorso, punto di ritrovo e orario. Durante la guida, le posizioni di tutti sono condivise in tempo reale con aggiornamenti ogni 5 secondi e interpolazione fluida sulla mappa. Dopo il giro, confronta le traiettorie: chi ha preso quale linea in curva, statistiche a confronto, tempi su tratti specifici. Room pubbliche o private, con sistema di inviti e TTL di 24 ore.</p>
+          <span class="feature-tag" style="background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.3);color:var(--purple);" data-i18n="features.room.tag">Room</span>
+          <h4 data-i18n="features.room.title">Guida insieme</h4>
+          <p data-i18n="features.room.body">Crea un Room con fino a 20 rider e organizza uscite di gruppo. Proponi un giro con percorso, punto di ritrovo e orario. Durante la guida, le posizioni di tutti sono condivise in tempo reale con aggiornamenti ogni 5 secondi e interpolazione fluida sulla mappa. Dopo il giro, confronta le traiettorie: chi ha preso quale linea in curva, statistiche a confronto, tempi su tratti specifici. Room pubbliche o private, con sistema di inviti validi 24 ore.</p>
           <ul class="feature-highlights">
-            <li>Fino a 20 rider con posizioni live (5s + interpolazione)</li>
-            <li>Pianificazione giri con percorso e punto di ritrovo</li>
-            <li>Confronto post-ride: traiettorie, statistiche, tempi</li>
+            <li data-i18n="features.room.highlight1">Fino a 20 rider con posizioni live (5s + interpolazione)</li>
+            <li data-i18n="features.room.highlight2">Pianificazione giri con percorso e punto di ritrovo</li>
+            <li data-i18n="features.room.highlight3">Confronto post-ride: traiettorie, statistiche, tempi</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag">Routes</span>
-          <h4>Import & Export</h4>
-          <p>I tuoi percorsi, nel formato che preferisci. Importa file GPX dal file picker o ricevili via share sheet da altre app. Incolla un URL di Google Maps e VRoom lo converte in GPX offline, estraendo le coordinate direttamente dal link. Esporta i tuoi giri come GPX standard per Strava e Komoot, oppure genera un link Google Maps con waypoint ottimizzati via algoritmo Ramer-Douglas-Peucker per condividerlo con chi non usa VRoom. Preview del tracciato con polyline sulla mappa e suggerimento regione per il download mappe offline.</p>
+          <span class="feature-tag" data-i18n="features.routes.tag">Routes</span>
+          <h4 data-i18n="features.routes.title">Import & Export</h4>
+          <p data-i18n="features.routes.body">I tuoi percorsi, nel formato che preferisci. Importa file GPX dal file picker o ricevili via share sheet da altre app. Incolla un URL di Google Maps e VRoom lo converte in GPX offline, estraendo le coordinate direttamente dal link. Esporta i tuoi giri come GPX standard per Strava e Komoot, oppure genera un link Google Maps con waypoint ottimizzati automaticamente per condividerlo con chi non usa VRoom. Preview del tracciato con polyline sulla mappa e suggerimento regione per il download mappe offline.</p>
           <ul class="feature-highlights">
-            <li>Google Maps URL to GPX -- conversione offline</li>
-            <li>GPX to Google Maps link con waypoint ottimizzati</li>
-            <li>Preview polyline + region hint per mappe offline</li>
+            <li data-i18n="features.routes.highlight1">Google Maps URL to GPX -- conversione offline</li>
+            <li data-i18n="features.routes.highlight2">GPX to Google Maps link con waypoint ottimizzati</li>
+            <li data-i18n="features.routes.highlight3">Preview polyline + region hint per mappe offline</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag">Replay</span>
-          <h4>Rivivi ogni curva</h4>
-          <p>Ogni giro registrato diventa un replay interattivo. La polyline del percorso e colorata in base all'angolo di piega o alla velocita -- vedi immediatamente dove hai spinto e dove sei stato piu cauto. Il curve teleprompter annota le prossime curve in arrivo. I grafici telemetrici mostrano velocita, piega e dislivello sincronizzati nel tempo. Esporta in GPX standard o, con il piano Pro, genera un video overlay con i dati sovraimpressi per condividere sui social.</p>
+          <span class="feature-tag" data-i18n="features.replay.tag">Replay</span>
+          <h4 data-i18n="features.replay.title">Rivivi ogni curva</h4>
+          <p data-i18n="features.replay.body">Ogni giro registrato diventa un replay interattivo. La polyline del percorso e colorata in base all'angolo di piega o alla velocita -- vedi immediatamente dove hai spinto e dove sei stato piu cauto. Il curve teleprompter annota le prossime curve in arrivo. I grafici telemetrici mostrano velocita, piega e dislivello sincronizzati nel tempo. Esporta in GPX standard o, con il piano Pro, genera un video overlay con i dati sovraimpressi per condividere sui social.</p>
           <ul class="feature-highlights">
-            <li>Polyline colorata per piega o velocita</li>
-            <li>Curve teleprompter -- annotazioni curve in arrivo</li>
-            <li>Export GPX + video overlay (Pro)</li>
+            <li data-i18n="features.replay.highlight1">Polyline colorata per piega o velocita</li>
+            <li data-i18n="features.replay.highlight2">Curve teleprompter -- annotazioni curve in arrivo</li>
+            <li data-i18n="features.replay.highlight3">Export GPX + video overlay (Pro)</li>
           </ul>
         </div>
 
         <div class="feature-card cinema-stagger" data-tilt>
-          <span class="feature-tag" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:var(--white);">Privacy</span>
-          <h4>I tuoi dati, punto.</h4>
-          <p>VRoom e costruita su tre principi non negoziabili: offline-first, privacy-first, safety-first. Tutta l'elaborazione avviene sul dispositivo -- ASR vocale, telemetria, navigazione, SOS. Nessun dato lascia il telefono senza il tuo consenso esplicito. La sincronizzazione cloud e opzionale e usa la strategia local-wins: il tuo dispositivo ha sempre l'ultima parola. Nessun tracciamento, nessuna profilazione pubblicitaria, nessun dato venduto. GDPR compliant con cancellazione completa dell'account e di tutti i dati associati.</p>
+          <span class="feature-tag" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:var(--white);" data-i18n="features.privacy.tag">Privacy</span>
+          <h4 data-i18n="features.privacy.title">I tuoi dati, punto.</h4>
+          <p data-i18n="features.privacy.body">VRoom e costruita su tre principi non negoziabili: offline-first, privacy-first, safety-first. Tutta l'elaborazione avviene sul dispositivo -- riconoscimento vocale, telemetria, navigazione, SOS. Nessun dato lascia il telefono senza il tuo consenso esplicito. La sincronizzazione cloud e opzionale e il tuo telefono ha sempre l'ultima parola. Nessun tracciamento, nessuna profilazione pubblicitaria, nessun dato venduto. GDPR compliant con cancellazione completa dell'account e di tutti i dati associati.</p>
           <ul class="feature-highlights">
-            <li>Offline-first: tutto funziona senza connessione</li>
-            <li>On-device processing -- nessun dato inviato di default</li>
-            <li>GDPR compliant con right-to-delete completo</li>
+            <li data-i18n="features.privacy.highlight1">Offline-first: tutto funziona senza connessione</li>
+            <li data-i18n="features.privacy.highlight2">On-device processing -- nessun dato inviato di default</li>
+            <li data-i18n="features.privacy.highlight3">GDPR compliant con right-to-delete completo</li>
           </ul>
         </div>
       </div>
@@ -2000,28 +2087,28 @@
   <section class="track-mode" id="track" data-cinema="track">
     <div class="section-inner">
       <div class="track-mode-header">
-        <span class="track-mode-tag cinema-stagger">NUOVO in alpha.74</span>
-        <h2 class="cinema-heading">Modalita Circuito</h2>
-        <p class="cinema-subtitle">Dal giro libero alla pista. Stessi sensori, un altro livello.</p>
+        <span class="track-mode-tag cinema-stagger" data-i18n="track.tag">NUOVO</span>
+        <h2 class="cinema-heading" data-i18n="track.title">Modalita Circuito</h2>
+        <p class="cinema-subtitle" data-i18n="track.subtitle">Dal giro libero alla pista. Stessi sensori, un altro livello.</p>
       </div>
 
       <div class="track-mode-grid">
         <div class="track-mode-card cinema-stagger" data-tilt>
           <span class="track-mode-icon">&#9635;</span>
-          <h3>Settori</h3>
-          <p>Il circuito viene suddiviso automaticamente in settori basati sulla geometria del tracciato, oppure li marchi tu a voce con "segna settore". Ogni settore ha il suo tempo, il suo delta, il suo record. Vedi dove guadagni e dove perdi, giro dopo giro. L'analisi per settore ti mostra l'evoluzione della sessione con precisione chirurgica.</p>
+          <h3 data-i18n="track.card1.title">Settori</h3>
+          <p data-i18n="track.card1.body">Il circuito viene suddiviso automaticamente in settori basati sulla geometria del tracciato, oppure li marchi tu a voce con "segna settore". Ogni settore ha il suo tempo, il suo delta, il suo record. Vedi dove guadagni e dove perdi, giro dopo giro. L'analisi per settore ti mostra l'evoluzione della sessione con precisione chirurgica.</p>
         </div>
 
         <div class="track-mode-card cinema-stagger" data-tilt>
           <span class="track-mode-icon">&#9201;</span>
-          <h3>Delta Timing</h3>
-          <p>Come in Formula 1: il delta in tempo reale ti dice se sei avanti o indietro rispetto al tuo giro migliore. Verde se stai guadagnando, rosso se stai perdendo. Il TTS te lo annuncia nel casco a ogni passaggio di settore, senza bisogno di guardare nulla. La finish line e rilevata automaticamente tramite GPS fence quando ripassi dal punto di partenza.</p>
+          <h3 data-i18n="track.card2.title">Delta Timing</h3>
+          <p data-i18n="track.card2.body">Come in Formula 1: il delta in tempo reale ti dice se sei avanti o indietro rispetto al tuo giro migliore. Verde se stai guadagnando, rosso se stai perdendo. La voce nel casco te lo annuncia a ogni passaggio di settore, senza bisogno di guardare nulla. La finish line e rilevata automaticamente quando ripassi dal punto di partenza.</p>
         </div>
 
         <div class="track-mode-card cinema-stagger" data-tilt>
           <span class="track-mode-icon">&#127908;</span>
-          <h3>TTS Coaching</h3>
-          <p>VRoom diventa il tuo ingegnere di pista personale. A ogni giro completato, il TTS annuncia il tempo totale e il confronto col best lap. A ogni settore, lo split time e il delta. Record personale? Lo senti subito. Tutto via Bluetooth nel casco, senza mai distogliere lo sguardo dalla pista. Comandi vocali dedicati: "inizia pista", "ferma pista", "segna settore".</p>
+          <h3 data-i18n="track.card3.title">Voce nel Casco</h3>
+          <p data-i18n="track.card3.body">VRoom diventa il tuo ingegnere di pista personale. A ogni giro completato, la voce nel casco annuncia il tempo totale e il confronto col best lap. A ogni settore, lo split time e il delta. Record personale? Lo senti subito. Tutto via Bluetooth nel casco, senza mai distogliere lo sguardo dalla pista. Comandi vocali dedicati: "inizia pista", "ferma pista", "segna settore".</p>
         </div>
       </div>
 
@@ -2032,20 +2119,20 @@
                 stroke="url(#trackGrad)" stroke-width="3" stroke-linecap="round" fill="none"
                 stroke-dasharray="8,6" opacity="0.6"/>
           <!-- Sector markers -->
-          <circle cx="180" cy="40" r="6" fill="#E94560" opacity="0.9"/>
+          <circle cx="180" cy="40" r="6" fill="#DC2626" opacity="0.9"/>
           <circle cx="420" cy="100" r="6" fill="#ff6b2c" opacity="0.9"/>
           <circle cx="200" cy="100" r="6" fill="#00e5bf" opacity="0.9"/>
           <!-- Finish line -->
-          <line x1="75" y1="150" x2="85" y2="170" stroke="#E94560" stroke-width="3" stroke-linecap="round"/>
-          <rect x="72" y="148" width="16" height="6" fill="#E94560" rx="1" opacity="0.5"/>
+          <line x1="75" y1="150" x2="85" y2="170" stroke="#DC2626" stroke-width="3" stroke-linecap="round"/>
+          <rect x="72" y="148" width="16" height="6" fill="#DC2626" rx="1" opacity="0.5"/>
           <!-- Labels -->
-          <text x="180" y="28" fill="#E94560" font-size="10" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">S1</text>
+          <text x="180" y="28" fill="#DC2626" font-size="10" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">S1</text>
           <text x="438" y="104" fill="#ff6b2c" font-size="10" font-weight="700" text-anchor="start" font-family="Inter, sans-serif">S2</text>
           <text x="200" y="92" fill="#00e5bf" font-size="10" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">S3</text>
-          <text x="60" y="165" fill="#E94560" font-size="9" font-weight="600" text-anchor="end" font-family="Inter, sans-serif">START</text>
+          <text x="60" y="165" fill="#DC2626" font-size="9" font-weight="600" text-anchor="end" font-family="Inter, sans-serif">START</text>
           <defs>
             <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#E94560"/>
+              <stop offset="0%" style="stop-color:#DC2626"/>
               <stop offset="50%" style="stop-color:#ff6b2c"/>
               <stop offset="100%" style="stop-color:#00e5bf"/>
             </linearGradient>
@@ -2059,49 +2146,49 @@
   <section class="faq" id="faq" data-cinema="faq">
     <div class="section-inner">
       <div class="faq-header">
-        <h2 class="cinema-heading">Domande frequenti</h2>
-        <p class="cinema-subtitle">Le risposte che cercavi, senza giri di parole.</p>
+        <h2 class="cinema-heading" data-i18n="faq.title">Domande frequenti</h2>
+        <p class="cinema-subtitle" data-i18n="faq.subtitle">Le risposte che cercavi, senza giri di parole.</p>
       </div>
 
       <div class="faq-grid">
         <details class="faq-item cinema-stagger">
-          <summary>VRoom e gratis?</summary>
-          <div class="faq-answer">Il piano Free e gratis per sempre, senza limiti di tempo e senza muri. Include registrazione giri, statistiche base, community alerts e SOS con countdown. Il piano Rider (4.99/mese) sblocca comandi vocali completi, navigazione offline turn-by-turn, telemetria avanzata e cloud sync. Il piano Pro (9.99/mese) aggiunge Track Mode completo con settori e delta F1, video overlay e AI Coach.</div>
+          <summary data-i18n="faq.q1.question">VRoom e gratis?</summary>
+          <div class="faq-answer" data-i18n="faq.q1.answer">Il piano Free e gratis per sempre, senza limiti di tempo e senza muri. Include registrazione giri, statistiche base, community alerts e SOS con countdown. Il piano Rider (4.99/mese) sblocca comandi vocali completi, navigazione offline turn-by-turn, telemetria avanzata e cloud sync. Il piano Pro (9.99/mese) aggiunge Track Mode completo con settori e delta F1, video overlay e AI Coach.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>Funziona offline?</summary>
-          <div class="faq-answer">Si, tutto. Il riconoscimento vocale Vosk funziona completamente offline. La navigazione Mapbox supporta mappe scaricabili per regione. La telemetria e elaborata interamente on-device dai sensori IMU. L'SOS invia SMS (che non richiedono connessione dati) con le coordinate GPS. Le segnalazioni community si sincronizzano quando torni online. VRoom e progettata per funzionare in montagna, in galleria, ovunque il segnale non arriva.</div>
+          <summary data-i18n="faq.q2.question">Funziona offline?</summary>
+          <div class="faq-answer" data-i18n="faq.q2.answer">Si, tutto. Il riconoscimento vocale funziona completamente offline. La navigazione supporta mappe scaricabili per regione. La telemetria e elaborata interamente sul telefono dai sensori integrati. L'SOS invia SMS (che non richiedono connessione dati) con le coordinate GPS. Le segnalazioni community si sincronizzano quando torni online. VRoom e progettata per funzionare in montagna, in galleria, ovunque il segnale non arriva.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>Serve un telefono specifico?</summary>
-          <div class="faq-answer">Android 8.0 (Oreo) o superiore, qualsiasi dispositivo con GPS e giroscopio. Non servono sensori speciali -- VRoom usa l'accelerometro e il giroscopio standard per calcolare piega, G-force e fall detection. Per i comandi vocali tramite intercom, serve un dispositivo Bluetooth SCO-compatible (praticamente tutti i telefoni moderni). Nessun hardware aggiuntivo necessario.</div>
+          <summary data-i18n="faq.q3.question">Serve un telefono specifico?</summary>
+          <div class="faq-answer" data-i18n="faq.q3.answer">Android 8.0 (Oreo) o superiore, qualsiasi dispositivo con GPS e giroscopio. Non servono sensori speciali -- VRoom usa l'accelerometro e il giroscopio standard per calcolare piega, G-force e fall detection. Per i comandi vocali tramite intercom, serve un telefono con Bluetooth (praticamente tutti i telefoni moderni). Nessun hardware aggiuntivo necessario.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>Funziona con l'intercom del casco?</summary>
-          <div class="faq-answer">Si. VRoom usa il profilo Bluetooth SCO (Synchronous Connection-Oriented) per instradare audio bidirezionale attraverso il tuo intercom moto. Testato con Cardo, Sena e altri intercom SCO-compatible. Il wake word "Ehi VRoom" funziona con il microfono dell'intercom, e le risposte TTS e la guida vocale escono dagli speaker del casco. Non serve configurazione speciale -- basta accoppiare il telefono all'intercom come fai normalmente per le telefonate.</div>
+          <summary data-i18n="faq.q4.question">Funziona con l'intercom del casco?</summary>
+          <div class="faq-answer" data-i18n="faq.q4.answer">Si. VRoom instrada l'audio bidirezionale attraverso il tuo intercom moto tramite la connessione Bluetooth standard. Testato con Cardo, Sena e altri intercom. Il wake word "Ehi VRoom" funziona con il microfono dell'intercom, e le risposte vocali e la guida escono dagli speaker del casco. Non serve configurazione speciale -- basta accoppiare il telefono all'intercom come fai normalmente per le telefonate.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>I miei dati sono al sicuro?</summary>
-          <div class="faq-answer">Tutto viene elaborato on-device. Il riconoscimento vocale non manda audio a nessun server. La telemetria resta sul telefono. La sincronizzazione cloud e opzionale e usa crittografia end-to-end. Nessun tracciamento pubblicitario, nessun dato venduto a terzi. Conformita GDPR completa: puoi cancellare il tuo account e tutti i dati associati in qualsiasi momento. Le chiavi API sono gestite tramite BYOK in Android Keystore con EncryptedSharedPreferences.</div>
+          <summary data-i18n="faq.q5.question">I miei dati sono al sicuro?</summary>
+          <div class="faq-answer" data-i18n="faq.q5.answer">Tutto viene elaborato on-device. Il riconoscimento vocale non manda audio a nessun server. La telemetria resta sul telefono. La sincronizzazione cloud e opzionale e usa crittografia end-to-end. Nessun tracciamento pubblicitario, nessun dato venduto a terzi. Conformita GDPR completa: puoi cancellare il tuo account e tutti i dati associati in qualsiasi momento. Le eventuali chiavi API personali sono protette dalla crittografia del dispositivo.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>VRoom e open source?</summary>
-          <div class="faq-answer">Si, il codice sorgente e disponibile su GitHub con licenza MIT. Puoi leggere, modificare e contribuire. Il progetto e nato dalla frustrazione di un rider per le app esistenti -- troppo orientate alla gamification della velocita, troppo poco alla sicurezza e all'esperienza di guida reale. Se condividi questa filosofia, le pull request sono benvenute.</div>
+          <summary data-i18n="faq.q6.question">VRoom e open source?</summary>
+          <div class="faq-answer" data-i18n="faq.q6.answer">VRoom sarà open source al lancio. Per ora puoi unirti alla waitlist per ricevere aggiornamenti e accesso anticipato. Il progetto e nato dalla frustrazione di un rider per le app esistenti -- troppo orientate alla gamification della velocita, troppo poco alla sicurezza e all'esperienza di guida reale. <a href="#waitlist" style="color:var(--teal)">Unisciti alla waitlist</a> per seguire lo sviluppo.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>Come funziona il Track Mode?</summary>
-          <div class="faq-answer">Attivi il Track Mode con il comando vocale "inizia pista" o dal menu. VRoom usa un GPS fence per rilevare automaticamente quando ripassi dalla linea di partenza e cronometra ogni giro. I settori vengono generati automaticamente dalla geometria del circuito, oppure li marchi tu a voce con "segna settore". Il delta timing stile F1 confronta ogni settore col tuo best lap in tempo reale. Il TTS annuncia tempi e split nel casco. Il conteggio giri base e gratis; settori, delta F1 ed export richiedono il piano Pro.</div>
+          <summary data-i18n="faq.q7.question">Come funziona il Track Mode?</summary>
+          <div class="faq-answer" data-i18n="faq.q7.answer">Attivi il Track Mode con il comando vocale "inizia pista" o dal menu. VRoom rileva automaticamente quando ripassi dalla linea di partenza e cronometra ogni giro. I settori vengono generati automaticamente dalla geometria del circuito, oppure li marchi tu a voce con "segna settore". Il delta timing stile F1 confronta ogni settore col tuo best lap in tempo reale. La voce nel casco annuncia tempi e split. Il conteggio giri base e gratis; settori, delta F1 ed export richiedono il piano Pro.</div>
         </details>
 
         <details class="faq-item cinema-stagger">
-          <summary>Posso importare i miei percorsi?</summary>
-          <div class="faq-answer">Si, in diversi modi. Importa file GPX dal file picker o ricevili via share sheet da Komoot, Strava, o qualsiasi altra app. Hai un link di Google Maps con un percorso? Incollalo in VRoom e viene convertito automaticamente in GPX, estraendo le coordinate direttamente dal URL senza bisogno di connessione. Puoi anche esportare i tuoi giri come link Google Maps con waypoint ottimizzati per condividerli con amici che non usano VRoom.</div>
+          <summary data-i18n="faq.q8.question">Posso importare i miei percorsi?</summary>
+          <div class="faq-answer" data-i18n="faq.q8.answer">Si, in diversi modi. Importa file GPX dal file picker o ricevili via share sheet da Komoot, Strava, o qualsiasi altra app. Hai un link di Google Maps con un percorso? Incollalo in VRoom e viene convertito automaticamente in GPX, estraendo le coordinate direttamente dal URL senza bisogno di connessione. Puoi anche esportare i tuoi giri come link Google Maps con waypoint ottimizzati per condividerli con amici che non usano VRoom.</div>
         </details>
       </div>
     </div>
@@ -2111,27 +2198,37 @@
   <section class="cta" id="cta" data-cinema="cta">
     <div class="section-inner">
       <div class="cta-content">
-        <h2 class="cinema-heading">Costruita da un rider.<br><span>Per i rider.</span></h2>
-        <p class="cinema-subtitle">VRoom è open source. Se credi nella sicurezza prima della velocità, unisciti a noi.</p>
+        <h2 class="cinema-heading"><span data-i18n="cta.title.line1">Costruita da un rider.</span><br><span data-i18n="cta.title.line2">Per i rider.</span></h2>
+        <p class="cinema-subtitle" data-i18n="cta.subtitle">Costruita da un rider, per i rider. Se credi nella sicurezza prima della velocità, unisciti alla waitlist.</p>
         <div class="cta-buttons cinema-stagger">
-          <a href="https://github.com/Vroom-dev/VRoom_app" class="btn btn-primary">Apri GitHub</a>
-          <a href="https://github.com/Vroom-dev/VRoom_app#-getting-started" class="btn btn-ghost">Come iniziare</a>
+          <a href="#waitlist" class="btn btn-primary" data-i18n="cta.primary">Entra in Waitlist</a>
+          <a href="#waitlist" class="btn btn-ghost" data-i18n="cta.secondary">Accesso Anticipato</a>
         </div>
         <div class="cta-stats">
-          <div class="cta-stat cinema-stagger"><div class="cta-stat-value" data-count-to="60" data-count-suffix="%">60%</div><div class="cta-stat-label">Completato</div></div>
-          <div class="cta-stat cinema-stagger"><div class="cta-stat-value" data-count-to="53">53</div><div class="cta-stat-label">Bug risolti</div></div>
-          <div class="cta-stat cinema-stagger"><div class="cta-stat-value" data-count-to="10">10</div><div class="cta-stat-label">Fasi</div></div>
+          <div class="cta-stat cinema-stagger"><div class="cta-stat-value" data-count-to="88" data-count-suffix="%" data-i18n="cta.stat1.value">88%</div><div class="cta-stat-label" data-i18n="cta.stat1.label">Completato</div></div>
+          <div class="cta-stat cinema-stagger"><div class="cta-stat-value" data-count-to="12" data-count-suffix="+" data-i18n="cta.stat2.value">12+</div><div class="cta-stat-label" data-i18n="cta.stat2.label">Funzionalità Attive</div></div>
+          <div class="cta-stat cinema-stagger"><div class="cta-stat-value" data-count-to="10" data-i18n="cta.stat3.value">10</div><div class="cta-stat-label" data-i18n="cta.stat3.label">Fasi</div></div>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- Waitlist -->
+  <section id="waitlist" style="padding:80px 24px;text-align:center;max-width:600px;margin:0 auto">
+    <h2 style="font-size:32px;font-weight:800;margin-bottom:16px;color:#f0f0f8" data-i18n="waitlist.title">Resta in Contatto</h2>
+    <p style="color:#8888a0;margin-bottom:24px" data-i18n="waitlist.subtitle">VRoom è in sviluppo attivo. Lascia la tua email per ricevere aggiornamenti e accesso anticipato.</p>
+    <form action="https://formspree.io/f/placeholder" method="POST" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+      <input type="email" name="email" placeholder="La tua email" data-i18n-placeholder="waitlist.placeholder" required style="flex:1;min-width:240px;padding:14px 20px;border-radius:12px;border:1px solid #2a2a3a;background:#0a0a12;color:#f0f0f8;font-size:16px">
+      <button type="submit" data-i18n="waitlist.submit" style="padding:14px 32px;border-radius:12px;border:none;background:linear-gradient(135deg,#00e5bf,#00b4d8);color:#050508;font-weight:700;font-size:16px;cursor:pointer">Iscriviti</button>
+    </form>
   </section>
 
   <!-- Scroll to top -->
   <button id="scroll-top" aria-label="Torna su">
     <svg viewBox="0 0 108 108" fill="none">
       <defs><linearGradient id="sttGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" style="stop-color:#E94560"/>
-        <stop offset="100%" style="stop-color:#ff5a75"/>
+        <stop offset="0%" style="stop-color:#DC2626"/>
+        <stop offset="100%" style="stop-color:#EF4444"/>
       </linearGradient></defs>
       <path fill="url(#sttGrad)" d="M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z"/>
       <line x1="36" y1="85" x2="72" y2="85" stroke="url(#sttGrad)" stroke-width="3" stroke-linecap="round"/>
@@ -2145,18 +2242,19 @@
   <footer>
     <div class="footer-logo">
       <svg class="vroom-logo" viewBox="0 0 108 108" style="width:32px;height:32px">
-        <defs><linearGradient id="footGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#E94560"/><stop offset="100%" style="stop-color:#ff5a75"/></linearGradient></defs>
+        <defs><linearGradient id="footGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#DC2626"/><stop offset="100%" style="stop-color:#EF4444"/></linearGradient></defs>
         <path fill="url(#footGrad)" d="M54,25 L30,80 L40,80 L54,48 L68,80 L78,80 L54,25 Z"/>
         <line x1="36" y1="85" x2="72" y2="85" stroke="url(#footGrad)" stroke-width="3" stroke-linecap="round"/>
       </svg>
-      <span>VRoom</span>
+      <span data-i18n="footer.brand">VRoom</span>
     </div>
     <div class="footer-links">
-      <a href="https://github.com/Vroom-dev/VRoom_app">Repository</a>
-      <a href="https://github.com/Vroom-dev/VRoom_app/issues">Feedback</a>
-      <a href="https://github.com/Vroom-dev/VRoom_app/blob/main/LICENSE">MIT License</a>
+      <a href="#waitlist" data-i18n="footer.link.waitlist">Waitlist</a>
+      <a href="mailto:info@vroom.app" data-i18n="footer.link.contact">Contattaci</a>
+      <a href="/privacy-policy.html" data-i18n="footer.link.privacy">Privacy Policy</a>
+      <a href="#waitlist" data-i18n="footer.link.early_access">Accesso Anticipato</a>
     </div>
-    <div class="footer-copy">© 2026 VRoom · By riders, for riders</div>
+    <div class="footer-copy" data-i18n="footer.copy">© 2026 VRoom · Da rider, per rider</div>
   </footer>
 
 
@@ -2165,7 +2263,7 @@
        ============================================================ -->
   <script>
     window.addEventListener('load', function() {
-      setTimeout(function() { document.getElementById('loader').classList.add('hidden'); }, 1500);
+      setTimeout(function() { document.getElementById('loader').classList.add('hidden'); }, 500);
     });
   </script>
 
@@ -2183,14 +2281,14 @@
 
   var CFG = {
     MAX_P: 120, TRAIL_RATE: 3, TRAIL_MIN_SPD: 1.5,
-    BURST_MIN: 30, BURST_MAX: 50, BURST_SPD_MIN: 2, BURST_SPD_MAX: 12,
+    BURST_MIN: 3, BURST_MAX: 6, BURST_SPD_MIN: 2, BURST_SPD_MAX: 12,
     SCROLL_RATE: 2, SCROLL_MIN_VEL: 3,
     MAG_RADIUS: 100, MAG_STRENGTH: 0.35,
     MAG_SCALE_MIN: 1.0, MAG_SCALE_MAX: 1.05,
     SPRING_K: 0.08, SPRING_D: 0.7,
     GRAVITY: 0.06, FRICTION: 0.985, TRAIL_DRAG: 0.96,
     C: {
-      red: {r:233,g:69,b:96}, teal: {r:0,g:229,b:191},
+      red: {r:220,g:38,b:38}, teal: {r:0,g:229,b:191},
       orange: {r:255,g:107,b:44}, purple: {r:168,g:85,b:247},
       white: {r:255,g:255,b:255}
     },
@@ -2355,13 +2453,13 @@
 
     if(m.on){
       var ds=4+m.ss*0.15;
-      var g1=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,ds*5);
-      g1.addColorStop(0,'rgba(233,69,96,0.35)'); g1.addColorStop(0.3,'rgba(233,69,96,0.1)'); g1.addColorStop(1,'rgba(233,69,96,0)');
-      ctx.fillStyle=g1; ctx.beginPath(); ctx.arc(m.x,m.y,ds*5,0,PI2); ctx.fill();
+      var g1=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,ds*3);
+      g1.addColorStop(0,'rgba(220,38,38,0.15)'); g1.addColorStop(0.3,'rgba(220,38,38,0.04)'); g1.addColorStop(1,'rgba(220,38,38,0)');
+      ctx.fillStyle=g1; ctx.beginPath(); ctx.arc(m.x,m.y,ds*3,0,PI2); ctx.fill();
       var g2=ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,ds*2);
-      g2.addColorStop(0,'rgba(233,69,96,0.7)'); g2.addColorStop(0.5,'rgba(233,69,96,0.15)'); g2.addColorStop(1,'rgba(233,69,96,0)');
+      g2.addColorStop(0,'rgba(220,38,38,0.4)'); g2.addColorStop(0.5,'rgba(220,38,38,0.08)'); g2.addColorStop(1,'rgba(220,38,38,0)');
       ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(m.x,m.y,ds*2,0,PI2); ctx.fill();
-      ctx.strokeStyle='rgba(233,69,96,'+Math.min(0.3+m.ss*0.005,0.6).toFixed(2)+')';
+      ctx.strokeStyle='rgba(220,38,38,'+Math.min(0.15+m.ss*0.003,0.35).toFixed(2)+')';
       ctx.lineWidth=1; ctx.beginPath(); ctx.arc(m.x,m.y,ds*1.5,0,PI2); ctx.stroke();
       ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.beginPath(); ctx.arc(m.x,m.y,2.2,0,PI2); ctx.fill();
       if(m.ss>8){var tA=Math.min((m.ss-8)/30,0.4);
@@ -2436,15 +2534,6 @@
     frame++;
     m.ss+=(m.spd-m.ss)*0.15; m.spd*=0.85;
     sc.sv+=(sc.vel-sc.sv)*0.1; sc.vel*=0.9;
-    if(m.on&&m.ss>CFG.TRAIL_MIN_SPD){
-      var n=Math.min(Math.floor(m.ss/8*CFG.TRAIL_RATE),6);
-      for(var i=0;i<n;i++) emitTrail(m.x,m.y,m.ss,m.ang);
-    }
-    if(m.on&&frame%12===0&&activeN<CFG.MAX_P*0.5) emitGlow(m.x,m.y);
-    if(Math.abs(sc.sv)>CFG.SCROLL_MIN_VEL){
-      var sn=Math.ceil(Math.min(Math.abs(sc.sv)/20,1)*CFG.SCROLL_RATE);
-      for(var j=0;j<sn;j++) emitSparkle();
-    }
     updateParticles(); updateMag(); updateNavTilt(); render();
     requestAnimationFrame(tick);
   }
@@ -2680,76 +2769,122 @@
     window.addEventListener('scroll', onCinemaScroll, { passive: true });
   }
 
-  // --- 7. HORIZONTAL SCROLL for features ---
-  var hscrollUpdateFn = null;
+  // --- 7. FEATURES CAROUSEL ---
+  // Infinite loop carousel driven by mouse position.
+  // Center = paused. Right = scrolls right. Left = scrolls left.
+  // Cards loop seamlessly — clones appended for infinite illusion.
+  // Also auto-scrolls slowly when mouse is not over the section.
 
   function setupHorizontalScroll() {
     var section = document.querySelector('section[data-cinema="features"]');
     if (!section) return;
     if (window.innerWidth <= 968) return;
 
-    var inner = section.querySelector('.section-inner');
-    if (!inner) return;
-
-    var header = section.querySelector('.features-header');
     var grid = section.querySelector('.features-grid');
     if (!grid) return;
 
-    var cards = grid.querySelectorAll('.feature-card');
+    var cards = Array.from(grid.querySelectorAll('.feature-card'));
     if (cards.length < 3) return;
 
-    var stickyWrap = document.createElement('div');
-    stickyWrap.className = 'cinema-hscroll-sticky';
+    section.classList.add('hscroll-active');
 
-    var stickyInner = document.createElement('div');
-    stickyInner.style.width = '100%';
-
-    if (header) stickyInner.appendChild(header);
-
+    // Build track with original cards + clones for seamless loop
     var track = document.createElement('div');
     track.className = 'cinema-hscroll-track';
+
+    // Add originals
     cards.forEach(function(card) { track.appendChild(card); });
-    stickyInner.appendChild(track);
-    stickyWrap.appendChild(stickyInner);
+    // Clone all cards and append for infinite loop
+    cards.forEach(function(card) {
+      var clone = card.cloneNode(true);
+      clone.setAttribute('aria-hidden', 'true');
+      track.appendChild(clone);
+    });
 
-    inner.innerHTML = '';
-    inner.appendChild(stickyWrap);
+    grid.innerHTML = '';
+    grid.appendChild(track);
 
-    var cardWidth = 360;
-    var gap = 24;
-    var totalTrackWidth = cards.length * (cardWidth + gap) - gap;
-    var overflow = totalTrackWidth - window.innerWidth + 120;
+    // Measure one set of cards (after layout)
+    var gap = 24; // matches CSS gap: 1.5rem ≈ 24px
+    var singleSetWidth = 0;
 
-    if (overflow <= 0) return;
+    function measureSet() {
+      singleSetWidth = 0;
+      for (var i = 0; i < cards.length; i++) {
+        singleSetWidth += track.children[i].offsetWidth + gap;
+      }
+    }
+    // Measure after a frame so layout is done
+    requestAnimationFrame(measureSet);
+    // Fallback immediate measure
+    measureSet();
 
-    var scrollDistance = overflow + window.innerHeight;
-    section.style.height = scrollDistance + 'px';
-    section.style.display = 'block';
-    section.style.padding = '0';
-    stickyWrap.style.paddingTop = '8rem';
-    stickyWrap.style.paddingBottom = '4rem';
+    // Animation state
+    var offset = 0;        // current translate offset in px
+    var speed = 0;         // current speed (px per frame)
+    var targetSpeed = 0.5; // default auto-scroll speed (slow right)
+    var isHovering = false;
+    var animId = null;
 
-    hscrollUpdateFn = function() {
+    // Mouse drives speed: center=0, right edge=fast right, left edge=fast left
+    section.addEventListener('mousemove', function(e) {
       var rect = section.getBoundingClientRect();
-      var sectionTop = -rect.top;
-      var sectionHeight = section.offsetHeight - window.innerHeight;
+      // -1 (left edge) to +1 (right edge)
+      var norm = ((e.clientX - rect.left) / rect.width) * 2 - 1;
 
-      if (sectionTop < 0 || sectionHeight <= 0) {
-        track.style.transform = 'translate3d(0, 0, 0)';
-        return;
+      // Dead zone in center ±0.15
+      if (Math.abs(norm) < 0.15) {
+        targetSpeed = 0;
+      } else {
+        // Ease: quadratic for natural feel, max speed ~6px/frame
+        var sign = norm > 0 ? 1 : -1;
+        var magnitude = (Math.abs(norm) - 0.15) / 0.85; // 0→1
+        targetSpeed = sign * magnitude * magnitude * 6;
+      }
+    });
+
+    section.addEventListener('mouseenter', function() {
+      isHovering = true;
+    });
+
+    section.addEventListener('mouseleave', function() {
+      isHovering = false;
+      targetSpeed = 0.5; // resume gentle auto-scroll
+    });
+
+    function tick() {
+      // Smooth speed interpolation
+      speed += (targetSpeed - speed) * 0.08;
+
+      // Apply
+      offset += speed;
+
+      // Wrap around: when we've scrolled past one full set, reset
+      if (singleSetWidth > 0) {
+        if (offset >= singleSetWidth) {
+          offset -= singleSetWidth;
+        } else if (offset < 0) {
+          offset += singleSetWidth;
+        }
       }
 
-      var progress = Math.min(Math.max(sectionTop / sectionHeight, 0), 1);
-      track.style.transform = 'translate3d(' + (-progress * overflow) + 'px, 0, 0)';
-    };
+      track.style.transform = 'translate3d(' + (-offset) + 'px, 0, 0)';
+      animId = requestAnimationFrame(tick);
+    }
 
-    window.addEventListener('scroll', function() {
-      if (!prefersReducedMotion && hscrollUpdateFn) {
-        requestAnimationFrame(hscrollUpdateFn);
-      }
-    }, { passive: true });
+    // Start animation only when section is visible (performance)
+    var visObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          if (!animId) { measureSet(); tick(); }
+        } else {
+          if (animId) { cancelAnimationFrame(animId); animId = null; }
+        }
+      });
+    }, { threshold: 0.1 });
+    visObs.observe(section);
 
-    hscrollUpdateFn();
+    window.addEventListener('resize', measureSet);
   }
 
   // --- 8. SMOOTH ANCHOR SCROLLING ---
@@ -2876,39 +3011,62 @@
     var cameraTarget = { x: 0, y: 0 };
     var cameraSmooth = { x: 0, y: 0 };
 
-    // Road
-    var roadLength = 400, roadWidth = 8;
-    var roadGeo = new THREE.PlaneGeometry(roadWidth, roadLength, 1, 200);
+    // Curve helpers: centerline X and its X-derivative at a given Z depth
+    function roadCurveX(z) {
+      return Math.sin(z * 0.08) * 3.5 + Math.sin(z * 0.03) * 2.0;
+    }
+    function roadCurveTangentX(z) {
+      return Math.cos(z * 0.08) * 0.08 * 3.5 + Math.cos(z * 0.03) * 0.03 * 2.0;
+    }
+
+    // Road — wide flat plane as base asphalt; curves are expressed through dashes and edge lines
+    var roadLength = 400, roadWidth = 20;
+    var roadGeo = new THREE.PlaneGeometry(roadWidth, roadLength, 1, 1);
     var roadMat = new THREE.MeshStandardMaterial({ color: 0x1a1a28, roughness: 0.6, metalness: 0.2, envMapIntensity: 0.5 });
     var road = new THREE.Mesh(roadGeo, roadMat);
     road.rotation.x = -Math.PI / 2;
-    road.position.set(0, 0, -roadLength / 2 + 10);
+    road.position.set(0, -0.01, -roadLength / 2 + 10);
     scene.add(road);
 
-    // Edge lines
-    var edgeLineMat = new THREE.MeshBasicMaterial({ color: 0x333340 });
-    function createEdgeLine(xPos) {
-      var geo = new THREE.PlaneGeometry(0.08, roadLength, 1, 1);
-      var mesh = new THREE.Mesh(geo, edgeLineMat);
-      mesh.rotation.x = -Math.PI / 2;
-      mesh.position.set(xPos, 0.01, -roadLength / 2 + 10);
-      return mesh;
+    // Curved edge lines using BufferGeometry line strips
+    var edgePoints = 220;
+    var roadHalfWidth = 4.2;
+    var leftEdgePts  = new Float32Array(edgePoints * 3);
+    var rightEdgePts = new Float32Array(edgePoints * 3);
+    for (var i = 0; i < edgePoints; i++) {
+      var ez = -i * 0.6;
+      var ecx = roadCurveX(ez);
+      var etan = roadCurveTangentX(ez);
+      var eangle = Math.atan(etan);
+      var eperpX = Math.cos(eangle + Math.PI / 2);
+      leftEdgePts[i * 3]     = ecx + eperpX * roadHalfWidth;
+      leftEdgePts[i * 3 + 1] = 0.01;
+      leftEdgePts[i * 3 + 2] = ez;
+      rightEdgePts[i * 3]     = ecx - eperpX * roadHalfWidth;
+      rightEdgePts[i * 3 + 1] = 0.01;
+      rightEdgePts[i * 3 + 2] = ez;
     }
-    scene.add(createEdgeLine(-roadWidth / 2 + 0.15));
-    scene.add(createEdgeLine(roadWidth / 2 - 0.15));
+    var edgeLineMat = new THREE.LineBasicMaterial({ color: 0x334455, transparent: true, opacity: 0.4 });
+    var leftEdgeGeo = new THREE.BufferGeometry();
+    leftEdgeGeo.setAttribute('position', new THREE.BufferAttribute(leftEdgePts, 3));
+    scene.add(new THREE.Line(leftEdgeGeo, edgeLineMat));
+    var rightEdgeGeo = new THREE.BufferGeometry();
+    rightEdgeGeo.setAttribute('position', new THREE.BufferAttribute(rightEdgePts, 3));
+    scene.add(new THREE.Line(rightEdgeGeo, edgeLineMat));
 
-    // Dashed center line
+    // Dashed center line — each instance positioned along the curve in world space
     var dashCount = 80, dashLength = 1.8, dashGap = 2.4;
     var dashCycleLength = dashLength + dashGap;
     var dashGeo = new THREE.PlaneGeometry(0.12, dashLength, 1, 1);
     var dashMat = new THREE.MeshBasicMaterial({ color: 0x888890, transparent: true, opacity: 0.7 });
     var dashes = new THREE.InstancedMesh(dashGeo, dashMat, dashCount);
-    dashes.rotation.x = -Math.PI / 2;
-    dashes.position.y = 0.015;
+    // No global rotation — per-instance matrix carries full world transform
 
     var dashDummy = new THREE.Object3D();
     for (var i = 0; i < dashCount; i++) {
-      dashDummy.position.set(0, 0, -i * dashCycleLength);
+      var dz = -i * dashCycleLength;
+      dashDummy.position.set(roadCurveX(dz), 0.015, dz);
+      dashDummy.rotation.set(-Math.PI / 2, 0, -Math.atan(roadCurveTangentX(dz)));
       dashDummy.updateMatrix();
       dashes.setMatrixAt(i, dashDummy.matrix);
     }
@@ -2984,13 +3142,13 @@
     vShape.lineTo(0, 1.6); vShape.lineTo(0.55, 0); vShape.lineTo(1.0, 0); vShape.closePath();
     var vGeo = new THREE.ExtrudeGeometry(vShape, { depth: 0.3, bevelEnabled: true, bevelThickness: 0.04, bevelSize: 0.03, bevelSegments: 3 });
     vGeo.center();
-    var vMat = new THREE.MeshStandardMaterial({ color: 0xE94560, emissive: 0xE94560, emissiveIntensity: 0.8, roughness: 0.2, metalness: 0.8 });
+    var vMat = new THREE.MeshStandardMaterial({ color: 0xDC2626, emissive: 0xDC2626, emissiveIntensity: 0.8, roughness: 0.2, metalness: 0.8 });
     var vLogo = new THREE.Mesh(vGeo, vMat);
     vLogo.position.set(0, 6.5, -25);
     vLogo.scale.set(1.8, 1.8, 1.8);
     scene.add(vLogo);
 
-    var vGlowMat = new THREE.MeshBasicMaterial({ color: 0xE94560, transparent: true, opacity: 0.15, side: THREE.FrontSide });
+    var vGlowMat = new THREE.MeshBasicMaterial({ color: 0xDC2626, transparent: true, opacity: 0.15, side: THREE.FrontSide });
     var vGlow = new THREE.Mesh(vGeo, vGlowMat);
     vGlow.position.copy(vLogo.position);
     vGlow.scale.set(2.2, 2.2, 2.2);
@@ -2998,7 +3156,7 @@
 
     // Road reflection
     var reflGeo = new THREE.PlaneGeometry(6, 20, 1, 1);
-    var reflMat = new THREE.MeshBasicMaterial({ color: 0xE94560, transparent: true, opacity: 0.06, blending: THREE.AdditiveBlending, depthWrite: false });
+    var reflMat = new THREE.MeshBasicMaterial({ color: 0xDC2626, transparent: true, opacity: 0.06, blending: THREE.AdditiveBlending, depthWrite: false });
     var roadReflection = new THREE.Mesh(reflGeo, reflMat);
     roadReflection.rotation.x = -Math.PI / 2;
     roadReflection.position.set(0, 0.02, -25);
@@ -3023,7 +3181,7 @@
     var moonlight = new THREE.DirectionalLight(0x4466aa, 0.4);
     moonlight.position.set(20, 40, -30);
     scene.add(moonlight);
-    var logoLight = new THREE.PointLight(0xE94560, 2.5, 40);
+    var logoLight = new THREE.PointLight(0xDC2626, 2.5, 40);
     logoLight.position.set(0, 7, -25);
     scene.add(logoLight);
     var headlight = new THREE.SpotLight(0xffeedd, 3.0, 80, Math.PI / 6, 0.5, 1.5);
@@ -3096,16 +3254,27 @@
 
       cameraSmooth.x += (cameraTarget.x - cameraSmooth.x) * 0.05;
       cameraSmooth.y += (cameraTarget.y - cameraSmooth.y) * 0.05;
-      cameraTarget.x = mouseNormX * 0.08;
-      cameraTarget.y = mouseNormY * 0.03;
-      camera.position.x = cameraSmooth.x * 3;
-      camera.rotation.y = -cameraSmooth.x * 0.15;
+      // Natural road sway: simulate riding through the S-curves
+      var rideCurveOffset = Math.sin(elapsed * 0.5) * 1.5;
+      cameraTarget.x = mouseNormX * 0.12 + rideCurveOffset * 0.1;
+      cameraTarget.y = mouseNormY * 0.05;
+      camera.position.x = cameraSmooth.x * 4;
+      // Subtle forward movement with the road
+      camera.position.z = 8 + Math.sin(elapsed * 0.3) * 0.5;
+      camera.rotation.y = -cameraSmooth.x * 0.2;
       camera.rotation.x = -0.12 + cameraSmooth.y * 0.08;
+      // Motorcycle lean feel: subtle roll follows steering
+      camera.rotation.z = cameraSmooth.x * 0.05;
 
+      // Animate dashes scrolling along the curved road
+      var dashOffset = (elapsed * 12) % dashCycleLength;
       for (var i = 0; i < dashCount; i++) {
-        var z = -i * dashCycleLength + (elapsed * 12) % dashCycleLength;
-        while (z > 5) z -= dashCount * dashCycleLength;
-        dashDummy.position.set(0, 0, z);
+        var daz = -i * dashCycleLength + dashOffset;
+        while (daz > 5) daz -= dashCount * dashCycleLength;
+        var dacx = roadCurveX(daz);
+        var datan = roadCurveTangentX(daz);
+        dashDummy.position.set(dacx, 0.015, daz);
+        dashDummy.rotation.set(-Math.PI / 2, 0, -Math.atan(datan));
         dashDummy.updateMatrix();
         dashes.setMatrixAt(i, dashDummy.matrix);
       }
@@ -3137,6 +3306,9 @@
         var px = pPositions.getX(i) + particleVelocities[i * 3];
         var py = pPositions.getY(i) + particleVelocities[i * 3 + 1];
         var pz = pPositions.getZ(i) + particleVelocities[i * 3 + 2];
+        // Subtle drift following the road curve
+        var curveInfluence = Math.sin(pz * 0.08) * 0.01;
+        px += curveInfluence;
         if (pz > 10) { px = (Math.random() - 0.5) * 16; py = Math.random() * 4 + 0.3; pz = -60 + Math.random() * -10; }
         pPositions.setXYZ(i, px, py, pz);
       }
@@ -3531,6 +3703,10 @@
   }
 })();
   </script>
+
+  <!-- i18n: dictionary + engine (must load in this order) -->
+  <script src="i18n-strings.js"></script>
+  <script src="i18n-engine.js"></script>
 
 </body>
 </html>
